@@ -1,0 +1,9 @@
+E:\БГУИР\ООТПиСП\Lab1\Lab1\bin\Debug\Lab1.exe.config
+E:\БГУИР\ООТПиСП\Lab1\Lab1\obj\Debug\Lab1.csprojResolveAssemblyReference.cache
+E:\БГУИР\ООТПиСП\Lab1\Lab1\obj\Debug\Lab1.MainForm.resources
+E:\БГУИР\ООТПиСП\Lab1\Lab1\obj\Debug\Lab1.Properties.Resources.resources
+E:\БГУИР\ООТПиСП\Lab1\Lab1\obj\Debug\Lab1.csproj.GenerateResource.Cache
+E:\БГУИР\ООТПиСП\Lab1\Lab1\bin\Debug\Lab1.exe
+E:\БГУИР\ООТПиСП\Lab1\Lab1\bin\Debug\Lab1.pdb
+E:\БГУИР\ООТПиСП\Lab1\Lab1\obj\Debug\Lab1.exe
+E:\БГУИР\ООТПиСП\Lab1\Lab1\obj\Debug\Lab1.pdb
