@@ -10,9 +10,26 @@ namespace Lab1
     public class Figure
     {
         public virtual void Draw(PictureBox pbox) { }
-    } 
+    }
 
-    public class Line : Figure
+    public class RectLike : Figure
+    {
+        public override void Draw(PictureBox pbox) { }
+        public int X1 { get; set; }
+        public int X2 { get; set; }
+        public int Y1 { get; set; }
+        public int Y2 { get; set; }
+    }
+
+    public class SymbolFigure : Figure
+    {
+        public override void Draw(PictureBox pbox) { }
+        public int X1 { get; set; }
+        public int Y1 { get; set; }
+        public int FontSize { get; set; }
+    }
+
+    public class Line : RectLike
     {
         public Line (int x1, int y1, int x2, int y2)
         {
@@ -26,13 +43,9 @@ namespace Lab1
             Graphics g = pbox.CreateGraphics();
             g.DrawLine(new Pen(Brushes.Red, 2), new Point(X1, Y1), new Point(X2, Y2));
         }
-        public int X1 { get; set; }
-        public int X2 { get; set; }
-        public int Y1 { get; set; }
-        public int Y2 { get; set; }
     }
 
-    public class Ellipce : Figure
+    public class Ellipce : RectLike
     {
         public Ellipce(int x1, int y1, int x2, int y2)
         {
@@ -53,13 +66,9 @@ namespace Lab1
             Graphics g = pbox.CreateGraphics();
             g.DrawEllipse(new Pen(Brushes.Green, 2), new Rectangle(X1, Y1, X2 - X1, Y2 - Y1));
         }
-        public int X1 { get; set; }
-        public int X2 { get; set; }
-        public int Y1 { get; set; }
-        public int Y2 { get; set; }
     }
 
-    public class Rect : Figure
+    public class Rect : RectLike
     {
         public Rect(int x1, int y1, int x2, int y2)
         {
@@ -69,18 +78,13 @@ namespace Lab1
             Y2 = y2;
         }
         public override void Draw(PictureBox pbox)
-        {
-            
+        {  
             Graphics g = pbox.CreateGraphics();
             g.DrawRectangle(new Pen(Brushes.Blue, 2), new Rectangle(X1, Y1, X2 - X1, Y2 - Y1));
         }
-        public int X1 { get; set; }
-        public int X2 { get; set; }
-        public int Y1 { get; set; }
-        public int Y2 { get; set; }
     }
 
-    public class Arc : Figure
+    public class Arc : RectLike
     {
         public Arc(Rectangle rect, float startAngle, float sweepAngle)
         {
@@ -115,15 +119,11 @@ namespace Lab1
             g.DrawArc(new Pen(Brushes.Yellow, 2), new Rectangle(X1, Y1, X2 - X1, Y2 - Y1), -begAngle, -endAngle);
             //g.DrawRectangle(new Pen(Brushes.Yellow, 2), new Rectangle(X1, Y1, X2, Y2));
         }
-        public int X1 { get; set; }
-        public int X2 { get; set; }
-        public int Y1 { get; set; }
-        public int Y2 { get; set; }
         public float begAngle { get; set; }
         public float endAngle { get; set; }
     }
 
-    public class RoundRect : Figure
+    public class RoundRect : RectLike
     {
         public RoundRect(int x1, int y1, int x2, int y2, int radius)
         {
@@ -159,48 +159,72 @@ namespace Lab1
             arc3.Draw(pbox);
             arc4.Draw(pbox);
         }
-        public int X1 { get; set; }
-        public int X2 { get; set; }
-        public int Y1 { get; set; }
-        public int Y2 { get; set; }
         public int Radius { get; set; }
     }
 
-    public class Hexagon : Figure
+    public class Hexagon : RectLike
     {
         public Hexagon(int x1, int y1, int x2, int y2)
         {
-            Left = x1;
-            Top = y1;
-            Right = x2;
-            Bottom = y2;
+            X1 = x1;
+            Y1 = y1;
+            X2 = x2;
+            Y2 = y2;
         }
         public Hexagon(Rect rect)
         {
-            Left = rect.X1;
-            Top = rect.Y1;
-            Right = rect.X2;
-            Bottom = rect.Y2;
+            X1 = rect.X1;
+            Y1 = rect.Y1;
+            X2 = rect.X2;
+            Y2 = rect.Y2;
         }
         public override void Draw(PictureBox pbox)
         {
 
             Graphics g = pbox.CreateGraphics();
             var pen = new Pen(Brushes.Orange, 2);
-            g.DrawLine(pen, (Left + Right) / 2, Top, Right, Top + (Bottom - Top) / 3);
-            g.DrawLine(pen, Right, Top + (Bottom - Top) / 3, Right, Top + (Bottom - Top) / 3 * 2);
-            g.DrawLine(pen, Right, Top + (Bottom - Top) / 3 * 2, (Left + Right) / 2, Bottom);
-            g.DrawLine(pen, (Left + Right) / 2, Bottom, Left, Top + (Bottom - Top) / 3 * 2);
-            g.DrawLine(pen, Left, Top + (Bottom - Top) / 3 * 2, Left, Top + (Bottom - Top) / 3);
-            g.DrawLine(pen, Left, Top + (Bottom - Top) / 3 , (Left + Right) / 2, Top);
+            g.DrawLine(pen, (X1 + X2) / 2, Y1, X2, Y1 + (Y2 - Y1) / 3);
+            g.DrawLine(pen, X2, Y1 + (Y2 - Y1) / 3, X2, Y1 + (Y2 - Y1) / 3 * 2);
+            g.DrawLine(pen, X2, Y1 + (Y2 - Y1) / 3 * 2, (X1 + X2) / 2, Y2);
+            g.DrawLine(pen, (X1 + X2) / 2, Y2, X1, Y1 + (Y2 - Y1) / 3 * 2);
+            g.DrawLine(pen, X1, Y1 + (Y2 - Y1) / 3 * 2, X1, Y1 + (Y2 - Y1) / 3);
+            g.DrawLine(pen, X1, Y1 + (Y2 - Y1) / 3 , (X1 + X2) / 2, Y1);
         }
-        public int Left { get; set; }
-        public int Right { get; set; }
-        public int Top { get; set; }
-        public int Bottom { get; set; }
     }
 
+    public class LetterA : SymbolFigure
+    {
+        public LetterA(int x1, int y1, int size)
+        {
+            X1 = x1;
+            Y1 = y1;
+            FontSize = size;
+        }
+        public override void Draw(PictureBox pbox)
+        {
+            Graphics g = pbox.CreateGraphics();
+            var pen = new Pen(Brushes.Yellow, 2);
+            g.DrawLine(pen, X1 + FontSize * 3 / 2, Y1, X1 + FontSize * 3, Y1 + FontSize * 4);
+            g.DrawLine(pen, X1 + FontSize * 3 / 2, Y1, X1, Y1 + FontSize * 4);
+            g.DrawLine(pen, X1 + 2 + (FontSize * 3 / 2 / 8 * 3), Y1 + (FontSize * 4 / 8 * 5), X1 + 2 + (FontSize * 3 / 2 / 8 * 5) + FontSize * 3 / 2, Y1 + (FontSize * 4 / 8 * 5));
+        }
+        
+    }
 
+    public class FiguresList<Figure>
+    {
+        public FiguresList()
+        {
+            Size = 0;
+        }
+        public Figure this[int index]
+        {
+            get { return Figures[index]; }
+            set { Figures[index] = value; Size++; }
+        }
+        private Figure[] Figures = new Figure[100];
+        public int Size { get; set; }
+    }
 
     static class MainUnit
     {
