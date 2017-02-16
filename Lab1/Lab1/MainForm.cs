@@ -19,15 +19,24 @@ namespace Lab1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Line line = new Line(10, 10, 100, 100, pictureBox1);
-            line.Draw();
-            /*Graphics graphics = this.CreateGraphics();
-            Rectangle rectangle = new Rectangle(100, 100, 200, 200);
-            graphics.DrawEllipse(Pens.Black, rectangle);
-            rectangle.Width = 100;
-            graphics.DrawRectangle(Pens.Red, rectangle);*/
+            var line = new Line(0, 0, 200, 10);
+            line.Draw(pictureBox1);
 
-            
+            var rectangle = new Rect(400, 200, 700, 300);
+            rectangle.Draw(pictureBox1);
+
+            var ellipce = new Ellipce(20, 20, 130, 170);
+            ellipce.Draw(pictureBox1);
+
+            var arc = new Arc(100, 100, 200, 200, 30, 150);
+            arc.Draw(pictureBox1);
+
+            var rorec = new RoundRect(420, 220, 680, 280, 25);
+            rorec.Draw(pictureBox1);
+
+            var hex = new Hexagon(500, 100, 600, 400);
+            hex.Draw(pictureBox1);
+
         }
     }
 }
