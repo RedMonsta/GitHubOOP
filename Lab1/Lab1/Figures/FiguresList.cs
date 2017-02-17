@@ -12,6 +12,7 @@ namespace Lab1
         public FiguresList()
         {
             Size = 0;
+           // ChoosenIndex = 0;
         }
         public void DrawAll(PictureBox pbox)
         {
@@ -24,6 +25,7 @@ namespace Lab1
             set { Figures[index] = value; if (index >= Size)Size++; }
         }
         private Figure[] Figures = new Figure[100];
-        private int Size { get; set; }
+        public int Size { get; set; }
+        //public int ChoosenIndex { get; set; }
     }
 }

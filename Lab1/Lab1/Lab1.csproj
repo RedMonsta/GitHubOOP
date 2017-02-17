@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BitMaps.cs" />
     <Compile Include="Figures\FiguresList.cs" />
     <Compile Include="Figures\RectLike\Arc.cs" />
     <Compile Include="Figures\RectLike\Ellipce.cs" />

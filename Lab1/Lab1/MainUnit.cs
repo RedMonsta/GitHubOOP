@@ -11,11 +11,13 @@ namespace Lab1
     public class Figure
     {
         public virtual void Draw(PictureBox pbox) { }
-        protected Pen pen;
+        public virtual void Draw(Graphics gr) { }
+        public Pen pen;
     }
     public class RectLike : Figure
     {
         public override void Draw(PictureBox pbox) { }
+        public override void Draw(Graphics gr) { }
         public int X1 { get; set; }
         public int X2 { get; set; }
         public int Y1 { get; set; }
@@ -24,6 +26,7 @@ namespace Lab1
     public class SymbolFigure : Figure
     {
         public override void Draw(PictureBox pbox) { }
+        public override void Draw(Graphics gr) { }
         public int X1 { get; set; }
         public int Y1 { get; set; }
         public int FontSize { get; set; }

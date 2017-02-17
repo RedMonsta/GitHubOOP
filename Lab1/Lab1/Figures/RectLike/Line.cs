@@ -21,5 +21,9 @@ namespace Lab1
             Graphics g = pbox.CreateGraphics();
             g.DrawLine(pen, new Point(X1, Y1), new Point(X2, Y2));
         }
+        public override void Draw(Graphics gr)
+        {
+            gr.DrawLine(pen, new Point(X1, Y1), new Point(X2, Y2));
+        }
     }
 }
