@@ -15,42 +15,81 @@ namespace Lab1
         public MainForm()
         {
             InitializeComponent();
+            CurrPen = new Pen(Brushes.Black, 2);
         }
+        protected Pen CurrPen;
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var FigList = new FiguresList<Figure>();
-            FigList[0] = new Line(0, 0, 200, 10);
-            FigList[1] = new Rect(400, 200, 700, 300);
-            FigList[2] = new Ellipce(20, 20, 130, 170);
-            FigList[3] = new Arc(100, 100, 200, 200, 30, 150);
+            var FigList = new FiguresList();
+            var pen = new Pen(Brushes.DarkRed, 2);
 
-            for (int i = 0; i < FigList.Size; i++)
-            FigList[i].Draw(pictureBox1);
+            FigList[0] = new Line(pen, 0, 0, 600, 10);
+            pen.Brush = Brushes.DarkSeaGreen;
+            FigList[1] = new Rect(pen, 400, 200, 700, 300);
+            pen.Brush = Brushes.Black;
+            FigList[2] = new Ellipce(pen, 20, 20, 130, 170);
+            pen.Brush = Brushes.Firebrick;
+            FigList[3] = new Arc(pen, 100, 100, 200, 200, 30, 150);
+            pen.Brush = Brushes.Yellow;
+            FigList[4] = new Hexagon(pen, 200, 100, 300, 400);
+            pen.Brush = Brushes.White;
+            FigList[5] = new RoundRect(pen, 420, 220, 680, 280, 25);
+            pen.Brush = Brushes.BlueViolet;
+            FigList[6] = new LetterA(pen, 100, 400, 20);
 
+            FigList.DrawAll(pictureBox1);
+        }
 
-            //var line = new Line(0, 0, 200, 10);
-            //line.Draw(pictureBox1);
+        private void button8_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                btnColor.BackColor = colorDialog1.Color;
+                CurrPen.Color = colorDialog1.Color;
+            }
+        }
 
-            //var rectangle = new Rect(400, 200, 700, 300);
-            //rectangle.Draw(pictureBox1);
+        private void btnLine_Click(object sender, EventArgs e)
+        {
+            var line = new Line(CurrPen, 0, 0, 600, 10);
+            line.Draw(pictureBox1);
+        }
 
-            //var ellipce = new Ellipce(20, 20, 130, 170);
-            //ellipce.Draw(pictureBox1);
-
-            //var arc = new Arc(100, 100, 200, 200, 30, 150);
-            //arc.Draw(pictureBox1);
-
-            var rorec = new RoundRect(420, 220, 680, 280, 25);
-            rorec.Draw(pictureBox1);
-
-            var hex = new Hexagon(500, 100, 600, 400);
-            hex.Draw(pictureBox1);
-
-            var rect = new Rect(0, 400, 60, 480);
+        private void btnRect_Click(object sender, EventArgs e)
+        {
+            var rect = new Rect(CurrPen, 400, 200, 700, 300);
             rect.Draw(pictureBox1);
-            var leta = new LetterA(0, 400, 20);
-            leta.Draw(pictureBox1);
+        }
+
+        private void btnEllipce_Click(object sender, EventArgs e)
+        {
+            var ellipce = new Ellipce(CurrPen, 20, 20, 130, 170);
+            ellipce.Draw(pictureBox1);
+        }
+
+        private void btnArc_Click(object sender, EventArgs e)
+        {
+            var arc = new Arc(CurrPen, 100, 100, 200, 200, 30, 150);
+            arc.Draw(pictureBox1);
+        }
+
+        private void btnRoundRect_Click(object sender, EventArgs e)
+        {
+            var rrect = new RoundRect(CurrPen, 420, 220, 680, 280, 25);
+            rrect.Draw(pictureBox1);
+        }
+
+        private void btnHexagon_Click(object sender, EventArgs e)
+        {
+            var hexagon = new Hexagon(CurrPen, 200, 100, 300, 400);
+            hexagon.Draw(pictureBox1);
+        }
+
+        private void btnLetA_Click(object sender, EventArgs e)
+        {
+            var letA = new LetterA(CurrPen, 100, 400, 20);
+            letA.Draw(pictureBox1);
         }
     }
 }
