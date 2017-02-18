@@ -33,15 +33,17 @@
             this.btnColor = new System.Windows.Forms.Button();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.grboxFigures = new System.Windows.Forms.GroupBox();
-            this.rbSymbolA = new System.Windows.Forms.RadioButton();
+            this.rbStarFour = new System.Windows.Forms.RadioButton();
             this.rbHexagon = new System.Windows.Forms.RadioButton();
             this.rbRoundRect = new System.Windows.Forms.RadioButton();
-            this.rbArc = new System.Windows.Forms.RadioButton();
+            this.rbIsoTriangle = new System.Windows.Forms.RadioButton();
             this.rbEllipce = new System.Windows.Forms.RadioButton();
             this.rbRect = new System.Windows.Forms.RadioButton();
             this.rbLine = new System.Windows.Forms.RadioButton();
             this.btnBackColor = new System.Windows.Forms.Button();
             this.colorDialog2 = new System.Windows.Forms.ColorDialog();
+            this.btnClear = new System.Windows.Forms.Button();
+            this.btnBack = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.grboxFigures.SuspendLayout();
             this.SuspendLayout();
@@ -73,9 +75,9 @@
             // 
             this.btnColor.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.btnColor.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnColor.Location = new System.Drawing.Point(11, 501);
+            this.btnColor.Location = new System.Drawing.Point(11, 440);
             this.btnColor.Name = "btnColor";
-            this.btnColor.Size = new System.Drawing.Size(145, 34);
+            this.btnColor.Size = new System.Drawing.Size(145, 61);
             this.btnColor.TabIndex = 10;
             this.btnColor.Text = "Choose Color";
             this.btnColor.UseVisualStyleBackColor = false;
@@ -83,10 +85,10 @@
             // 
             // grboxFigures
             // 
-            this.grboxFigures.Controls.Add(this.rbSymbolA);
+            this.grboxFigures.Controls.Add(this.rbStarFour);
             this.grboxFigures.Controls.Add(this.rbHexagon);
             this.grboxFigures.Controls.Add(this.rbRoundRect);
-            this.grboxFigures.Controls.Add(this.rbArc);
+            this.grboxFigures.Controls.Add(this.rbIsoTriangle);
             this.grboxFigures.Controls.Add(this.rbEllipce);
             this.grboxFigures.Controls.Add(this.rbRect);
             this.grboxFigures.Controls.Add(this.rbLine);
@@ -98,17 +100,17 @@
             this.grboxFigures.TabStop = false;
             this.grboxFigures.Text = "Figures";
             // 
-            // rbSymbolA
+            // rbStarFour
             // 
-            this.rbSymbolA.AutoSize = true;
-            this.rbSymbolA.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.rbSymbolA.Location = new System.Drawing.Point(9, 179);
-            this.rbSymbolA.Name = "rbSymbolA";
-            this.rbSymbolA.Size = new System.Drawing.Size(95, 21);
-            this.rbSymbolA.TabIndex = 6;
-            this.rbSymbolA.Text = "Symbol \"A\"";
-            this.rbSymbolA.UseVisualStyleBackColor = true;
-            this.rbSymbolA.CheckedChanged += new System.EventHandler(this.rbSymbolA_CheckedChanged);
+            this.rbStarFour.AutoSize = true;
+            this.rbStarFour.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.rbStarFour.Location = new System.Drawing.Point(9, 179);
+            this.rbStarFour.Name = "rbStarFour";
+            this.rbStarFour.Size = new System.Drawing.Size(81, 21);
+            this.rbStarFour.TabIndex = 6;
+            this.rbStarFour.Text = "StarFour";
+            this.rbStarFour.UseVisualStyleBackColor = true;
+            this.rbStarFour.CheckedChanged += new System.EventHandler(this.rbSymbolA_CheckedChanged);
             // 
             // rbHexagon
             // 
@@ -134,17 +136,17 @@
             this.rbRoundRect.UseVisualStyleBackColor = true;
             this.rbRoundRect.CheckedChanged += new System.EventHandler(this.rbRoundRect_CheckedChanged);
             // 
-            // rbArc
+            // rbIsoTriangle
             // 
-            this.rbArc.AutoSize = true;
-            this.rbArc.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.rbArc.Location = new System.Drawing.Point(9, 98);
-            this.rbArc.Name = "rbArc";
-            this.rbArc.Size = new System.Drawing.Size(47, 21);
-            this.rbArc.TabIndex = 3;
-            this.rbArc.Text = "Arc";
-            this.rbArc.UseVisualStyleBackColor = true;
-            this.rbArc.CheckedChanged += new System.EventHandler(this.rbArc_CheckedChanged);
+            this.rbIsoTriangle.AutoSize = true;
+            this.rbIsoTriangle.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.rbIsoTriangle.Location = new System.Drawing.Point(9, 98);
+            this.rbIsoTriangle.Name = "rbIsoTriangle";
+            this.rbIsoTriangle.Size = new System.Drawing.Size(96, 21);
+            this.rbIsoTriangle.TabIndex = 3;
+            this.rbIsoTriangle.Text = "IsoTriangle";
+            this.rbIsoTriangle.UseVisualStyleBackColor = true;
+            this.rbIsoTriangle.CheckedChanged += new System.EventHandler(this.rbArc_CheckedChanged);
             // 
             // rbEllipce
             // 
@@ -186,13 +188,33 @@
             // 
             // btnBackColor
             // 
-            this.btnBackColor.Location = new System.Drawing.Point(12, 541);
+            this.btnBackColor.Location = new System.Drawing.Point(12, 518);
             this.btnBackColor.Name = "btnBackColor";
-            this.btnBackColor.Size = new System.Drawing.Size(143, 33);
+            this.btnBackColor.Size = new System.Drawing.Size(143, 56);
             this.btnBackColor.TabIndex = 16;
             this.btnBackColor.Text = "Back Color";
             this.btnBackColor.UseVisualStyleBackColor = true;
             this.btnBackColor.Click += new System.EventHandler(this.btnBackColor_Click);
+            // 
+            // btnClear
+            // 
+            this.btnClear.Location = new System.Drawing.Point(11, 383);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(64, 36);
+            this.btnClear.TabIndex = 17;
+            this.btnClear.Text = "ClearScr";
+            this.btnClear.UseVisualStyleBackColor = true;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+            // 
+            // btnBack
+            // 
+            this.btnBack.Location = new System.Drawing.Point(81, 384);
+            this.btnBack.Name = "btnBack";
+            this.btnBack.Size = new System.Drawing.Size(73, 34);
+            this.btnBack.TabIndex = 18;
+            this.btnBack.Text = "StepBack";
+            this.btnBack.UseVisualStyleBackColor = true;
+            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
             // 
             // MainForm
             // 
@@ -200,13 +222,15 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1074, 587);
+            this.Controls.Add(this.btnBack);
+            this.Controls.Add(this.btnClear);
             this.Controls.Add(this.btnBackColor);
             this.Controls.Add(this.grboxFigures);
             this.Controls.Add(this.btnColor);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnDraw);
             this.Name = "MainForm";
-            this.Text = "Form1";
+            this.Text = "MonsterPaint";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.grboxFigures.ResumeLayout(false);
             this.grboxFigures.PerformLayout();
@@ -221,15 +245,17 @@
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.Button btn1;
         private System.Windows.Forms.GroupBox grboxFigures;
-        private System.Windows.Forms.RadioButton rbSymbolA;
+        private System.Windows.Forms.RadioButton rbStarFour;
         private System.Windows.Forms.RadioButton rbHexagon;
         private System.Windows.Forms.RadioButton rbRoundRect;
-        private System.Windows.Forms.RadioButton rbArc;
+        private System.Windows.Forms.RadioButton rbIsoTriangle;
         private System.Windows.Forms.RadioButton rbEllipce;
         private System.Windows.Forms.RadioButton rbRect;
         private System.Windows.Forms.RadioButton rbLine;
         private System.Windows.Forms.Button btnBackColor;
         private System.Windows.Forms.ColorDialog colorDialog2;
+        private System.Windows.Forms.Button btnClear;
+        private System.Windows.Forms.Button btnBack;
     }
 }
 

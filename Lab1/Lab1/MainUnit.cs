@@ -18,24 +18,6 @@ namespace Lab1
         public int Y1 { get; set; }
         public int Y2 { get; set; }
     }
-    public class RectLike : Figure
-    {
-        public override void Draw(PictureBox pbox) { }
-        public override void Draw(Graphics gr) { }
-        public int X1 { get; set; }
-        public int X2 { get; set; }
-        public int Y1 { get; set; }
-        public int Y2 { get; set; }
-    }
-    public class SymbolFigure : Figure
-    {
-        public override void Draw(PictureBox pbox) { }
-        public override void Draw(Graphics gr) { }
-        public int X1 { get; set; }
-        public int Y1 { get; set; }
-        public int FontSize { get; set; }
-    }
-
     static class MainUnit
     {
         /// <summary>

@@ -8,7 +8,7 @@ using System.Drawing;
 
 namespace Lab1
 {
-    public class Rect : RectLike
+    public class Rect : Figure
     {
         public Rect(Pen pens, int x1, int y1, int x2, int y2)
         {
@@ -18,15 +18,12 @@ namespace Lab1
             Y2 = y2;
             pen = new Pen(pens.Brush, pens.Width);
         }
-        public override void Draw(PictureBox pbox)
-        {
-            Graphics g = pbox.CreateGraphics();
-            g.DrawRectangle(pen, new Rectangle(X1, Y1, X2 - X1, Y2 - Y1));
-        }
         public override void Draw(Graphics gr)
         {
-            //Graphics g = pbox.CreateGraphics();
-            gr.DrawRectangle(pen, new Rectangle(X1, Y1, X2 - X1, Y2 - Y1));
+            gr.DrawLine(pen, X1, Y1, X2, Y1);
+            gr.DrawLine(pen, X2, Y1, X2, Y2);
+            gr.DrawLine(pen, X2, Y2, X1, Y2);
+            gr.DrawLine(pen, X1, Y2, X1, Y1);
         }
     }
 }
