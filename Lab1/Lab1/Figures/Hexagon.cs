@@ -37,5 +37,14 @@ namespace Lab1
             g.DrawLine(pen, X1, Y1 + (Y2 - Y1) / 3 * 2, X1, Y1 + (Y2 - Y1) / 3);
             g.DrawLine(pen, X1, Y1 + (Y2 - Y1) / 3, (X1 + X2) / 2, Y1);
         }
+        public override void Draw(Graphics gr)
+        {
+            gr.DrawLine(pen, (X1 + X2) / 2, Y1, X2, Y1 + (Y2 - Y1) / 3);
+            gr.DrawLine(pen, X2, Y1 + (Y2 - Y1) / 3, X2, Y1 + (Y2 - Y1) / 3 * 2);
+            gr.DrawLine(pen, X2, Y1 + (Y2 - Y1) / 3 * 2, (X1 + X2) / 2, Y2);
+            gr.DrawLine(pen, (X1 + X2) / 2, Y2, X1, Y1 + (Y2 - Y1) / 3 * 2);
+            gr.DrawLine(pen, X1, Y1 + (Y2 - Y1) / 3 * 2, X1, Y1 + (Y2 - Y1) / 3);
+            gr.DrawLine(pen, X1, Y1 + (Y2 - Y1) / 3, (X1 + X2) / 2, Y1);
+        }
     }
 }

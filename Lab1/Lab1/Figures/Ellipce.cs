@@ -31,5 +31,9 @@ namespace Lab1
             Graphics g = pbox.CreateGraphics();
             g.DrawEllipse(pen, new Rectangle(X1, Y1, X2 - X1, Y2 - Y1));
         }
+        public override void Draw(Graphics gr)
+        {
+            gr.DrawEllipse(pen, new Rectangle(X1, Y1, X2 - X1, Y2 - Y1));
+        }
     }
 }

@@ -40,9 +40,8 @@
             this.rbEllipce = new System.Windows.Forms.RadioButton();
             this.rbRect = new System.Windows.Forms.RadioButton();
             this.rbLine = new System.Windows.Forms.RadioButton();
-            this.btnDrawOne = new System.Windows.Forms.Button();
-            this.btnTest = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnBackColor = new System.Windows.Forms.Button();
+            this.colorDialog2 = new System.Windows.Forms.ColorDialog();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.grboxFigures.SuspendLayout();
             this.SuspendLayout();
@@ -66,14 +65,17 @@
             this.pictureBox1.Size = new System.Drawing.Size(912, 584);
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
+            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
+            this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
             // 
             // btnColor
             // 
             this.btnColor.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.btnColor.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnColor.Location = new System.Drawing.Point(11, 516);
+            this.btnColor.Location = new System.Drawing.Point(11, 501);
             this.btnColor.Name = "btnColor";
-            this.btnColor.Size = new System.Drawing.Size(123, 59);
+            this.btnColor.Size = new System.Drawing.Size(145, 34);
             this.btnColor.TabIndex = 10;
             this.btnColor.Text = "Choose Color";
             this.btnColor.UseVisualStyleBackColor = false;
@@ -182,35 +184,15 @@
             this.rbLine.UseVisualStyleBackColor = true;
             this.rbLine.Click += new System.EventHandler(this.rbLine_Click);
             // 
-            // btnDrawOne
+            // btnBackColor
             // 
-            this.btnDrawOne.Location = new System.Drawing.Point(24, 392);
-            this.btnDrawOne.Name = "btnDrawOne";
-            this.btnDrawOne.Size = new System.Drawing.Size(99, 47);
-            this.btnDrawOne.TabIndex = 13;
-            this.btnDrawOne.Text = "Draw One";
-            this.btnDrawOne.UseVisualStyleBackColor = true;
-            this.btnDrawOne.Click += new System.EventHandler(this.btnDrawOne_Click);
-            // 
-            // btnTest
-            // 
-            this.btnTest.Location = new System.Drawing.Point(28, 466);
-            this.btnTest.Name = "btnTest";
-            this.btnTest.Size = new System.Drawing.Size(86, 29);
-            this.btnTest.TabIndex = 14;
-            this.btnTest.Text = "TestBitmaps";
-            this.btnTest.UseVisualStyleBackColor = true;
-            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(94, 123);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(77, 34);
-            this.button1.TabIndex = 15;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            this.btnBackColor.Location = new System.Drawing.Point(12, 541);
+            this.btnBackColor.Name = "btnBackColor";
+            this.btnBackColor.Size = new System.Drawing.Size(143, 33);
+            this.btnBackColor.TabIndex = 16;
+            this.btnBackColor.Text = "Back Color";
+            this.btnBackColor.UseVisualStyleBackColor = true;
+            this.btnBackColor.Click += new System.EventHandler(this.btnBackColor_Click);
             // 
             // MainForm
             // 
@@ -218,9 +200,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1074, 587);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.btnTest);
-            this.Controls.Add(this.btnDrawOne);
+            this.Controls.Add(this.btnBackColor);
             this.Controls.Add(this.grboxFigures);
             this.Controls.Add(this.btnColor);
             this.Controls.Add(this.pictureBox1);
@@ -248,9 +228,8 @@
         private System.Windows.Forms.RadioButton rbEllipce;
         private System.Windows.Forms.RadioButton rbRect;
         private System.Windows.Forms.RadioButton rbLine;
-        private System.Windows.Forms.Button btnDrawOne;
-        private System.Windows.Forms.Button btnTest;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnBackColor;
+        private System.Windows.Forms.ColorDialog colorDialog2;
     }
 }
 

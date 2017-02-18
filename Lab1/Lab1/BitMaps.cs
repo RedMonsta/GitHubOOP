@@ -13,15 +13,7 @@ namespace Lab1
         public BitMaps()
         {
             Size = 0;
-            // ChoosenIndex = 0;
         }
-        public void DrawAll(PictureBox pbox)
-        {
-            //for (int i = 0; i < Size; i++)
-                //Layers[i].Draw(pbox);
-        }
-
-
         public Bitmap this[int index]
         {
             get { return Layers[index]; }
@@ -29,6 +21,5 @@ namespace Lab1
         }
         private Bitmap[] Layers = new Bitmap[100];
         public int Size { get; set; }
-        //public int ChoosenIndex { get; set; }
     }
 }

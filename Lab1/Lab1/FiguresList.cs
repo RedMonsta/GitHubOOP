@@ -28,4 +28,21 @@ namespace Lab1
         public int Size { get; set; }
         //public int ChoosenIndex { get; set; }
     }
+
+    public class RectList
+    {
+        public RectList()
+        {
+            Size = 0;
+            // ChoosenIndex = 0;
+        }
+        public RectLike this[int index]
+        {
+            get { return Figures[index]; }
+            set { Figures[index] = value; if (index >= Size) Size++; }
+        }
+        private RectLike[] Figures = new RectLike[100];
+        public int Size { get; set; }
+        //public int ChoosenIndex { get; set; }
+    }
 }

@@ -45,6 +45,11 @@ namespace Lab1
             Graphics g = pbox.CreateGraphics();
             g.DrawArc(pen, new Rectangle(X1, Y1, X2 - X1, Y2 - Y1), -begAngle, -endAngle);
         }
+        public override void Draw(Graphics gr)
+        {
+            gr.DrawArc(pen, new Rectangle(X1, Y1, X2 - X1, Y2 - Y1), -begAngle, -endAngle);
+        }
+
         public float begAngle { get; set; }
         public float endAngle { get; set; }
     }

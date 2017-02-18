@@ -45,6 +45,21 @@ namespace Lab1
             arc3.Draw(pbox);
             arc4.Draw(pbox);
         }
+        public override void Draw(Graphics gr)
+        {
+            gr.DrawLine(pen, X1 + Radius, Y1, X2 - Radius, Y1);
+            gr.DrawLine(pen, X2, Y1 + Radius, X2, Y2 - Radius);
+            gr.DrawLine(pen, X1 + Radius, Y2, X2 - Radius, Y2);
+            gr.DrawLine(pen, X1, Y1 + Radius, X1, Y2 - Radius);
+            var arc1 = new Arc(pen, X1, Y1, X1 + 2 * Radius, Y1 + 2 * Radius, 89, 181);
+            var arc2 = new Arc(pen, X2 - 2 * Radius, Y1, X2, Y1 + 2 * Radius, -1, 91);
+            var arc3 = new Arc(pen, X2 - 2 * Radius, Y2 - 2 * Radius, X2, Y2, 269, 361);
+            var arc4 = new Arc(pen, X1, Y2 - 2 * Radius, X1 + 2 * Radius, Y2, 179, 271);
+            arc1.Draw(gr);
+            arc2.Draw(gr);
+            arc3.Draw(gr);
+            arc4.Draw(gr);
+        }
         public int Radius { get; set; }
     }
 }
