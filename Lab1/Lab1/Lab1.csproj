@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BitMaps.cs" />
+    <Compile Include="Figure.cs" />
     <Compile Include="FiguresList.cs" />
     <Compile Include="Figures\Ellipce.cs" />
     <Compile Include="Figures\Hexagon.cs" />

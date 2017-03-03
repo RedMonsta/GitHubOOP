@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnDraw = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnColor = new System.Windows.Forms.Button();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
@@ -44,20 +43,10 @@
             this.colorDialog2 = new System.Windows.Forms.ColorDialog();
             this.btnClear = new System.Windows.Forms.Button();
             this.btnBack = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.grboxFigures.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // btnDraw
-            // 
-            this.btnDraw.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnDraw.Location = new System.Drawing.Point(24, 28);
-            this.btnDraw.Name = "btnDraw";
-            this.btnDraw.Size = new System.Drawing.Size(110, 85);
-            this.btnDraw.TabIndex = 0;
-            this.btnDraw.Text = "Draw All";
-            this.btnDraw.UseVisualStyleBackColor = true;
-            this.btnDraw.Click += new System.EventHandler(this.button1_Click);
             // 
             // pictureBox1
             // 
@@ -216,19 +205,29 @@
             this.btnBack.UseVisualStyleBackColor = true;
             this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(12, 25);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(137, 77);
+            this.button1.TabIndex = 19;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1074, 587);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.btnBack);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.btnBackColor);
             this.Controls.Add(this.grboxFigures);
             this.Controls.Add(this.btnColor);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.btnDraw);
             this.Name = "MainForm";
             this.Text = "MonsterPaint";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -239,11 +238,9 @@
         }
 
         #endregion
-        public System.Windows.Forms.Button btnDraw;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button btnColor;
         private System.Windows.Forms.ColorDialog colorDialog1;
-        private System.Windows.Forms.Button btn1;
         private System.Windows.Forms.GroupBox grboxFigures;
         private System.Windows.Forms.RadioButton rbStarFour;
         private System.Windows.Forms.RadioButton rbHexagon;
@@ -256,6 +253,7 @@
         private System.Windows.Forms.ColorDialog colorDialog2;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Button btnBack;
+        private System.Windows.Forms.Button button1;
     }
 }
 
