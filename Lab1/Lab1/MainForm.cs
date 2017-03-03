@@ -36,24 +36,14 @@ namespace Lab1
 
             FigureList = new DynamicFigList();
 
-            rblist[0] = rbLine;
-            rblist[1] = rbRect;
-            rblist[2] = rbEllipce;
-            rblist[3] = rbIsoTriangle;
-            rblist[4] = rbRoundRect;
-            rblist[5] = rbHexagon;
-            rblist[6] = rbStarFour;
-
             CurrPen.Brush = Brushes.Black;
         }
         private Pen CurrPen;
         private DynamicFigList FigureList;
         private BitMaps Layers;
-        private bool pressed;
+        private bool pressed, isChanged;
         private Graphics grBack, grFront, grTemp, grRez, grLast;
         private Figure figure;
-        private RadioButton[] rblist = new RadioButton[7];
-
 
         private void button8_Click(object sender, EventArgs e)
         {
@@ -64,19 +54,19 @@ namespace Lab1
             }
         }
 
-        private void rbLine_Click(object sender, EventArgs e) { figure = new Line(CurrPen, 0, 0, 0, 0); }
+        private void rbLine_Click(object sender, EventArgs e) { figure = new Line(CurrPen, 0, 0, 0, 0); isChanged = true; }
 
-        private void rbRect_CheckedChanged(object sender, EventArgs e) { figure = new Rect(CurrPen, 0, 0, 0, 0); }
+        private void rbRect_CheckedChanged(object sender, EventArgs e) { figure = new Rect(CurrPen, 0, 0, 0, 0); isChanged = true; }
 
-        private void rbEllipce_CheckedChanged(object sender, EventArgs e) { figure = new Ellipce(CurrPen, 0, 0, 0, 0); }
+        private void rbEllipce_CheckedChanged(object sender, EventArgs e) { figure = new Ellipce(CurrPen, 0, 0, 0, 0); isChanged = true; }
 
-        private void rbArc_CheckedChanged(object sender, EventArgs e) { figure = new IsoTriangle(CurrPen, 0, 0, 0, 0);  }
+        private void rbArc_CheckedChanged(object sender, EventArgs e) { figure = new IsoTriangle(CurrPen, 0, 0, 0, 0); isChanged = true; }
 
-        private void rbRoundRect_CheckedChanged(object sender, EventArgs e) { figure = new RoundRect(CurrPen, 0, 0, 0, 0);  }
+        private void rbRoundRect_CheckedChanged(object sender, EventArgs e) { figure = new RoundRect(CurrPen, 0, 0, 0, 0); isChanged = true; }
 
-        private void rbHexagon_CheckedChanged(object sender, EventArgs e) { figure = new Hexagon(CurrPen, 0, 0, 0, 0); }
+        private void rbHexagon_CheckedChanged(object sender, EventArgs e) { figure = new Hexagon(CurrPen, 0, 0, 0, 0); isChanged = true; }
 
-        private void rbSymbolA_CheckedChanged(object sender, EventArgs e) { figure = new StarFour(CurrPen, 0, 0, 0, 0); }
+        private void rbSymbolA_CheckedChanged(object sender, EventArgs e) { figure = new StarFour(CurrPen, 0, 0, 0, 0); isChanged = true; }
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {     
@@ -142,14 +132,14 @@ namespace Lab1
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
             btnBack.Enabled = true;
-          //HOW TO RECREATE OBJECT WHEN RADIOBUTTON ISN'T CHANGED
-             
+            if (!isChanged) figure = (Figure)Activator.CreateInstance(figure.GetType(), new Object[] { CurrPen, 0, 0, 0, 0 });
             FigureList[FigureList.Size] = figure;
             FigureList[FigureList.Size - 1].X1 = e.X;
             FigureList[FigureList.Size - 1].Y1 = e.Y;
             grFront.DrawImage(Layers[1], 0, 0);
             grTemp.Clear(Color.Transparent);
             pressed = true;
+            isChanged = false;
         }
 
         private void btnBackColor_Click(object sender, EventArgs e)
