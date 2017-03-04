@@ -8,6 +8,15 @@ using System.Drawing;
 
 namespace Lab1
 {
+    public class FigList : List<Figure>
+    {
+        //public void DrawAll(Graphics gr)
+        //{
+           // for (int i = 0; i < Count; i++)
+               //item[i].Draw(gr);              
+       // }
+    }
+
     public class DynamicFigList
     {
         public DynamicFigList()
@@ -28,7 +37,6 @@ namespace Lab1
         }
         private Figure[] Figures = new Figure[100];
         public int Size { get; set; }
+        
     }
-
-
 }
