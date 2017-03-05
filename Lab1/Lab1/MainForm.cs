@@ -50,6 +50,7 @@ namespace Lab1
         private bool isPressed, isChanged, isMoved, isPointer;
         private Graphics grBack, grFront, grTemp, grRez, grLast, grEdit, grMajor;
         private Figure figure;
+        private int BackSteps = 0;
 
         private void button8_Click(object sender, EventArgs e)
         {
@@ -74,7 +75,7 @@ namespace Lab1
 
         private void rbSymbolA_CheckedChanged(object sender, EventArgs e) { figure = new StarFour(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }
 
-        private void rbPointer_CheckedChanged(object sender, EventArgs e) { isPointer = true; }
+        private void rbPointer_CheckedChanged(object sender, EventArgs e) { isPointer = true; label1.Text = "choose pointer"; }
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {     
@@ -82,16 +83,12 @@ namespace Lab1
             {
                 isMoved = true;
                 grTemp.Clear(Color.Transparent);
-                //FigureList[FigureList.Size - 1].pen = CurrPen;
-                //FigureList[FigureList.Size - 1].X2 = e.X;
-                //FigureList[FigureList.Size - 1].Y2 = e.Y;
-                //FigureList[FigureList.Size - 1].Draw(grTemp);
-                FigList.Last.GetPen(CurrPen);// = CurrPen;
+                FigList.Last.GetPen(CurrPen);
                 FigList.Last.X2 = e.X;
                 FigList.Last.Y2 = e.Y;
                 FigList.Last.Draw(grTemp);
                 grRez.Clear(Color.Transparent);
-                grRez.DrawImage(Layers[2], 0, 0);
+                grRez.DrawImage(Layers[6], 0, 0);
                 grRez.DrawImage(Layers[3], 0, 0);
                 pictureBox1.Refresh();
             }
@@ -105,8 +102,7 @@ namespace Lab1
                 grRez.Clear(Color.Transparent);
                 grRez.DrawImage(Layers[6], 0, 0);
                 FigList.Item(lboxFigures.SelectedIndex).SelectFigure(grEdit);
-                label1.Text = lboxFigures.SelectedIndex.ToString();
-                //FigList.Item(lboxFigures.SelectedIndex).SelectFigure(grEdit);
+                //label1.Text = lboxFigures.SelectedIndex.ToString();
                 grRez.DrawImage(Layers[5], 0, 0);
                 pictureBox1.Refresh();
             }
@@ -127,11 +123,15 @@ namespace Lab1
         private void btnBack_Click(object sender, EventArgs e)
         {
             grRez.Clear(Color.Transparent);
-            grRez.DrawImage(Layers[4], 0, 0);
+            //grRez.DrawImage(Layers[4], 0, 0);
             FigList.Remove(FigList.Last);
             FigList.PrintList(lboxFigures);
+            FigList.DrawAll(grRez);
+            grMajor.Clear(Color.Transparent);
+            grMajor.DrawImage(Layers[1], 0, 0);
             pictureBox1.Refresh();
-            btnBack.Enabled = false;
+            BackSteps++;
+            if (BackSteps == 3) btnBack.Enabled = false;
         }
 
         private void btnClear_Click(object sender, EventArgs e)
@@ -152,19 +152,20 @@ namespace Lab1
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
             //FigureList[FigureList.Size - 1].Draw(grTemp);
-            if (isMoved)
+            if ( isMoved && !isPointer )
             {
                 FigList.Last.Draw(grTemp);
                 FigList.AddOneMore(lboxFigures);
-                grLast.Clear(Color.Transparent);
-                grLast.DrawImage(Layers[2], 0, 0);
+                //grLast.Clear(Color.Transparent);
+                //grLast.DrawImage(Layers[2], 0, 0);
                 grRez.Clear(Color.Transparent);
-                grRez.DrawImage(Layers[2], 0, 0);
+                grRez.DrawImage(Layers[6], 0, 0);
                 grRez.DrawImage(Layers[3], 0, 0);
                 grFront.Clear(Color.Transparent);
                 grMajor.DrawImage(Layers[1], 0, 0);
+                BackSteps = 0;
             } else
-                FigList.Remove(FigList.Last);
+                if ( !isMoved && !isPointer ) FigList.Remove(FigList.Last);
             pictureBox1.Refresh();
             isPressed = false;
             //FigList.Remove(FigList.Last); if (!isMoved) FigList.Remove(FigList.Last);
@@ -180,11 +181,13 @@ namespace Lab1
                 {
                     if (FigList.Item(index).isSelectable)
                     {
+                        lboxFigures.SelectedIndex = index;
                         grEdit.Clear(Color.Transparent);
                         grRez.Clear(Color.Transparent);
                         grRez.DrawImage(Layers[6], 0, 0);
+                        FigList.AllOff();
                         FigList.Item(index).SelectFigure(grEdit);
-                        label1.Text = index.ToString();
+                        //label1.Text = index.ToString();
                         grRez.DrawImage(Layers[5], 0, 0);
                         pictureBox1.Refresh();
                     }
@@ -196,6 +199,7 @@ namespace Lab1
                 if (!isChanged) figure = (Figure)Activator.CreateInstance(figure.GetType(), new Object[] { CurrPen, 0, 0, 0, 0 });
                 //FigureList[FigureList.Size] = figure;
                 FigList.Add(figure);
+                label1.Text = "Added a figure";
                 FigList.Last.X1 = e.X;
                 FigList.Last.Y1 = e.Y;
                 grFront.DrawImage(Layers[6], 0, 0);

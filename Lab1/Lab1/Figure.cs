@@ -18,6 +18,7 @@ namespace Lab1
             Y2 = y2;
             //pen = new Pen(pens.Brush, pens.Width);
             isSelectable = true;
+            isSelected = false;
             pen = (Pen)pens.Clone();
         }
 
@@ -27,15 +28,13 @@ namespace Lab1
             pen = (Pen)pn.Clone();
         }
 
-
-
-
         public abstract void Draw(Graphics gr);
 
         public void SelectFigure(Graphics gr)
         {
             gr.Clear(Color.Transparent);
-            var pens = new Pen(Brushes.Black, 1);
+            this.isSelected = true;
+            var pens = new Pen(Brushes.Gray, 1);
             pens.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
             gr.DrawLine(pens, X1, Y1, X2, Y1);
             gr.DrawLine(pens, X2, Y1, X2, Y2);
@@ -62,5 +61,6 @@ namespace Lab1
         public int Y2 { get; set; }
 
         public bool isSelectable { get; set; }
+        public bool isSelected { get; set; }
     }
 }
