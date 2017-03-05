@@ -42,6 +42,7 @@ namespace Lab1
             FigList = new FigureList();
 
             CurrPen.Brush = Brushes.Black;
+            btnConfirm.Enabled = false;
         }
         private Pen CurrPen;
         //private DynamicFigList FigureList;
@@ -50,7 +51,7 @@ namespace Lab1
         private bool isPressed, isChanged, isMoved, isPointer;
         private Graphics grBack, grFront, grTemp, grRez, grLast, grEdit, grMajor;
         private Figure figure;
-        private int BackSteps = 0;
+        private int BackSteps = 0, CurrFig = -1;
 
         private void button8_Click(object sender, EventArgs e)
         {
@@ -92,6 +93,21 @@ namespace Lab1
                 grRez.DrawImage(Layers[3], 0, 0);
                 pictureBox1.Refresh();
             }
+            /*if (isPointer)
+            {
+                if (CurrFig != -1)
+                {
+                    grEdit.Clear(Color.Transparent);
+                    grRez.Clear(Color.Transparent);
+                    grRez.DrawImage(Layers[6], 0, 0);
+                    FigList.AllOff();
+                    FigList.Item(CurrFig).SelectFigure(grEdit);
+                    //label1.Text = index.ToString();
+                    grRez.DrawImage(Layers[5], 0, 0);
+                    pictureBox1.Refresh();
+                }
+            }*/
+            
         }
 
         private void lboxFigures_SelectedIndexChanged(object sender, EventArgs e)
@@ -102,6 +118,7 @@ namespace Lab1
                 grRez.Clear(Color.Transparent);
                 grRez.DrawImage(Layers[6], 0, 0);
                 FigList.Item(lboxFigures.SelectedIndex).SelectFigure(grEdit);
+                CurrFig = lboxFigures.SelectedIndex;
                 //label1.Text = lboxFigures.SelectedIndex.ToString();
                 grRez.DrawImage(Layers[5], 0, 0);
                 pictureBox1.Refresh();
@@ -110,14 +127,56 @@ namespace Lab1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            grTemp.Clear(Color.Transparent);
+            /*grTemp.Clear(Color.Transparent);
             grRez.Clear(Color.Transparent);
             FigList.DrawAll(grTemp);
             FigList.PrintList(lboxFigures);
             
-            grRez.DrawImage(Layers[2], 0, 0);
+            grRez.DrawImage(Layers[6], 0, 0);
             grRez.DrawImage(Layers[3], 0, 0);
+            pictureBox1.Refresh();*/
+
+            if (isPointer)
+            {
+                if (CurrFig != -1)
+                {
+                    btnConfirm.Enabled = true;
+                    grboxFigures.Enabled = false;
+                    grEdit.Clear(Color.Transparent);
+                    grRez.Clear(Color.Transparent);
+                    grMajor.Clear(Color.Transparent);
+                    grTemp.Clear(Color.Transparent);
+                    FigList.DrawAllExcept(grMajor, CurrFig);
+                    FigList.Item(CurrFig).pen.Brush = Brushes.Red;
+                    FigList.Item(CurrFig).Draw(grTemp);
+                    FigList.Item(CurrFig).SelectFigure(grEdit);
+
+                    //var fig = (Figure)Activator.CreateInstance(FigList.Item(CurrFig).GetType(), new Object[] { new Pen(Brushes.Red, 3),
+                      //               FigList.Item(CurrFig).X1, FigList.Item(CurrFig).Y1, FigList.Item(CurrFig).X2, FigList.Item(CurrFig).Y2 });
+                    //fig.Draw(grTemp);
+                    
+                    label1.Text = CurrFig.ToString() + " " + lboxFigures.Items[CurrFig].ToString();
+                    grMajor.DrawImage(Layers[3], 0, 0);
+                    grRez.DrawImage(Layers[6], 0, 0);
+                    
+                    //grRez.DrawImage(Layers[5], 0, 0);
+                    //grRez.DrawImage(Layers[3], 0, 0);
+                    grMajor.DrawImage(Layers[1], 0, 0);
+                    pictureBox1.Refresh();
+                }
+            }
+        }
+
+        private void btnConfirm_Click(object sender, EventArgs e)
+        {
+            grRez.Clear(Color.Transparent);
+            grRez.DrawImage(Layers[6], 0, 0);
+            grRez.DrawImage(Layers[3], 0, 0);
+            grMajor.Clear(Color.Transparent);
+            grMajor.DrawImage(Layers[1], 0, 0);
             pictureBox1.Refresh();
+            btnConfirm.Enabled = false;
+            grboxFigures.Enabled = true;
         }
 
         private void btnBack_Click(object sender, EventArgs e)
@@ -176,17 +235,17 @@ namespace Lab1
         {
             if (isPointer)
             {
-                var index = FigList.MouseSelect(e);
-                if (index != -1)
+                CurrFig = FigList.MouseSelect(e);
+                if (CurrFig != -1)
                 {
-                    if (FigList.Item(index).isSelectable)
+                    if (FigList.Item(CurrFig).isSelectable)
                     {
-                        lboxFigures.SelectedIndex = index;
+                        lboxFigures.SelectedIndex = CurrFig;
                         grEdit.Clear(Color.Transparent);
                         grRez.Clear(Color.Transparent);
                         grRez.DrawImage(Layers[6], 0, 0);
                         FigList.AllOff();
-                        FigList.Item(index).SelectFigure(grEdit);
+                        FigList.Item(CurrFig).SelectFigure(grEdit);
                         //label1.Text = index.ToString();
                         grRez.DrawImage(Layers[5], 0, 0);
                         pictureBox1.Refresh();
@@ -221,6 +280,7 @@ namespace Lab1
                 pictureBox1.Refresh();
             }
         }
+
 
         
        

@@ -92,6 +92,17 @@ namespace Lab1
             return -1;
         }
 
+        public void AllOff()
+        {
+            foreach (var fig in figures)
+                fig.isSelected = false;
+        }
+
+        public void DrawAllExcept(Graphics gr, int index)
+        {
+            for (int i = 0; i < figures.Count; i++)
+                if (i != index) figures[i].Draw(gr);
+        }
 
         //public Figure Find()
         //{

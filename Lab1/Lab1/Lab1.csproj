@@ -53,6 +53,7 @@
     <Compile Include="Figures\Hexagon.cs" />
     <Compile Include="Figures\Line.cs" />
     <Compile Include="Figures\IsoTriangle.cs" />
+    <Compile Include="IEditable.cs" />
     <Compile Include="ISelectable.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

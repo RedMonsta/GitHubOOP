@@ -11,6 +11,6 @@ namespace Lab1
     {
         bool isSelectable { get; set; }
         void SelectFigure(Graphics gr);
-        
+        bool isSelected { get; set; }
     }
 }

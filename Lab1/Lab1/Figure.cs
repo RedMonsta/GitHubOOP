@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace Lab1
 {
-    public abstract class Figure : ISelectable
+    public abstract class Figure : ISelectable, IEditable
     {
         //public virtual void Draw(PictureBox pbox) { }
         public Figure(Pen pens, int x1, int y1, int x2, int y2)
@@ -18,7 +18,10 @@ namespace Lab1
             Y2 = y2;
             //pen = new Pen(pens.Brush, pens.Width);
             isSelectable = true;
+            isEditable = true;
+
             isSelected = false;
+               
             pen = (Pen)pens.Clone();
         }
 
@@ -62,5 +65,6 @@ namespace Lab1
 
         public bool isSelectable { get; set; }
         public bool isSelected { get; set; }
+        public bool isEditable { get; set; }
     }
 }

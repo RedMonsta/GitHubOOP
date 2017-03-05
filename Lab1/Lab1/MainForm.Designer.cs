@@ -32,6 +32,7 @@
             this.btnColor = new System.Windows.Forms.Button();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.grboxFigures = new System.Windows.Forms.GroupBox();
+            this.rbPointer = new System.Windows.Forms.RadioButton();
             this.rbStarFour = new System.Windows.Forms.RadioButton();
             this.rbHexagon = new System.Windows.Forms.RadioButton();
             this.rbRoundRect = new System.Windows.Forms.RadioButton();
@@ -46,7 +47,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.lboxFigures = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.rbPointer = new System.Windows.Forms.RadioButton();
+            this.btnConfirm = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.grboxFigures.SuspendLayout();
             this.SuspendLayout();
@@ -92,6 +93,18 @@
             this.grboxFigures.TabIndex = 12;
             this.grboxFigures.TabStop = false;
             this.grboxFigures.Text = "Figures";
+            // 
+            // rbPointer
+            // 
+            this.rbPointer.AutoSize = true;
+            this.rbPointer.Location = new System.Drawing.Point(9, 222);
+            this.rbPointer.Name = "rbPointer";
+            this.rbPointer.Size = new System.Drawing.Size(71, 21);
+            this.rbPointer.TabIndex = 22;
+            this.rbPointer.TabStop = true;
+            this.rbPointer.Text = "Pointer";
+            this.rbPointer.UseVisualStyleBackColor = true;
+            this.rbPointer.CheckedChanged += new System.EventHandler(this.rbPointer_CheckedChanged);
             // 
             // rbStarFour
             // 
@@ -237,17 +250,15 @@
             this.label1.TabIndex = 21;
             this.label1.Text = "label1";
             // 
-            // rbPointer
+            // btnConfirm
             // 
-            this.rbPointer.AutoSize = true;
-            this.rbPointer.Location = new System.Drawing.Point(9, 222);
-            this.rbPointer.Name = "rbPointer";
-            this.rbPointer.Size = new System.Drawing.Size(71, 21);
-            this.rbPointer.TabIndex = 22;
-            this.rbPointer.TabStop = true;
-            this.rbPointer.Text = "Pointer";
-            this.rbPointer.UseVisualStyleBackColor = true;
-            this.rbPointer.CheckedChanged += new System.EventHandler(this.rbPointer_CheckedChanged);
+            this.btnConfirm.Location = new System.Drawing.Point(291, 42);
+            this.btnConfirm.Name = "btnConfirm";
+            this.btnConfirm.Size = new System.Drawing.Size(60, 54);
+            this.btnConfirm.TabIndex = 22;
+            this.btnConfirm.Text = "Confirm";
+            this.btnConfirm.UseVisualStyleBackColor = true;
+            this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
             // 
             // MainForm
             // 
@@ -255,6 +266,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1074, 651);
+            this.Controls.Add(this.btnConfirm);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lboxFigures);
             this.Controls.Add(this.button1);
@@ -294,6 +306,7 @@
         private System.Windows.Forms.ListBox lboxFigures;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.RadioButton rbPointer;
+        private System.Windows.Forms.Button btnConfirm;
     }
 }
 
