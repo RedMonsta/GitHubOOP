@@ -44,6 +44,9 @@
             this.btnClear = new System.Windows.Forms.Button();
             this.btnBack = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.lboxFigures = new System.Windows.Forms.ListBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.rbPointer = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.grboxFigures.SuspendLayout();
             this.SuspendLayout();
@@ -51,9 +54,9 @@
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.pictureBox1.Location = new System.Drawing.Point(162, 1);
+            this.pictureBox1.Location = new System.Drawing.Point(162, 111);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(912, 584);
+            this.pictureBox1.Size = new System.Drawing.Size(912, 539);
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
@@ -64,7 +67,7 @@
             // 
             this.btnColor.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.btnColor.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnColor.Location = new System.Drawing.Point(11, 440);
+            this.btnColor.Location = new System.Drawing.Point(754, 25);
             this.btnColor.Name = "btnColor";
             this.btnColor.Size = new System.Drawing.Size(145, 61);
             this.btnColor.TabIndex = 10;
@@ -74,6 +77,7 @@
             // 
             // grboxFigures
             // 
+            this.grboxFigures.Controls.Add(this.rbPointer);
             this.grboxFigures.Controls.Add(this.rbStarFour);
             this.grboxFigures.Controls.Add(this.rbHexagon);
             this.grboxFigures.Controls.Add(this.rbRoundRect);
@@ -82,9 +86,9 @@
             this.grboxFigures.Controls.Add(this.rbRect);
             this.grboxFigures.Controls.Add(this.rbLine);
             this.grboxFigures.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.grboxFigures.Location = new System.Drawing.Point(24, 136);
+            this.grboxFigures.Location = new System.Drawing.Point(27, 25);
             this.grboxFigures.Name = "grboxFigures";
-            this.grboxFigures.Size = new System.Drawing.Size(111, 219);
+            this.grboxFigures.Size = new System.Drawing.Size(111, 249);
             this.grboxFigures.TabIndex = 12;
             this.grboxFigures.TabStop = false;
             this.grboxFigures.Text = "Figures";
@@ -177,7 +181,7 @@
             // 
             // btnBackColor
             // 
-            this.btnBackColor.Location = new System.Drawing.Point(12, 518);
+            this.btnBackColor.Location = new System.Drawing.Point(919, 25);
             this.btnBackColor.Name = "btnBackColor";
             this.btnBackColor.Size = new System.Drawing.Size(143, 56);
             this.btnBackColor.TabIndex = 16;
@@ -187,7 +191,7 @@
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(11, 383);
+            this.btnClear.Location = new System.Drawing.Point(590, 51);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(64, 36);
             this.btnClear.TabIndex = 17;
@@ -197,7 +201,7 @@
             // 
             // btnBack
             // 
-            this.btnBack.Location = new System.Drawing.Point(81, 384);
+            this.btnBack.Location = new System.Drawing.Point(675, 52);
             this.btnBack.Name = "btnBack";
             this.btnBack.Size = new System.Drawing.Size(73, 34);
             this.btnBack.TabIndex = 18;
@@ -207,20 +211,52 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 25);
+            this.button1.Location = new System.Drawing.Point(421, 12);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(137, 77);
+            this.button1.Size = new System.Drawing.Size(137, 69);
             this.button1.TabIndex = 19;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // lboxFigures
+            // 
+            this.lboxFigures.FormattingEnabled = true;
+            this.lboxFigures.Location = new System.Drawing.Point(30, 297);
+            this.lboxFigures.Name = "lboxFigures";
+            this.lboxFigures.Size = new System.Drawing.Size(101, 251);
+            this.lboxFigures.TabIndex = 20;
+            this.lboxFigures.SelectedIndexChanged += new System.EventHandler(this.lboxFigures_SelectedIndexChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(166, 15);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 21;
+            this.label1.Text = "label1";
+            // 
+            // rbPointer
+            // 
+            this.rbPointer.AutoSize = true;
+            this.rbPointer.Location = new System.Drawing.Point(9, 222);
+            this.rbPointer.Name = "rbPointer";
+            this.rbPointer.Size = new System.Drawing.Size(71, 21);
+            this.rbPointer.TabIndex = 22;
+            this.rbPointer.TabStop = true;
+            this.rbPointer.Text = "Pointer";
+            this.rbPointer.UseVisualStyleBackColor = true;
+            this.rbPointer.CheckedChanged += new System.EventHandler(this.rbPointer_CheckedChanged);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(1074, 587);
+            this.ClientSize = new System.Drawing.Size(1074, 651);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lboxFigures);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnBack);
             this.Controls.Add(this.btnClear);
@@ -234,6 +270,7 @@
             this.grboxFigures.ResumeLayout(false);
             this.grboxFigures.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -254,6 +291,9 @@
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Button btnBack;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ListBox lboxFigures;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.RadioButton rbPointer;
     }
 }
 

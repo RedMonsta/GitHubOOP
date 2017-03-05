@@ -16,7 +16,7 @@ namespace Lab1
         }
         public override void Draw(Graphics gr)
         {
-            if (Math.Abs(X1 - X2) < 15 || Math.Abs(Y1 - Y2) < 15) Radius = 5;
+            if (Math.Abs(X1 - X2) < 15 || Math.Abs(Y1 - Y2) < 15) Radius = 3;
             if ((Math.Abs(X1 - X2) < 25 || Math.Abs(Y1 - Y2) < 25) && Math.Abs(X1 - X2) > 15 && Math.Abs(Y1 - Y2) > 15) Radius = 7;
             if ((Math.Abs(X1 - X2) < 40 || Math.Abs(Y1 - Y2) < 40) && Math.Abs(X1 - X2) > 25 && Math.Abs(Y1 - Y2) > 25) Radius = 10;
             if (Math.Abs(X1 - X2) > 40 && Math.Abs(Y1 - Y2) > 40) Radius = 20;
