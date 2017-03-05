@@ -16,10 +16,14 @@ namespace Lab1
 
         public override void Draw(Graphics gr)
         {
+           // if (X1 > X2) { temp = X1; X1 = X2; X2 = temp; }
+           // if (Y1 > Y2) { temp = Y1; Y1 = Y2; Y2 = temp; }
+
             gr.DrawLine(pen, X1, Y1, X2, Y1);
             gr.DrawLine(pen, X2, Y1, X2, Y2);
             gr.DrawLine(pen, X2, Y2, X1, Y2);
             gr.DrawLine(pen, X1, Y2, X1, Y1);
         }
+        private int temp;
     }
 }

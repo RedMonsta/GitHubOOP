@@ -12,6 +12,12 @@ namespace Lab1
         //public virtual void Draw(PictureBox pbox) { }
         public Figure(Pen pens, int x1, int y1, int x2, int y2)
         {
+            /*if (x1 < x2) { X1 = x1; X2 = x2; }
+            else { X1 = x2; X2 = x1; }
+            if (y1 < y2) { Y1 = y1; Y2 = y2; }
+            else { Y1 = y2; Y2 = y1; }*/
+
+
             X1 = x1;
             Y1 = y1;
             X2 = x2;

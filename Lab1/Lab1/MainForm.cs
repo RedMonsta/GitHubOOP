@@ -12,6 +12,22 @@ namespace Lab1
 {
     public partial class MainForm : Form
     {
+
+        private void ChangeCursor(Figure fig, MouseEventArgs e)
+        {
+            if (e.X < fig.X1 + 5 && e.X > fig.X1 - 5 && e.Y < fig.Y1 + 5 && e.Y > fig.Y1 - 5) { this.Cursor = Cursors.SizeNWSE; return; }//this.Cursor = Cursors.SizeNWSE;
+            if (e.X < fig.X2 + 5 && e.X > fig.X2 - 5 && e.Y < fig.Y1 + 5 && e.Y > fig.Y1 - 5) { this.Cursor = Cursors.SizeNESW; return; }
+            if (e.X < fig.X1 + 5 && e.X > fig.X1 - 5 && e.Y < fig.Y2 + 5 && e.Y > fig.Y2 - 5) { this.Cursor = Cursors.SizeNESW; return; }
+            if (e.X < fig.X2 + 5 && e.X > fig.X2 - 5 && e.Y < fig.Y2 + 5 && e.Y > fig.Y2 - 5) { this.Cursor = Cursors.SizeNWSE; return; }
+            if (e.X < (fig.X1 + fig.X2) / 2 + 5 && e.X > (fig.X1 + fig.X2) / 2 - 5 && e.Y < fig.Y1 + 5 && e.Y > fig.Y1 - 5) { this.Cursor = Cursors.SizeNS; return; }
+            if (e.X < (fig.X1 + fig.X2) / 2 + 5 && e.X > (fig.X1 + fig.X2) / 2 - 5 && e.Y < fig.Y2 + 5 && e.Y > fig.Y2 - 5) { this.Cursor = Cursors.SizeNS; return; }
+            if (e.X < fig.X1 + 5 && e.X > fig.X1 - 5 && e.Y < (fig.Y1 + fig.Y2) / 2 + 5 && e.Y > (fig.Y1 + fig.Y2) / 2 - 5) { this.Cursor = Cursors.SizeWE; return; }
+            if (e.X < fig.X2 + 5 && e.X > fig.X2 - 5 && e.Y < (fig.Y1 + fig.Y2) / 2 + 5 && e.Y > (fig.Y1 + fig.Y2) / 2 - 5) { this.Cursor = Cursors.SizeWE; return; }
+            if (e.X < (fig.X1 + fig.X2) / 2 + 5 && e.X > (fig.X1 + fig.X2) / 2 - 5 && e.Y < (fig.Y1 + fig.Y2) / 2 + 5 && e.Y > (fig.Y1 + fig.Y2) / 2 - 5) { this.Cursor = Cursors.SizeAll; return; }
+            this.Cursor = Cursors.Default;
+        }
+
+
         public MainForm()
         {
             InitializeComponent();
@@ -92,6 +108,11 @@ namespace Lab1
                 grRez.DrawImage(Layers[6], 0, 0);
                 grRez.DrawImage(Layers[3], 0, 0);
                 pictureBox1.Refresh();
+            }
+            if (isPointer)
+            {
+                if (CurrFig != -1) ChangeCursor(FigList.Item(CurrFig), e);
+
             }
             /*if (isPointer)
             {
@@ -175,6 +196,7 @@ namespace Lab1
             grMajor.Clear(Color.Transparent);
             grMajor.DrawImage(Layers[1], 0, 0);
             pictureBox1.Refresh();
+            CurrFig = -1;
             btnConfirm.Enabled = false;
             grboxFigures.Enabled = true;
         }
@@ -223,6 +245,7 @@ namespace Lab1
                 grFront.Clear(Color.Transparent);
                 grMajor.DrawImage(Layers[1], 0, 0);
                 BackSteps = 0;
+                CurrFig = -1;
             } else
                 if ( !isMoved && !isPointer ) FigList.Remove(FigList.Last);
             pictureBox1.Refresh();
