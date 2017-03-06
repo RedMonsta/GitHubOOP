@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivePoints.cs" />
     <Compile Include="BitMaps.cs" />
     <Compile Include="Figure.cs" />
     <Compile Include="FiguresList.cs" />

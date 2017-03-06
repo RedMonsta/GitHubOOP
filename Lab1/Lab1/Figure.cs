@@ -29,7 +29,7 @@ namespace Lab1
 
             isSelected = false;
 
-            position = -1;
+            //position = -1;
             pen = (Pen)pens.Clone();
         }
 
@@ -39,7 +39,17 @@ namespace Lab1
             pen = (Pen)pn.Clone();
         }
 
-        public abstract void Draw(Graphics gr);
+        public abstract void Draw(Graphics gr); 
+
+        public void Check()
+        {
+            int tempx = Math.Min(X1, X2);
+            int tempy = Math.Min(Y1, Y2);            
+            X2 = Math.Max(X1, X2);
+            Y2 = Math.Max(Y1, Y2);
+            X1 = tempx;
+            Y1 = tempy;
+        }
 
         public void SelectFigure(Graphics gr)
         {
@@ -65,66 +75,68 @@ namespace Lab1
             gr.DrawLine(pens, (X1 + X2) / 2 - 3, (Y1 + Y2) / 2 + 3, (X1 + X2) / 2 + 3, (Y1 + Y2) / 2 - 3);
         }
 
-        public void Edit(MouseEventArgs e)
+        public void Edit(int pos, MouseEventArgs e)
         {
-         /*   if (position == 1)
-            {
-                X1 = e.X;
-                Y1 = e.Y;
-                return;
-            }*/
-
-            switch (position)
-            {
-                case 1:
-                    {
-                        X1 = e.X;
-                        Y1 = e.Y;
-                        break;
-                    }
-                case 2:
-                    {
-                        Y1 = e.Y;
-                        break;
-                    }
-
-                default: { break; }
-            }
-            //int pos = -1;
-            if (e.X < X1 + 10 && e.X > X1 - 10 && e.Y < Y1 + 10 && e.Y > Y1 - 10) { position = 1; }
-            else if (e.X < (X1 + X2) / 2 + 10 && e.X > (X1 + X2) / 2 - 10 && e.Y < Y1 + 10 && e.Y > Y1 - 10) { position = 2; }
-            else if (e.X < X2 + 5 && e.X > X2 - 5 && e.Y < Y1 + 5 && e.Y > Y1 - 5) { position = 5; }
-            else if (e.X < X1 + 5 && e.X > X1 - 5 && e.Y < Y2 + 5 && e.Y > Y2 - 5) { position = 3; }
-            else if (e.X < X2 + 5 && e.X > X2 - 5 && e.Y < Y2 + 5 && e.Y > Y2 - 5) { position = 4; }
             
-            else if (e.X < (X1 + X2) / 2 + 5 && e.X > (X1 + X2) / 2 - 5 && e.Y < Y2 + 5 && e.Y > Y2 - 5) { position = 6; }
-            else if (e.X < X1 + 5 && e.X > X1 - 5 && e.Y < (Y1 + Y2) / 2 + 5 && e.Y > (Y1 + Y2) / 2 - 5) { position = 7; }
-            else if (e.X < X2 + 5 && e.X > X2 - 5 && e.Y < (Y1 + Y2) / 2 + 5 && e.Y > (Y1 + Y2) / 2 - 5) { position = 8; }
-            else if (e.X < (X1 + X2) / 2 + 5 && e.X > (X1 + X2) / 2 - 5 && e.Y < (Y1 + Y2) / 2 + 5 && e.Y > (Y1 + Y2) / 2 - 5) { position = 0; }
-            else position = -1;
-            /*switch (position)
+            switch (pos)
                  {
-                 case 1:
+                case 1:     //Top-Left
                      {
                          X1 = e.X;
                          Y1 = e.Y;
                          break;
                      }
-                case 2:
+                case 2:     //Top-Mid
                     {
                         Y1 = e.Y;
                         break;
                     }
+                case 3:     //Top-Right
+                    {
+                        X2 = e.X;
+                        Y1 = e.Y;
+                        break;
+                    }
+                case 4:     //Mid-Right
+                    {
+                        X2 = e.X;
+                        break;
+                    }
+                case 5:     //Bot-Right
+                    {
+                        X2 = e.X;
+                        Y2 = e.Y;
+                        break;
+                    }
+                case 6:     //Bot-Mid
+                    {
+                        Y2 = e.Y;
+                        break;
+                    }
+                case 7:     //Bot-Left
+                    {
+                        X1 = e.X;
+                        Y2 = e.Y;
+                        break;
+                    }
+                case 8:     //Mid-Left
+                    {
+                        X1 = e.X;
+                        break;
+                    }
+                case 0:     //Mid-Mid
+                    {
+                        Replace(e);
+                        break;
+                    }
 
                  default: { break; } 
-             }*/
-             
+             }
+        }
 
-            /*if (e.X < this.X1 + 5 && e.X > this.X1 - 5 && e.Y < this.Y1 + 5 && e.Y > this.Y1 - 5)
-            {
-                this.X1 = e.X;
-                this.Y1 = e.Y;
-            }*/
+        public void ChangeColor(Pen pens)
+        {
+            pen = (Pen)pens.Clone();
         }
 
         public Pen pen;
@@ -133,10 +145,20 @@ namespace Lab1
         public int Y1 { get; set; }
         public int Y2 { get; set; }
 
-        private int position { get; set; }
+        //private int position { get; set; }
         public bool isSelectable { get; set; }
         public bool isSelected { get; set; }
         public bool isEditable { get; set; }
+
+        private void Replace(MouseEventArgs e)
+        {
+            int sX = (X1 + X2) / 2 - X1;
+            int sY = (Y1 + Y2) / 2 - Y1;
+            X1 = e.X - sX;
+            X2 = e.X + sX;
+            Y1 = e.Y - sY;
+            Y2 = e.Y + sY;
+        }
         
     }
 }

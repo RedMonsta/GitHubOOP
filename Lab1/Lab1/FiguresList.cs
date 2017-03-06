@@ -80,14 +80,14 @@ namespace Lab1
         {
             for (int i = figures.Count() - 1; i >= 0; i--)   
             {
-                if (figures[i].X1 < figures[i].X2 && figures[i].Y1 < figures[i].Y2)
+                //if (figures[i].X1 < figures[i].X2 && figures[i].Y1 < figures[i].Y2)
                     if (e.X > figures[i].X1 && e.X < figures[i].X2 && e.Y > figures[i].Y1 && e.Y < figures[i].Y2) return i;
-                if (figures[i].X2 < figures[i].X1 && figures[i].Y1 < figures[i].Y2)
+                /*if (figures[i].X2 < figures[i].X1 && figures[i].Y1 < figures[i].Y2)
                     if (e.X > figures[i].X2 && e.X < figures[i].X1 && e.Y > figures[i].Y1 && e.Y < figures[i].Y2) return i;
                 if (figures[i].X1 < figures[i].X2 && figures[i].Y2 < figures[i].Y1)
                     if (e.X > figures[i].X1 && e.X < figures[i].X2 && e.Y > figures[i].Y2 && e.Y < figures[i].Y1) return i;
                 if (figures[i].X2 < figures[i].X1 && figures[i].Y2 < figures[i].Y1)
-                    if (e.X > figures[i].X2 && e.X < figures[i].X1 && e.Y > figures[i].Y2 && e.Y < figures[i].Y1) return i;
+                    if (e.X > figures[i].X2 && e.X < figures[i].X1 && e.Y > figures[i].Y2 && e.Y < figures[i].Y1) return i;*/
             }
             return -1;
         }
