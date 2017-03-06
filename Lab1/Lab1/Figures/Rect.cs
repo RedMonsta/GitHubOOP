@@ -16,14 +16,20 @@ namespace Lab1
 
         public override void Draw(Graphics gr)
         {
-           // if (X1 > X2) { temp = X1; X1 = X2; X2 = temp; }
-           // if (Y1 > Y2) { temp = Y1; Y1 = Y2; Y2 = temp; }
+            /*X1 = Math.Min(X1, X2);
+            Y1 = Math.Min(Y1, Y2);
+            X2 = Math.Max(X1, X2);
+            Y2 = Math.Max(Y1, Y2);*/
 
-            gr.DrawLine(pen, X1, Y1, X2, Y1);
-            gr.DrawLine(pen, X2, Y1, X2, Y2);
-            gr.DrawLine(pen, X2, Y2, X1, Y2);
-            gr.DrawLine(pen, X1, Y2, X1, Y1);
+             gr.DrawLine(pen, X1, Y1, X2, Y1);
+             gr.DrawLine(pen, X2, Y1, X2, Y2);
+             gr.DrawLine(pen, X2, Y2, X1, Y2);
+             gr.DrawLine(pen, X1, Y2, X1, Y1);
+
+            /*gr.DrawLine(pen, Math.Min(X1, X2), Math.Min(Y1, Y2), Math.Max(X1, X2), Math.Min(Y1, Y2));
+            gr.DrawLine(pen, Math.Max(X1, X2), Math.Min(Y1, Y2), Math.Max(X1, X2), Math.Max(Y1, Y2));
+            gr.DrawLine(pen, Math.Max(X1, X2), Math.Max(Y1, Y2), Math.Min(X1, X2), Math.Max(Y1, Y2));
+            gr.DrawLine(pen, Math.Min(X1, X2), Math.Max(Y1, Y2), Math.Min(X1, X2), Math.Min(Y1, Y2));*/
         }
-        private int temp;
     }
 }

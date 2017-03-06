@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Lab1
 {
@@ -27,7 +28,8 @@ namespace Lab1
             isEditable = true;
 
             isSelected = false;
-               
+
+            position = -1;
             pen = (Pen)pens.Clone();
         }
 
@@ -63,14 +65,78 @@ namespace Lab1
             gr.DrawLine(pens, (X1 + X2) / 2 - 3, (Y1 + Y2) / 2 + 3, (X1 + X2) / 2 + 3, (Y1 + Y2) / 2 - 3);
         }
 
+        public void Edit(MouseEventArgs e)
+        {
+         /*   if (position == 1)
+            {
+                X1 = e.X;
+                Y1 = e.Y;
+                return;
+            }*/
+
+            switch (position)
+            {
+                case 1:
+                    {
+                        X1 = e.X;
+                        Y1 = e.Y;
+                        break;
+                    }
+                case 2:
+                    {
+                        Y1 = e.Y;
+                        break;
+                    }
+
+                default: { break; }
+            }
+            //int pos = -1;
+            if (e.X < X1 + 10 && e.X > X1 - 10 && e.Y < Y1 + 10 && e.Y > Y1 - 10) { position = 1; }
+            else if (e.X < (X1 + X2) / 2 + 10 && e.X > (X1 + X2) / 2 - 10 && e.Y < Y1 + 10 && e.Y > Y1 - 10) { position = 2; }
+            else if (e.X < X2 + 5 && e.X > X2 - 5 && e.Y < Y1 + 5 && e.Y > Y1 - 5) { position = 5; }
+            else if (e.X < X1 + 5 && e.X > X1 - 5 && e.Y < Y2 + 5 && e.Y > Y2 - 5) { position = 3; }
+            else if (e.X < X2 + 5 && e.X > X2 - 5 && e.Y < Y2 + 5 && e.Y > Y2 - 5) { position = 4; }
+            
+            else if (e.X < (X1 + X2) / 2 + 5 && e.X > (X1 + X2) / 2 - 5 && e.Y < Y2 + 5 && e.Y > Y2 - 5) { position = 6; }
+            else if (e.X < X1 + 5 && e.X > X1 - 5 && e.Y < (Y1 + Y2) / 2 + 5 && e.Y > (Y1 + Y2) / 2 - 5) { position = 7; }
+            else if (e.X < X2 + 5 && e.X > X2 - 5 && e.Y < (Y1 + Y2) / 2 + 5 && e.Y > (Y1 + Y2) / 2 - 5) { position = 8; }
+            else if (e.X < (X1 + X2) / 2 + 5 && e.X > (X1 + X2) / 2 - 5 && e.Y < (Y1 + Y2) / 2 + 5 && e.Y > (Y1 + Y2) / 2 - 5) { position = 0; }
+            else position = -1;
+            /*switch (position)
+                 {
+                 case 1:
+                     {
+                         X1 = e.X;
+                         Y1 = e.Y;
+                         break;
+                     }
+                case 2:
+                    {
+                        Y1 = e.Y;
+                        break;
+                    }
+
+                 default: { break; } 
+             }*/
+             
+
+            /*if (e.X < this.X1 + 5 && e.X > this.X1 - 5 && e.Y < this.Y1 + 5 && e.Y > this.Y1 - 5)
+            {
+                this.X1 = e.X;
+                this.Y1 = e.Y;
+            }*/
+        }
+
         public Pen pen;
         public int X1 { get; set; }
         public int X2 { get; set; }
         public int Y1 { get; set; }
         public int Y2 { get; set; }
 
+        private int position { get; set; }
         public bool isSelectable { get; set; }
         public bool isSelected { get; set; }
         public bool isEditable { get; set; }
+        
     }
 }

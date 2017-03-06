@@ -96,10 +96,10 @@ namespace Lab1
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {     
-            if (isPressed)
+            if (isPressed && !isPointer)
             {
                 isMoved = true;
-                grTemp.Clear(Color.Transparent);
+                grTemp.Clear(Color.Transparent);    
                 FigList.Last.GetPen(CurrPen);
                 FigList.Last.X2 = e.X;
                 FigList.Last.Y2 = e.Y;
@@ -114,6 +114,36 @@ namespace Lab1
                 if (CurrFig != -1) ChangeCursor(FigList.Item(CurrFig), e);
 
             }
+
+            if (isPointer && isPressed)
+            {
+                btnConfirm.Enabled = true;
+                grboxFigures.Enabled = false;
+                grEdit.Clear(Color.Transparent);
+                grRez.Clear(Color.Transparent);
+                grMajor.Clear(Color.Transparent);
+                grTemp.Clear(Color.Transparent);
+                FigList.DrawAllExcept(grMajor, CurrFig);
+                //FigList.Item(CurrFig).pen.Brush = Brushes.Red;
+                FigList.Item(CurrFig).Edit(e);
+                FigList.Item(CurrFig).Draw(grTemp);
+                FigList.Item(CurrFig).SelectFigure(grEdit);
+
+                //var fig = (Figure)Activator.CreateInstance(FigList.Item(CurrFig).GetType(), new Object[] { new Pen(Brushes.Red, 3),
+                //               FigList.Item(CurrFig).X1, FigList.Item(CurrFig).Y1, FigList.Item(CurrFig).X2, FigList.Item(CurrFig).Y2 });
+                //fig.Draw(grTemp);
+
+                //label1.Text = CurrFig.ToString() + " " + lboxFigures.Items[CurrFig].ToString();
+                label1.Text = "Try to change";
+                grMajor.DrawImage(Layers[3], 0, 0);
+                grRez.DrawImage(Layers[6], 0, 0);
+
+                //grRez.DrawImage(Layers[5], 0, 0);
+                //grRez.DrawImage(Layers[3], 0, 0);
+                grMajor.DrawImage(Layers[1], 0, 0);
+                pictureBox1.Refresh();
+            }
+
             /*if (isPointer)
             {
                 if (CurrFig != -1)
@@ -246,8 +276,19 @@ namespace Lab1
                 grMajor.DrawImage(Layers[1], 0, 0);
                 BackSteps = 0;
                 CurrFig = -1;
-            } else
-                if ( !isMoved && !isPointer ) FigList.Remove(FigList.Last);
+            } 
+            if ( !isMoved && !isPointer ) FigList.Remove(FigList.Last);
+            /*if (isMoved && isPointer)
+            {
+                grEdit.Clear(Color.Transparent);
+                grRez.Clear(Color.Transparent);
+                grRez.DrawImage(Layers[6], 0, 0);
+                FigList.Item(CurrFig).SelectFigure(grEdit);
+                //CurrFig = lboxFigures.SelectedIndex;
+                //label1.Text = lboxFigures.SelectedIndex.ToString();
+                grRez.DrawImage(Layers[5], 0, 0);
+                pictureBox1.Refresh();
+            }*/
             pictureBox1.Refresh();
             isPressed = false;
             //FigList.Remove(FigList.Last); if (!isMoved) FigList.Remove(FigList.Last);
@@ -272,6 +313,7 @@ namespace Lab1
                         //label1.Text = index.ToString();
                         grRez.DrawImage(Layers[5], 0, 0);
                         pictureBox1.Refresh();
+                        isPressed = true;
                     }
                 }
             }
