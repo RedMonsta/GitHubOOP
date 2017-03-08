@@ -46,11 +46,12 @@ namespace Lab1
             CurrPen.Brush = Brushes.Black;
             btnConfirm.Enabled = false;
             CursorPos = -1;
+            isOpenFile = false;
         }
         private Pen CurrPen;
         private FigureList FigList;
         private BitMaps Layers;
-        private bool isPressed, isChanged, isMoved, isPointer;
+        private bool isPressed, isChanged, isMoved, isPointer, isOpenFile;
         private Graphics grBack, grFront, grTemp, grRez, grLast, grEdit, grMajor;
         private Figure figure;
         private int BackSteps = 0, CurrFig = -1;
@@ -106,24 +107,6 @@ namespace Lab1
 
         private void rbSymbolA_CheckedChanged(object sender, EventArgs e) { figure = new StarFour(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }
 
-        private void btnLoad_MouseClick(object sender, MouseEventArgs e)
-        {
-            label1.Text = "opennn";
-            if (ofdlgLoad.ShowDialog() != DialogResult.Cancel)
-            {
-                FigList = new FigureList();
-                CurrFig = -1;
-                lboxFigures.Items.Clear();
-                figure = new Line(CurrPen, 0, 0, 0, 0);
-                //isPointer = false;
-                isPressed = false;
-                isMoved = false;
-                isChanged = false;
-
-            }
-            
-        }
-
         private void rbPointer_CheckedChanged(object sender, EventArgs e) { isPointer = true; label1.Text = "choose pointer"; }
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
@@ -132,18 +115,19 @@ namespace Lab1
             {
                 isMoved = true;
                 grTemp.Clear(Color.Transparent);    
-                /*FigList.Last.GetPen(CurrPen);
+                FigList.Last.GetPen(CurrPen);
                 FigList.Last.X2 = e.X;
                 FigList.Last.Y2 = e.Y;
-                FigList.Last.Draw(grTemp);*/
-                FigList.Item(FigList.Size() - 1).GetPen(CurrPen);
+                FigList.Last.Draw(grTemp);
+                /*FigList.Item(FigList.Size() - 1).GetPen(CurrPen);
                 FigList.Item(FigList.Size() - 1).X2 = e.X;
                 FigList.Item(FigList.Size() - 1).Y2 = e.Y;
-                FigList.Item(FigList.Size() - 1).Draw(grTemp);
+                FigList.Item(FigList.Size() - 1).Draw(grTemp);*/
                 grRez.Clear(Color.Transparent);
                 grRez.DrawImage(Layers[6], 0, 0);
                 grRez.DrawImage(Layers[3], 0, 0);
                 pictureBox1.Refresh();
+                btnBack.Enabled = true;
             }
             if (isPointer & !isPressed)
             {
@@ -236,8 +220,8 @@ namespace Lab1
         {
             grRez.Clear(Color.Transparent);
             //grRez.DrawImage(Layers[4], 0, 0);
-            //FigList.Remove(FigList.Last);
-            FigList.Remove(FigList.Size() - 1);
+            FigList.Remove(FigList.Last);
+            //FigList.Remove(FigList.Size() - 1);
             FigList.PrintList(lboxFigures);
             FigList.DrawAll(grRez);
             grMajor.Clear(Color.Transparent);
@@ -267,10 +251,10 @@ namespace Lab1
             //FigureList[FigureList.Size - 1].Draw(grTemp);
             if ( isMoved && !isPointer )
             {
-                //FigList.Last.Draw(grTemp);
-                //FigList.Last.Check();
-                FigList.Item(FigList.Size() - 1).Draw(grTemp);
-                FigList.Item(FigList.Size() - 1).Check();
+                FigList.Last.Draw(grTemp);
+                FigList.Last.Check();
+                //FigList.Item(FigList.Size() - 1).Draw(grTemp);
+                //FigList.Item(FigList.Size() - 1).Check();
                 FigList.AddOneMore(lboxFigures);
                 //grLast.Clear(Color.Transparent);
                 //grLast.DrawImage(Layers[2], 0, 0);
@@ -283,7 +267,7 @@ namespace Lab1
                 CurrFig = -1;
             }
             //if ( !isMoved && !isPointer ) FigList.Remove(FigList.Last);
-            if (!isMoved && !isPointer) FigList.Remove(FigList.Size() - 1); 
+            if (!isMoved && !isPointer && !isOpenFile) FigList.Remove(FigList.Size() - 1); 
             if (isMoved && isPointer)
             {
                 grEdit.Clear(Color.Transparent);
@@ -299,6 +283,7 @@ namespace Lab1
             pictureBox1.Refresh();
             isPressed = false;
             CursorPos = -1;
+            isOpenFile = false;
             //FigList.Remove(FigList.Last); if (!isMoved) FigList.Remove(FigList.Last);
 
         }
@@ -336,10 +321,10 @@ namespace Lab1
                 //FigureList[FigureList.Size] = figure;
                 FigList.Add(figure);
                 label1.Text = "Added a figure";
-                //FigList.Last.X1 = e.X;
-                //FigList.Last.Y1 = e.Y;
-                FigList.Item(FigList.Size() - 1).X1 = e.X;
-                FigList.Item(FigList.Size() - 1).Y1 = e.Y;
+                FigList.Last.X1 = e.X;
+                FigList.Last.Y1 = e.Y;
+                //FigList.Item(FigList.Size() - 1).X1 = e.X;
+                //FigList.Item(FigList.Size() - 1).Y1 = e.Y;
                 grFront.DrawImage(Layers[6], 0, 0);
                 grTemp.Clear(Color.Transparent);
                 isPressed = true;
@@ -362,12 +347,46 @@ namespace Lab1
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            sfdlgSave.ShowDialog();
-            if (sfdlgSave.FileName != "")
+            if (sfdlgSave.ShowDialog() != DialogResult.Cancel)
             {
-                FileStream fs = (FileStream)sfdlgSave.OpenFile();
-                binser = new BinSerializer();
-                binser.Save(fs, FigList);
+                if (sfdlgSave.FileName != "")
+                {
+                    FileStream fs = (FileStream)sfdlgSave.OpenFile();
+                    binser = new BinSerializer();
+                    binser.Save(fs, FigList);
+                }
+            }
+        }
+
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            isOpenFile = true;
+            ofdlgLoad.InitialDirectory = Application.StartupPath.ToString() + "\\SavedPictures";
+            if (ofdlgLoad.ShowDialog() != DialogResult.Cancel)
+            {
+                if (ofdlgLoad.FileName != "")
+                {
+                    
+                    FileStream fs = (FileStream)ofdlgLoad.OpenFile();
+                    binser = new BinSerializer();
+                    FigList.Clear();
+                    lboxFigures.Items.Clear();
+                    CurrFig = -1;
+                    isPressed = false;
+                    isMoved = false;
+                    isChanged = false;
+                    FigList = (FigureList)binser.Load(fs);
+                    FigList.PrintList(lboxFigures);
+                    grRez.Clear(Color.Transparent);
+                    grMajor.Clear(Color.Transparent);
+                    FigList.DrawAll(grMajor);
+                    grRez.DrawImage(Layers[6], 0, 0);
+                    btnBack.Enabled = false;
+
+
+                }
+
             }
         }
 

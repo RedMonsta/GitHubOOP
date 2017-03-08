@@ -278,11 +278,13 @@
             this.btnLoad.TabIndex = 24;
             this.btnLoad.Text = "Load";
             this.btnLoad.UseVisualStyleBackColor = true;
-            this.btnLoad.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btnLoad_MouseClick);
+            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
             // 
             // ofdlgLoad
             // 
-            this.ofdlgLoad.FilterIndex = 0;
+            this.ofdlgLoad.DefaultExt = "mpp";
+            this.ofdlgLoad.Filter = "MonsterPaint Pictures|*.mpp|All Files|*.**";
+            this.ofdlgLoad.InitialDirectory = "./SavedPictures";
             // 
             // MainForm
             // 

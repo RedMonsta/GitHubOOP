@@ -13,7 +13,7 @@ namespace Lab1
     public class FigureList
     {
         private List<Figure> figures;
-        //public Figure Last { get { return figures[figures.Count() - 1]; } }
+        public Figure Last { get { return figures[figures.Count() - 1]; } }
         //private Figure last;
         public FigureList()
         {
@@ -42,11 +42,11 @@ namespace Lab1
             return figures[index];
         }
 
-        private Figure getlast()
+        /*private Figure getlast()
         {
             return new Line( new Pen(Brushes.AliceBlue, 3), 0, 0, 100, 100);
             //return figures[figures.Count() - figures.Count()];
-        }
+        }*/
 
         public int Size()
         {
