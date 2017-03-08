@@ -8,6 +8,7 @@ using System.Drawing;
 
 namespace Lab1
 {
+    [Serializable]
     public class Ellipce : Figure
     {
         public Ellipce(Pen pens, int x1, int y1, int x2, int y2) : base(pens, x1, y1, x2, y2)
@@ -16,7 +17,8 @@ namespace Lab1
 
         public override void Draw(Graphics gr)
         {
-            gr.DrawEllipse(pen, new Rectangle(X1, Y1, X2 - X1, Y2 - Y1));
+            var pn = new Pen(pen.color, pen.Width);
+            gr.DrawEllipse(pn, new Rectangle(X1, Y1, X2 - X1, Y2 - Y1));
         }
     }
 }

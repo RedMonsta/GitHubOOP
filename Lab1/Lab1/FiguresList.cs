@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 
+
 namespace Lab1
 {
+    [Serializable]
     public class FigureList
     {
         private List<Figure> figures;
-        public Figure Last { get { return getlast(); } }
+        //public Figure Last { get { return figures[figures.Count() - 1]; } }
         //private Figure last;
         public FigureList()
         {
@@ -42,7 +44,8 @@ namespace Lab1
 
         private Figure getlast()
         {
-            return figures[figures.Count() - 1];
+            return new Line( new Pen(Brushes.AliceBlue, 3), 0, 0, 100, 100);
+            //return figures[figures.Count() - figures.Count()];
         }
 
         public int Size()
@@ -68,7 +71,8 @@ namespace Lab1
 
         public void AddOneMore(ListBox lbox)
         {
-            lbox.Items.Add((Last.ToString()).Substring(5));
+            //lbox.Items.Add((Last.ToString()).Substring(5));
+            lbox.Items.Add(figures[figures.Count - 1].ToString().Substring(5));
         }
 
         public void Clear()
@@ -80,14 +84,14 @@ namespace Lab1
         {
             for (int i = figures.Count() - 1; i >= 0; i--)   
             {
-                //if (figures[i].X1 < figures[i].X2 && figures[i].Y1 < figures[i].Y2)
+                if (figures[i].X1 < figures[i].X2 && figures[i].Y1 < figures[i].Y2)
                     if (e.X > figures[i].X1 && e.X < figures[i].X2 && e.Y > figures[i].Y1 && e.Y < figures[i].Y2) return i;
-                /*if (figures[i].X2 < figures[i].X1 && figures[i].Y1 < figures[i].Y2)
+                if (figures[i].X2 < figures[i].X1 && figures[i].Y1 < figures[i].Y2)
                     if (e.X > figures[i].X2 && e.X < figures[i].X1 && e.Y > figures[i].Y1 && e.Y < figures[i].Y2) return i;
                 if (figures[i].X1 < figures[i].X2 && figures[i].Y2 < figures[i].Y1)
                     if (e.X > figures[i].X1 && e.X < figures[i].X2 && e.Y > figures[i].Y2 && e.Y < figures[i].Y1) return i;
                 if (figures[i].X2 < figures[i].X1 && figures[i].Y2 < figures[i].Y1)
-                    if (e.X > figures[i].X2 && e.X < figures[i].X1 && e.Y > figures[i].Y2 && e.Y < figures[i].Y1) return i;*/
+                    if (e.X > figures[i].X2 && e.X < figures[i].X1 && e.Y > figures[i].Y2 && e.Y < figures[i].Y1) return i;
             }
             return -1;
         }
@@ -104,38 +108,5 @@ namespace Lab1
                 if (i != index) figures[i].Draw(gr);
         }
 
-        //public Figure Find()
-        //{
-        //figures.Find()
-        //}
-
-        //public void DrawAll(Graphics gr)
-        //{
-        // for (int i = 0; i < Count; i++)
-        //item[i].Draw(gr);              
-        // }
     }
-
-    /*public class DynamicFigList
-    {
-        public DynamicFigList()
-        {
-            Size = 0;
-        }
-
-        public void DrawAll(Graphics gr)
-        {
-            for (int i = 0; i < Size; i++)
-                Figures[i].Draw(gr);
-        }
-
-        public Figure this[int index]
-        {
-            get { return Figures[index]; }
-            set { Figures[index] = value; if (index >= Size) Size++; }
-        }
-        private Figure[] Figures = new Figure[100];
-        public int Size { get; set; }
-        
-    }*/
 }

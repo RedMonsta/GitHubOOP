@@ -8,17 +8,12 @@ using System.Windows.Forms;
 
 namespace Lab1
 {
+    [Serializable]
     public abstract class Figure : ISelectable, IEditable
     {
         //public virtual void Draw(PictureBox pbox) { }
         public Figure(Pen pens, int x1, int y1, int x2, int y2)
         {
-            /*if (x1 < x2) { X1 = x1; X2 = x2; }
-            else { X1 = x2; X2 = x1; }
-            if (y1 < y2) { Y1 = y1; Y2 = y2; }
-            else { Y1 = y2; Y2 = y1; }*/
-
-
             X1 = x1;
             Y1 = y1;
             X2 = x2;
@@ -30,25 +25,42 @@ namespace Lab1
             isSelected = false;
 
             //position = -1;
-            pen = (Pen)pens.Clone();
+            //pen = (Pen)pens.Clone();
+            //pen.brush = pens.Brush;
+            pen.color = pens.Color;
+            pen.Width = pens.Width;
+            Direction = 0;
         }
 
         public void GetPen(Pen pn)
         {
             //pen.Brush = pn.Brush;
-            pen = (Pen)pn.Clone();
+            //pen = (Pen)pn.Clone();
+            //pen.brush = pn.Brush;
+            pen.color = pn.Color;
+            pen.Width = pn.Width;
         }
 
         public abstract void Draw(Graphics gr); 
 
         public void Check()
         {
+            /*int sx1 = X1, sx2 = X2, sy1 = Y1, sy2 = Y2;
             int tempx = Math.Min(X1, X2);
             int tempy = Math.Min(Y1, Y2);            
             X2 = Math.Max(X1, X2);
             Y2 = Math.Max(Y1, Y2);
             X1 = tempx;
             Y1 = tempy;
+            if (X1 == sx1 && Y1 == sy1) chgpt = 0;
+            if (X1 == sx1 && Y1 == sy1) chgpt = 0;
+            if (X1 == sx1 && Y1 == sy1) chgpt = 0;
+            if (X1 == sx1 && Y1 == sy1) chgpt = 0;*/
+
+            if (X1 < X2 && Y1 < Y2) Direction = 0; //non - SE
+            if (X1 > X2 && Y1 < Y2) Direction = 1; //vert - SW
+            if (X1 > X2 && Y1 > Y2) Direction = 2; //vert-hor - NW
+            if (X1 < X2 && Y1 > Y2) Direction = 3; //hor - NE
         }
 
         public void SelectFigure(Graphics gr)
@@ -136,19 +148,34 @@ namespace Lab1
 
         public void ChangeColor(Pen pens)
         {
-            pen = (Pen)pens.Clone();
+            //pen = (Pen)pens.Clone();
+            //pen.brush = pens.Brush;
+            pen.color = pens.Color;
+            pen.Width = pens.Width;
         }
 
-        public Pen pen;
+        //public Pen pen;
+        //private Color pencolor = new Color; pen.Color;
         public int X1 { get; set; }
         public int X2 { get; set; }
         public int Y1 { get; set; }
         public int Y2 { get; set; }
 
+        public Mypen pen;
+        public int Direction { get; set; }
+
         //private int position { get; set; }
         public bool isSelectable { get; set; }
         public bool isSelected { get; set; }
         public bool isEditable { get; set; }
+
+        [Serializable]
+        public struct Mypen
+        {
+            public Color color;
+            //public Brush brush;
+            public float Width;
+        }
 
         private void Replace(MouseEventArgs e)
         {

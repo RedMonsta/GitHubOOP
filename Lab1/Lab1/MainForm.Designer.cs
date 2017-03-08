@@ -44,10 +44,13 @@
             this.colorDialog2 = new System.Windows.Forms.ColorDialog();
             this.btnClear = new System.Windows.Forms.Button();
             this.btnBack = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.lboxFigures = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btnConfirm = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.sfdlgSave = new System.Windows.Forms.SaveFileDialog();
+            this.btnLoad = new System.Windows.Forms.Button();
+            this.ofdlgLoad = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.grboxFigures.SuspendLayout();
             this.SuspendLayout();
@@ -68,7 +71,7 @@
             // 
             this.btnColor.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.btnColor.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnColor.Location = new System.Drawing.Point(754, 25);
+            this.btnColor.Location = new System.Drawing.Point(491, 35);
             this.btnColor.Name = "btnColor";
             this.btnColor.Size = new System.Drawing.Size(145, 61);
             this.btnColor.TabIndex = 10;
@@ -194,7 +197,7 @@
             // 
             // btnBackColor
             // 
-            this.btnBackColor.Location = new System.Drawing.Point(919, 25);
+            this.btnBackColor.Location = new System.Drawing.Point(663, 34);
             this.btnBackColor.Name = "btnBackColor";
             this.btnBackColor.Size = new System.Drawing.Size(143, 56);
             this.btnBackColor.TabIndex = 16;
@@ -204,7 +207,7 @@
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(590, 51);
+            this.btnClear.Location = new System.Drawing.Point(371, 25);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(64, 36);
             this.btnClear.TabIndex = 17;
@@ -214,23 +217,13 @@
             // 
             // btnBack
             // 
-            this.btnBack.Location = new System.Drawing.Point(675, 52);
+            this.btnBack.Location = new System.Drawing.Point(371, 67);
             this.btnBack.Name = "btnBack";
             this.btnBack.Size = new System.Drawing.Size(73, 34);
             this.btnBack.TabIndex = 18;
             this.btnBack.Text = "StepBack";
             this.btnBack.UseVisualStyleBackColor = true;
             this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(421, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(137, 69);
-            this.button1.TabIndex = 19;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // lboxFigures
             // 
@@ -260,16 +253,48 @@
             this.btnConfirm.UseVisualStyleBackColor = true;
             this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
             // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(833, 31);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(91, 58);
+            this.btnSave.TabIndex = 23;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // sfdlgSave
+            // 
+            this.sfdlgSave.DefaultExt = "mpp";
+            this.sfdlgSave.Filter = "MonsterPaint Pictures|*.mpp|All Files|*.**";
+            this.sfdlgSave.InitialDirectory = "./SavedPictures";
+            this.sfdlgSave.OverwritePrompt = false;
+            // 
+            // btnLoad
+            // 
+            this.btnLoad.Location = new System.Drawing.Point(955, 32);
+            this.btnLoad.Name = "btnLoad";
+            this.btnLoad.Size = new System.Drawing.Size(85, 56);
+            this.btnLoad.TabIndex = 24;
+            this.btnLoad.Text = "Load";
+            this.btnLoad.UseVisualStyleBackColor = true;
+            this.btnLoad.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btnLoad_MouseClick);
+            // 
+            // ofdlgLoad
+            // 
+            this.ofdlgLoad.FilterIndex = 0;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1074, 651);
+            this.Controls.Add(this.btnLoad);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnConfirm);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lboxFigures);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.btnBack);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.btnBackColor);
@@ -302,11 +327,14 @@
         private System.Windows.Forms.ColorDialog colorDialog2;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Button btnBack;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ListBox lboxFigures;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.RadioButton rbPointer;
         private System.Windows.Forms.Button btnConfirm;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.SaveFileDialog sfdlgSave;
+        private System.Windows.Forms.Button btnLoad;
+        private System.Windows.Forms.OpenFileDialog ofdlgLoad;
     }
 }
 
