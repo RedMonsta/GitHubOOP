@@ -9,7 +9,7 @@ using System.Drawing;
 namespace Lab1
 {
     [Serializable]
-    public class IsoTriangle : Figure
+    public class IsoTriangle : Figure, ISelectable, IEditable
     {
         public IsoTriangle(Pen pens, int x1, int y1, int x2, int y2) : base(pens, x1, y1, x2, y2)
         {

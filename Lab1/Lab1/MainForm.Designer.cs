@@ -228,7 +228,7 @@
             // lboxFigures
             // 
             this.lboxFigures.FormattingEnabled = true;
-            this.lboxFigures.Location = new System.Drawing.Point(30, 297);
+            this.lboxFigures.Location = new System.Drawing.Point(30, 373);
             this.lboxFigures.Name = "lboxFigures";
             this.lboxFigures.Size = new System.Drawing.Size(101, 251);
             this.lboxFigures.TabIndex = 20;
@@ -245,9 +245,9 @@
             // 
             // btnConfirm
             // 
-            this.btnConfirm.Location = new System.Drawing.Point(291, 42);
+            this.btnConfirm.Location = new System.Drawing.Point(36, 297);
             this.btnConfirm.Name = "btnConfirm";
-            this.btnConfirm.Size = new System.Drawing.Size(60, 54);
+            this.btnConfirm.Size = new System.Drawing.Size(88, 54);
             this.btnConfirm.TabIndex = 22;
             this.btnConfirm.Text = "Confirm";
             this.btnConfirm.UseVisualStyleBackColor = true;

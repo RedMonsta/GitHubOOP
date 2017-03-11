@@ -9,8 +9,8 @@ namespace Lab1
 {
     public interface ISelectable
     {
-        bool isSelectable { get; set; }
-        void SelectFigure(Graphics gr);
+        //bool isSelectable { get; set; }
+        //void SelectFigure(Graphics gr);
         bool isSelected { get; set; }
     }
 }

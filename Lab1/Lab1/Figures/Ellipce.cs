@@ -9,7 +9,7 @@ using System.Drawing;
 namespace Lab1
 {
     [Serializable]
-    public class Ellipce : Figure
+    public class Ellipce : Figure, ISelectable, IEditable
     {
         public Ellipce(Pen pens, int x1, int y1, int x2, int y2) : base(pens, x1, y1, x2, y2)
         {

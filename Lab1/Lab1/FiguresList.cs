@@ -14,7 +14,7 @@ namespace Lab1
     {
         private List<Figure> figures;
         public Figure Last { get { return figures[figures.Count() - 1]; } }
-        //private Figure last;
+
         public FigureList()
         {
             figures = new List<Figure>();
@@ -42,12 +42,6 @@ namespace Lab1
             return figures[index];
         }
 
-        /*private Figure getlast()
-        {
-            return new Line( new Pen(Brushes.AliceBlue, 3), 0, 0, 100, 100);
-            //return figures[figures.Count() - figures.Count()];
-        }*/
-
         public int Size()
         {
             return figures.Count();
@@ -55,7 +49,6 @@ namespace Lab1
 
         public void DrawAll(Graphics gr)
         {
-            //for (int i = 0; i < figures.Count; i++)
             foreach (var fig in figures)
                 fig.Draw(gr);
         }
@@ -71,7 +64,6 @@ namespace Lab1
 
         public void AddOneMore(ListBox lbox)
         {
-            //lbox.Items.Add((Last.ToString()).Substring(5));
             lbox.Items.Add(figures[figures.Count - 1].ToString().Substring(5));
         }
 

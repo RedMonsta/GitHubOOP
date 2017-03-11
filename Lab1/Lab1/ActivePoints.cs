@@ -30,13 +30,9 @@ namespace Lab1
             Arr[0].X = (fig.X1 + fig.X2) / 2; Arr[0].Y = (fig.Y1 + fig.Y2) / 2;
         }
 
-        private Cursor[] CursSE = new Cursor[] { Cursors.SizeAll, Cursors.SizeNWSE, Cursors.SizeNS, Cursors.SizeNESW, Cursors.SizeWE,
+        private Cursor[] CursNWSE = new Cursor[] { Cursors.SizeAll, Cursors.SizeNWSE, Cursors.SizeNS, Cursors.SizeNESW, Cursors.SizeWE,
                                                Cursors.SizeNWSE, Cursors.SizeNS, Cursors.SizeNESW, Cursors.SizeWE, Cursors.Default };
-        private Cursor[] CursSW = new Cursor[] { Cursors.SizeAll, Cursors.SizeNESW, Cursors.SizeNS, Cursors.SizeNWSE, Cursors.SizeWE,
-                                               Cursors.SizeNESW, Cursors.SizeNS, Cursors.SizeNWSE, Cursors.SizeWE, Cursors.Default };
-        private Cursor[] CursNW = new Cursor[] { Cursors.SizeAll, Cursors.SizeNWSE, Cursors.SizeNS, Cursors.SizeNESW, Cursors.SizeWE,
-                                               Cursors.SizeNWSE, Cursors.SizeNS, Cursors.SizeNESW, Cursors.SizeWE, Cursors.Default };
-        private Cursor[] CursNE = new Cursor[] { Cursors.SizeAll, Cursors.SizeNESW, Cursors.SizeNS, Cursors.SizeNWSE, Cursors.SizeWE,
+        private Cursor[] CursNESW = new Cursor[] { Cursors.SizeAll, Cursors.SizeNESW, Cursors.SizeNS, Cursors.SizeNWSE, Cursors.SizeWE,
                                                Cursors.SizeNESW, Cursors.SizeNS, Cursors.SizeNWSE, Cursors.SizeWE, Cursors.Default };
 
         public Cursor ChangeCursor(MouseEventArgs e, Figure fig)
@@ -47,26 +43,26 @@ namespace Lab1
                 case 0:
                     {
                         for (int i = 0; i < 9; i++)
-                            if (e.X < Arr[i].X + S && e.X > Arr[i].X - S && e.Y < Arr[i].Y + S && e.Y > Arr[i].Y - S) return CursSE[i];
-                        return CursSE[9];
+                            if (e.X < Arr[i].X + S && e.X > Arr[i].X - S && e.Y < Arr[i].Y + S && e.Y > Arr[i].Y - S) return CursNWSE[i];
+                        return CursNWSE[9];
                     }
                 case 1:
                     {
                         for (int i = 0; i < 9; i++)
-                            if (e.X < Arr[i].X + S && e.X > Arr[i].X - S && e.Y < Arr[i].Y + S && e.Y > Arr[i].Y - S) return CursSW[i];
-                        return CursSW[9];
+                            if (e.X < Arr[i].X + S && e.X > Arr[i].X - S && e.Y < Arr[i].Y + S && e.Y > Arr[i].Y - S) return CursNESW[i];
+                        return CursNESW[9];
                     }
                 case 2:
                     {
                         for (int i = 0; i < 9; i++)
-                            if (e.X < Arr[i].X + S && e.X > Arr[i].X - S && e.Y < Arr[i].Y + S && e.Y > Arr[i].Y - S) return CursNW[i];
-                        return CursNW[9];
+                            if (e.X < Arr[i].X + S && e.X > Arr[i].X - S && e.Y < Arr[i].Y + S && e.Y > Arr[i].Y - S) return CursNWSE[i];
+                        return CursNWSE[9];
                     }
                 case 3:
                     {
                         for (int i = 0; i < 9; i++)
-                            if (e.X < Arr[i].X + S && e.X > Arr[i].X - S && e.Y < Arr[i].Y + S && e.Y > Arr[i].Y - S) return CursNE[i];
-                        return CursNE[9];
+                            if (e.X < Arr[i].X + S && e.X > Arr[i].X - S && e.Y < Arr[i].Y + S && e.Y > Arr[i].Y - S) return CursNESW[i];
+                        return CursNESW[9];
                     }
                 default: { return Cursors.Default; }
             }
