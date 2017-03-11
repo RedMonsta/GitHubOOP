@@ -121,7 +121,7 @@ namespace Lab1
              }
         }
 
-        public void ChangeColor(Pen pens)
+        public void ChangePen(Pen pens)
         {
             pen.color = pens.Color;
             pen.Width = pens.Width;

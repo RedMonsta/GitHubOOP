@@ -51,8 +51,12 @@
             this.sfdlgSave = new System.Windows.Forms.SaveFileDialog();
             this.btnLoad = new System.Windows.Forms.Button();
             this.ofdlgLoad = new System.Windows.Forms.OpenFileDialog();
+            this.trackbarWidth = new System.Windows.Forms.TrackBar();
+            this.lblWidth = new System.Windows.Forms.Label();
+            this.btnDel = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.grboxFigures.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackbarWidth)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -60,7 +64,7 @@
             this.pictureBox1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.pictureBox1.Location = new System.Drawing.Point(162, 111);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(912, 539);
+            this.pictureBox1.Size = new System.Drawing.Size(1140, 539);
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
@@ -71,7 +75,7 @@
             // 
             this.btnColor.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.btnColor.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnColor.Location = new System.Drawing.Point(491, 35);
+            this.btnColor.Location = new System.Drawing.Point(784, 22);
             this.btnColor.Name = "btnColor";
             this.btnColor.Size = new System.Drawing.Size(145, 61);
             this.btnColor.TabIndex = 10;
@@ -197,7 +201,7 @@
             // 
             // btnBackColor
             // 
-            this.btnBackColor.Location = new System.Drawing.Point(663, 34);
+            this.btnBackColor.Location = new System.Drawing.Point(935, 25);
             this.btnBackColor.Name = "btnBackColor";
             this.btnBackColor.Size = new System.Drawing.Size(143, 56);
             this.btnBackColor.TabIndex = 16;
@@ -207,9 +211,9 @@
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(371, 25);
+            this.btnClear.Location = new System.Drawing.Point(705, 15);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(64, 36);
+            this.btnClear.Size = new System.Drawing.Size(73, 36);
             this.btnClear.TabIndex = 17;
             this.btnClear.Text = "ClearScr";
             this.btnClear.UseVisualStyleBackColor = true;
@@ -217,7 +221,7 @@
             // 
             // btnBack
             // 
-            this.btnBack.Location = new System.Drawing.Point(371, 67);
+            this.btnBack.Location = new System.Drawing.Point(705, 62);
             this.btnBack.Name = "btnBack";
             this.btnBack.Size = new System.Drawing.Size(73, 34);
             this.btnBack.TabIndex = 18;
@@ -255,7 +259,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(833, 31);
+            this.btnSave.Location = new System.Drawing.Point(1096, 26);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(91, 58);
             this.btnSave.TabIndex = 23;
@@ -272,7 +276,7 @@
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(955, 32);
+            this.btnLoad.Location = new System.Drawing.Point(1193, 26);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(85, 56);
             this.btnLoad.TabIndex = 24;
@@ -286,12 +290,45 @@
             this.ofdlgLoad.Filter = "MonsterPaint Pictures|*.mpp|All Files|*.**";
             this.ofdlgLoad.InitialDirectory = "./SavedPictures";
             // 
+            // trackbarWidth
+            // 
+            this.trackbarWidth.Location = new System.Drawing.Point(331, 44);
+            this.trackbarWidth.Minimum = 1;
+            this.trackbarWidth.Name = "trackbarWidth";
+            this.trackbarWidth.Size = new System.Drawing.Size(131, 45);
+            this.trackbarWidth.TabIndex = 25;
+            this.trackbarWidth.Value = 2;
+            this.trackbarWidth.Scroll += new System.EventHandler(this.trackbarWidth_Scroll);
+            // 
+            // lblWidth
+            // 
+            this.lblWidth.AutoSize = true;
+            this.lblWidth.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblWidth.Location = new System.Drawing.Point(367, 9);
+            this.lblWidth.Name = "lblWidth";
+            this.lblWidth.Size = new System.Drawing.Size(60, 24);
+            this.lblWidth.TabIndex = 26;
+            this.lblWidth.Text = "label2";
+            // 
+            // btnDel
+            // 
+            this.btnDel.Location = new System.Drawing.Point(582, 44);
+            this.btnDel.Name = "btnDel";
+            this.btnDel.Size = new System.Drawing.Size(94, 57);
+            this.btnDel.TabIndex = 27;
+            this.btnDel.Text = "Delete Figure";
+            this.btnDel.UseVisualStyleBackColor = true;
+            this.btnDel.Click += new System.EventHandler(this.btnDel_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(1074, 651);
+            this.ClientSize = new System.Drawing.Size(1303, 651);
+            this.Controls.Add(this.btnDel);
+            this.Controls.Add(this.lblWidth);
+            this.Controls.Add(this.trackbarWidth);
             this.Controls.Add(this.btnLoad);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnConfirm);
@@ -308,6 +345,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.grboxFigures.ResumeLayout(false);
             this.grboxFigures.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackbarWidth)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -337,6 +375,9 @@
         private System.Windows.Forms.SaveFileDialog sfdlgSave;
         private System.Windows.Forms.Button btnLoad;
         private System.Windows.Forms.OpenFileDialog ofdlgLoad;
+        private System.Windows.Forms.TrackBar trackbarWidth;
+        private System.Windows.Forms.Label lblWidth;
+        private System.Windows.Forms.Button btnDel;
     }
 }
 

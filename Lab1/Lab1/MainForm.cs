@@ -24,9 +24,11 @@ namespace Lab1
             CurrPen = new Pen(Brushes.Black, 2);
             figure = new Line(CurrPen, 0, 0, 0, 0);
             btnConfirm.Enabled = false;
+            btnDel.Enabled = false;
             CursorPos = -1;
             isOpenFile = false;
             FigList = new FigureList();
+            lblWidth.Text = "Width: 2";
 
             Layers = new BitMaps();
             Layers[0] = new Bitmap(pictureBox1.Width, pictureBox1.Height);      // Background layer
@@ -81,28 +83,7 @@ namespace Lab1
             {
                 btnColor.BackColor = colorDialog1.Color;
                 CurrPen.Color = colorDialog1.Color;
-                if (CurrFig != -1)
-                {
-                    btnConfirm.Enabled = true;
-                    //grboxFigures.Enabled = false;
-                    grEdit.Clear(Color.Transparent);
-                    grRez.Clear(Color.Transparent);
-                    grMajor.Clear(Color.Transparent);
-                    grTemp.Clear(Color.Transparent);
-                    FigList.DrawAllExcept(grMajor, CurrFig);
-                    //FigList.Item(CurrFig).pen.Brush = Brushes.Red;
-                    FigList.Item(CurrFig).ChangeColor(CurrPen);
-                    FigList.Item(CurrFig).Draw(grTemp);
-                    //FigList.Item(CurrFig).Check();
-                    FigList.Item(CurrFig).SelectFigure(grEdit);
-
-                    label1.Text = "Changed color";
-                    grMajor.DrawImage(Layers[3], 0, 0);
-                    grRez.DrawImage(Layers[2], 0, 0);
-
-                    grMajor.DrawImage(Layers[1], 0, 0);
-                    pictureBox1.Refresh();
-                } 
+                if (CurrFig != -1) ChangePen(FigList.Item(CurrFig));
             }
         }
 
@@ -186,6 +167,7 @@ namespace Lab1
                 grboxFigures.Enabled = false;
                 btnBack.Enabled = false;
                 btnClear.Enabled = false;
+                btnDel.Enabled = true;
                 grRez.DrawImage(Layers[2], 0, 0);
                 FigList.Item(lboxFigures.SelectedIndex).SelectFigure(grEdit);
                 CurrFig = lboxFigures.SelectedIndex;
@@ -208,6 +190,7 @@ namespace Lab1
             grboxFigures.Enabled = true;
             lboxFigures.Enabled = true;
             btnBack.Enabled = true;
+            btnDel.Enabled = false;
         }
 
         private void btnBack_Click(object sender, EventArgs e)
@@ -252,6 +235,55 @@ namespace Lab1
             grMajor.DrawImage(Layers[1], 0, 0);
             BackSteps = 0;
             CurrFig = -1;
+        }
+
+        private void trackbarWidth_Scroll(object sender, EventArgs e)
+        {
+            CurrPen.Width = trackbarWidth.Value;
+            lblWidth.Text = "Width: " + trackbarWidth.Value.ToString();
+            if (CurrFig != -1) ChangePen(FigList.Item(CurrFig));  
+        }
+
+        private void ChangePen(Figure fig)
+        {
+            btnConfirm.Enabled = true;
+            grEdit.Clear(Color.Transparent);
+            grRez.Clear(Color.Transparent);
+            grMajor.Clear(Color.Transparent);
+            grTemp.Clear(Color.Transparent);
+            FigList.DrawAllExcept(grMajor, CurrFig);
+            fig.ChangePen(CurrPen);
+            fig.Draw(grTemp);
+            fig.SelectFigure(grEdit);
+            grMajor.DrawImage(Layers[3], 0, 0);
+            grRez.DrawImage(Layers[2], 0, 0);
+            grMajor.DrawImage(Layers[1], 0, 0);
+            pictureBox1.Refresh();
+        }
+
+        private void btnDel_Click(object sender, EventArgs e)
+        {
+            DeleteFigure();    
+        }
+
+        private void DeleteFigure()
+        {
+            if (CurrFig != -1)
+            {
+                grRez.Clear(Color.Transparent);
+                grMajor.Clear(Color.Transparent);
+                grTemp.Clear(Color.Transparent);
+                grEdit.Clear(Color.Transparent);
+                FigList.Remove(CurrFig);
+                lboxFigures.Items.Clear();
+                FigList.PrintList(lboxFigures);
+                FigList.DrawAllExcept(grMajor, CurrFig);
+                grRez.DrawImage(Layers[2], 0, 0);
+                grMajor.DrawImage(Layers[1], 0, 0);
+                pictureBox1.Refresh();
+                lboxFigures.Enabled = true;
+                btnDel.Enabled = false;
+            }
         }
 
         private void MU_CurrentFigureEditEnd(MouseEventArgs ee)
@@ -310,12 +342,15 @@ namespace Lab1
             pictureBox1.Refresh();
             isPressed = true;
             APoints = new ActivePoints(FigList.Item(CurrFig));
+            trackbarWidth.Value = (int)FigList.Item(CurrFig).pen.Width;
+            lblWidth.Text = "Width: " + ((int)FigList.Item(CurrFig).pen.Width).ToString();
+            btnColor.BackColor = FigList.Item(CurrFig).pen.color;
             CursorPos = APoints.GetCursorAPoint(ee);
-            //label1.Text = "Cursor position: " + CursorPos.ToString();
             btnConfirm.Enabled = true;
             lboxFigures.Enabled = false;
             btnBack.Enabled = false;
             btnClear.Enabled = false;
+            btnDel.Enabled = true;
         }
 
         private void MD_NewFigureBegin(MouseEventArgs ee)
