@@ -68,5 +68,10 @@ namespace Lab1
             }
         }
         public int Radius { get; set; }
+
+        public override void Fill(Graphics gr)
+        {
+
+        }
     }
 }

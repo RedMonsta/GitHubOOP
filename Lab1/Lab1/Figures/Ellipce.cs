@@ -20,5 +20,10 @@ namespace Lab1
             var pn = new Pen(pen.color, pen.Width);
             gr.DrawEllipse(pn, new Rectangle(X1, Y1, X2 - X1, Y2 - Y1));
         }
+
+        public override void Fill(Graphics gr)
+        {
+
+        }
     }
 }

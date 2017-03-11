@@ -54,9 +54,13 @@
             this.trackbarWidth = new System.Windows.Forms.TrackBar();
             this.lblWidth = new System.Windows.Forms.Label();
             this.btnDel = new System.Windows.Forms.Button();
+            this.grboxFill = new System.Windows.Forms.GroupBox();
+            this.rbFillOn = new System.Windows.Forms.RadioButton();
+            this.rbFillOff = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.grboxFigures.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackbarWidth)).BeginInit();
+            this.grboxFill.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -64,7 +68,7 @@
             this.pictureBox1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.pictureBox1.Location = new System.Drawing.Point(162, 111);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1140, 539);
+            this.pictureBox1.Size = new System.Drawing.Size(1140, 701);
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
@@ -292,7 +296,7 @@
             // 
             // trackbarWidth
             // 
-            this.trackbarWidth.Location = new System.Drawing.Point(331, 44);
+            this.trackbarWidth.Location = new System.Drawing.Point(282, 44);
             this.trackbarWidth.Minimum = 1;
             this.trackbarWidth.Name = "trackbarWidth";
             this.trackbarWidth.Size = new System.Drawing.Size(131, 45);
@@ -304,11 +308,11 @@
             // 
             this.lblWidth.AutoSize = true;
             this.lblWidth.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblWidth.Location = new System.Drawing.Point(367, 9);
+            this.lblWidth.Location = new System.Drawing.Point(301, 15);
             this.lblWidth.Name = "lblWidth";
-            this.lblWidth.Size = new System.Drawing.Size(60, 24);
+            this.lblWidth.Size = new System.Drawing.Size(78, 24);
             this.lblWidth.TabIndex = 26;
-            this.lblWidth.Text = "label2";
+            this.lblWidth.Text = "Width: 2";
             // 
             // btnDel
             // 
@@ -320,12 +324,49 @@
             this.btnDel.UseVisualStyleBackColor = true;
             this.btnDel.Click += new System.EventHandler(this.btnDel_Click);
             // 
+            // grboxFill
+            // 
+            this.grboxFill.Controls.Add(this.rbFillOff);
+            this.grboxFill.Controls.Add(this.rbFillOn);
+            this.grboxFill.Location = new System.Drawing.Point(461, 29);
+            this.grboxFill.Name = "grboxFill";
+            this.grboxFill.Size = new System.Drawing.Size(79, 66);
+            this.grboxFill.TabIndex = 28;
+            this.grboxFill.TabStop = false;
+            this.grboxFill.Text = "Filling";
+            // 
+            // rbFillOn
+            // 
+            this.rbFillOn.AutoSize = true;
+            this.rbFillOn.Location = new System.Drawing.Point(6, 19);
+            this.rbFillOn.Name = "rbFillOn";
+            this.rbFillOn.Size = new System.Drawing.Size(56, 17);
+            this.rbFillOn.TabIndex = 0;
+            this.rbFillOn.TabStop = true;
+            this.rbFillOn.Text = "Fill ON";
+            this.rbFillOn.UseVisualStyleBackColor = true;
+            this.rbFillOn.CheckedChanged += new System.EventHandler(this.rbFillOn_CheckedChanged);
+            // 
+            // rbFillOff
+            // 
+            this.rbFillOff.AutoSize = true;
+            this.rbFillOff.Checked = true;
+            this.rbFillOff.Location = new System.Drawing.Point(6, 42);
+            this.rbFillOff.Name = "rbFillOff";
+            this.rbFillOff.Size = new System.Drawing.Size(60, 17);
+            this.rbFillOff.TabIndex = 1;
+            this.rbFillOff.TabStop = true;
+            this.rbFillOff.Text = "Fill OFF";
+            this.rbFillOff.UseVisualStyleBackColor = true;
+            this.rbFillOff.CheckedChanged += new System.EventHandler(this.rbFillOff_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(1303, 651);
+            this.ClientSize = new System.Drawing.Size(1303, 815);
+            this.Controls.Add(this.grboxFill);
             this.Controls.Add(this.btnDel);
             this.Controls.Add(this.lblWidth);
             this.Controls.Add(this.trackbarWidth);
@@ -346,6 +387,8 @@
             this.grboxFigures.ResumeLayout(false);
             this.grboxFigures.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackbarWidth)).EndInit();
+            this.grboxFill.ResumeLayout(false);
+            this.grboxFill.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -378,6 +421,9 @@
         private System.Windows.Forms.TrackBar trackbarWidth;
         private System.Windows.Forms.Label lblWidth;
         private System.Windows.Forms.Button btnDel;
+        private System.Windows.Forms.GroupBox grboxFill;
+        private System.Windows.Forms.RadioButton rbFillOff;
+        private System.Windows.Forms.RadioButton rbFillOn;
     }
 }
 

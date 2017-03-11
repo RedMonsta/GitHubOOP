@@ -19,5 +19,10 @@ namespace Lab1
             var pn = new Pen(pen.color, pen.Width);
             gr.DrawLine(pn, new Point(X1, Y1), new Point(X2, Y2));
         }
+
+        public override void Fill(Graphics gr)
+        {
+
+        }
     }
 }

@@ -27,6 +27,7 @@ namespace Lab1
             btnDel.Enabled = false;
             CursorPos = -1;
             isOpenFile = false;
+            isFill = false;
             FigList = new FigureList();
             lblWidth.Text = "Width: 2";
 
@@ -55,7 +56,7 @@ namespace Lab1
         private Pen CurrPen;
         private FigureList FigList;
         private BitMaps Layers;
-        private bool isPressed, isChanged, isMoved, isPointer, isOpenFile;
+        private bool isPressed, isChanged, isMoved, isPointer, isOpenFile, isFill;
         private Graphics grBack, grTemp, grRez, grEdit, grMajor;
         private Figure figure;
         private int BackSteps = 0, CurrFig = -1;
@@ -111,7 +112,8 @@ namespace Lab1
             FigList.Last.GetPen(CurrPen);
             FigList.Last.X2 = ee.X;
             FigList.Last.Y2 = ee.Y;
-            FigList.Last.Draw(grTemp);            
+            FigList.Last.Draw(grTemp);
+            if (FigList.Last is IFillingable && FigList.Last.isFilled) FigList.Last.Fill(grTemp);
             grRez.DrawImage(Layers[2], 0, 0);
             grRez.DrawImage(Layers[3], 0, 0);
             pictureBox1.Refresh();
@@ -130,6 +132,7 @@ namespace Lab1
             FigList.DrawAllExcept(grMajor, CurrFig);
             FigList.Item(CurrFig).Edit(CursorPos, ee);
             FigList.Item(CurrFig).Draw(grTemp);
+            if (FigList.Item(CurrFig) is IFillingable && FigList.Item(CurrFig).isFilled == true) FigList.Item(CurrFig).Fill(grTemp);
             FigList.Item(CurrFig).SelectFigure(grEdit);
             grMajor.DrawImage(Layers[3], 0, 0);
             grRez.DrawImage(Layers[2], 0, 0);
@@ -189,8 +192,10 @@ namespace Lab1
             btnConfirm.Enabled = false;
             grboxFigures.Enabled = true;
             lboxFigures.Enabled = true;
+            //lboxFigures.SelectedIndex = -1;
             btnBack.Enabled = true;
             btnDel.Enabled = false;
+            btnClear.Enabled = true;
         }
 
         private void btnBack_Click(object sender, EventArgs e)
@@ -277,12 +282,40 @@ namespace Lab1
                 FigList.Remove(CurrFig);
                 lboxFigures.Items.Clear();
                 FigList.PrintList(lboxFigures);
-                FigList.DrawAllExcept(grMajor, CurrFig);
+                //FigList.DrawAllExcept(grMajor, CurrFig);
+                CurrFig = -1;
+                FigList.DrawAll(grMajor);
                 grRez.DrawImage(Layers[2], 0, 0);
-                grMajor.DrawImage(Layers[1], 0, 0);
+                //grMajor.DrawImage(Layers[1], 0, 0);
                 pictureBox1.Refresh();
                 lboxFigures.Enabled = true;
                 btnDel.Enabled = false;
+                grboxFigures.Enabled = true;
+                btnConfirm.Enabled = false;
+                btnClear.Enabled = true;
+                btnBack.Enabled = false;
+            }
+        }
+
+        private void rbFillOff_CheckedChanged(object sender, EventArgs e)
+        {
+            isFill = false;
+            if (CurrFig != -1)
+            {
+                var eee = new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0);
+                FigList.Item(CurrFig).isFilled = false;
+                MM_CurrentFigureEdit(eee);
+            }
+        }
+
+        private void rbFillOn_CheckedChanged(object sender, EventArgs e)
+        {
+            isFill = true;
+            if (CurrFig != -1)
+            {
+                var eee = new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0);
+                FigList.Item(CurrFig).isFilled = true;
+                MM_CurrentFigureEdit(eee);
             }
         }
 
@@ -341,9 +374,13 @@ namespace Lab1
             grRez.DrawImage(Layers[4], 0, 0);
             pictureBox1.Refresh();
             isPressed = true;
+            CurrPen.Color = FigList.Item(CurrFig).pen.color;
+            CurrPen.Width = FigList.Item(CurrFig).pen.Width;
             APoints = new ActivePoints(FigList.Item(CurrFig));
             trackbarWidth.Value = (int)FigList.Item(CurrFig).pen.Width;
             lblWidth.Text = "Width: " + ((int)FigList.Item(CurrFig).pen.Width).ToString();
+            if (FigList.Item(CurrFig).isFilled == true) rbFillOn.Checked = true;
+            else rbFillOff.Checked = true;
             btnColor.BackColor = FigList.Item(CurrFig).pen.color;
             CursorPos = APoints.GetCursorAPoint(ee);
             btnConfirm.Enabled = true;
@@ -355,9 +392,11 @@ namespace Lab1
 
         private void MD_NewFigureBegin(MouseEventArgs ee)
         {
+            
             btnBack.Enabled = true;
-            if (!isChanged) figure = (Figure)Activator.CreateInstance(figure.GetType(), new Object[] { CurrPen, 0, 0, 0, 0 });
+            if (!isChanged) figure = (Figure)Activator.CreateInstance(figure.GetType(), new Object[] { CurrPen, 0, 0, 0, 0 });           
             FigList.Add(figure);
+            if (FigList.Last is IFillingable) figure.isFilled = isFill;
             //label1.Text = "Added a figure";
             FigList.Last.X1 = ee.X;
             FigList.Last.Y1 = ee.Y;
@@ -373,6 +412,7 @@ namespace Lab1
             {
                 btnBackColor.BackColor = colorDialog2.Color;
                 grBack.Clear(colorDialog2.Color);
+                pictureBox1.BackgroundImage = Layers[0];
                 pictureBox1.Refresh();
             }
         }
@@ -420,3 +460,5 @@ namespace Lab1
   
     }
 }
+
+//Need to kill bag when lboxFigures.SelectedIndex = -1 after btnConfirm.Click()

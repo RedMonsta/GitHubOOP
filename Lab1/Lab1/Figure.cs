@@ -21,6 +21,7 @@ namespace Lab1
             pen.Width = pens.Width;
             Direction = 0;
             isSelected = false;
+            isFilled = false;
         }
 
         public void GetPen(Pen pn)
@@ -29,7 +30,8 @@ namespace Lab1
             pen.Width = pn.Width;
         }
 
-        public abstract void Draw(Graphics gr); 
+        public abstract void Draw(Graphics gr);
+        public abstract void Fill(Graphics gr);
 
         public void Check()
         {
@@ -135,6 +137,7 @@ namespace Lab1
         public Mypen pen;
         public int Direction { get; set; }
         public bool isSelected { get; set; }
+        public bool isFilled { get; set; }
 
         [Serializable]
         public struct Mypen

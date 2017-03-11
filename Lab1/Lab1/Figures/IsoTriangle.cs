@@ -22,5 +22,10 @@ namespace Lab1
             gr.DrawLine(pn, X1, Y2, (X1 + X2) / 2, Y1);
             gr.DrawLine(pn, (X1 + X2) / 2, Y1, X2, Y2);
         }
+
+        public override void Fill(Graphics gr)
+        {
+
+        }
     }
 }

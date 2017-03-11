@@ -50,7 +50,10 @@ namespace Lab1
         public void DrawAll(Graphics gr)
         {
             foreach (var fig in figures)
+            {
                 fig.Draw(gr);
+                if (fig.isFilled == true) fig.Fill(gr);
+            }
         }
 
         public void PrintList(ListBox lbox)
@@ -97,7 +100,10 @@ namespace Lab1
         public void DrawAllExcept(Graphics gr, int index)
         {
             for (int i = 0; i < figures.Count; i++)
+            {
                 if (i != index) figures[i].Draw(gr);
+                if (figures[i].isFilled == true) figures[i].Fill(gr);
+            }
         }
 
     }
