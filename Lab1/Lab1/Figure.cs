@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace Lab1
 {
     [Serializable]
-    public abstract class Figure //: ISelectable, IEditable
+    public abstract class Figure //: ISelectable, IEditable, IFillingable
     {
         public Figure(Pen pens, int x1, int y1, int x2, int y2)
         {
@@ -20,8 +20,8 @@ namespace Lab1
             pen.color = pens.Color;
             pen.Width = pens.Width;
             Direction = 0;
-            isSelected = false;
-            isFilled = false;
+            //isSelected = false;
+            //isFilled = false;
         }
 
         public void GetPen(Pen pn)
@@ -31,7 +31,7 @@ namespace Lab1
         }
 
         public abstract void Draw(Graphics gr);
-        public abstract void Fill(Graphics gr);
+        //public abstract void Fill(Graphics gr);
 
         public void Check()
         {
@@ -136,8 +136,8 @@ namespace Lab1
 
         public Mypen pen;
         public int Direction { get; set; }
-        public bool isSelected { get; set; }
-        public bool isFilled { get; set; }
+        //public bool isSelected { get; set; }
+        //public bool isFilled { get; set; }
 
         [Serializable]
         public struct Mypen

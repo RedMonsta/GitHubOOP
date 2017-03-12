@@ -55,8 +55,8 @@
             this.lblWidth = new System.Windows.Forms.Label();
             this.btnDel = new System.Windows.Forms.Button();
             this.grboxFill = new System.Windows.Forms.GroupBox();
-            this.rbFillOn = new System.Windows.Forms.RadioButton();
             this.rbFillOff = new System.Windows.Forms.RadioButton();
+            this.rbFillOn = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.grboxFigures.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackbarWidth)).BeginInit();
@@ -83,9 +83,11 @@
             this.btnColor.Name = "btnColor";
             this.btnColor.Size = new System.Drawing.Size(145, 61);
             this.btnColor.TabIndex = 10;
+            this.btnColor.TabStop = false;
             this.btnColor.Text = "Choose Color";
             this.btnColor.UseVisualStyleBackColor = false;
             this.btnColor.Click += new System.EventHandler(this.button8_Click);
+            this.btnColor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnColor_KeyDown);
             // 
             // grboxFigures
             // 
@@ -112,7 +114,6 @@
             this.rbPointer.Name = "rbPointer";
             this.rbPointer.Size = new System.Drawing.Size(71, 21);
             this.rbPointer.TabIndex = 22;
-            this.rbPointer.TabStop = true;
             this.rbPointer.Text = "Pointer";
             this.rbPointer.UseVisualStyleBackColor = true;
             this.rbPointer.CheckedChanged += new System.EventHandler(this.rbPointer_CheckedChanged);
@@ -198,7 +199,6 @@
             this.rbLine.Name = "rbLine";
             this.rbLine.Size = new System.Drawing.Size(53, 21);
             this.rbLine.TabIndex = 0;
-            this.rbLine.TabStop = true;
             this.rbLine.Text = "Line";
             this.rbLine.UseVisualStyleBackColor = true;
             this.rbLine.Click += new System.EventHandler(this.rbLine_Click);
@@ -209,6 +209,7 @@
             this.btnBackColor.Name = "btnBackColor";
             this.btnBackColor.Size = new System.Drawing.Size(143, 56);
             this.btnBackColor.TabIndex = 16;
+            this.btnBackColor.TabStop = false;
             this.btnBackColor.Text = "Back Color";
             this.btnBackColor.UseVisualStyleBackColor = true;
             this.btnBackColor.Click += new System.EventHandler(this.btnBackColor_Click);
@@ -219,6 +220,7 @@
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(73, 36);
             this.btnClear.TabIndex = 17;
+            this.btnClear.TabStop = false;
             this.btnClear.Text = "ClearScr";
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
@@ -229,6 +231,7 @@
             this.btnBack.Name = "btnBack";
             this.btnBack.Size = new System.Drawing.Size(73, 34);
             this.btnBack.TabIndex = 18;
+            this.btnBack.TabStop = false;
             this.btnBack.Text = "StepBack";
             this.btnBack.UseVisualStyleBackColor = true;
             this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
@@ -240,6 +243,7 @@
             this.lboxFigures.Name = "lboxFigures";
             this.lboxFigures.Size = new System.Drawing.Size(101, 251);
             this.lboxFigures.TabIndex = 20;
+            this.lboxFigures.TabStop = false;
             this.lboxFigures.SelectedIndexChanged += new System.EventHandler(this.lboxFigures_SelectedIndexChanged);
             // 
             // label1
@@ -257,9 +261,11 @@
             this.btnConfirm.Name = "btnConfirm";
             this.btnConfirm.Size = new System.Drawing.Size(88, 54);
             this.btnConfirm.TabIndex = 22;
+            this.btnConfirm.TabStop = false;
             this.btnConfirm.Text = "Confirm";
             this.btnConfirm.UseVisualStyleBackColor = true;
             this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
+            this.btnConfirm.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnConfirm_KeyDown);
             // 
             // btnSave
             // 
@@ -267,6 +273,7 @@
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(91, 58);
             this.btnSave.TabIndex = 23;
+            this.btnSave.TabStop = false;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
@@ -284,6 +291,7 @@
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(85, 56);
             this.btnLoad.TabIndex = 24;
+            this.btnLoad.TabStop = false;
             this.btnLoad.Text = "Load";
             this.btnLoad.UseVisualStyleBackColor = true;
             this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
@@ -301,6 +309,7 @@
             this.trackbarWidth.Name = "trackbarWidth";
             this.trackbarWidth.Size = new System.Drawing.Size(131, 45);
             this.trackbarWidth.TabIndex = 25;
+            this.trackbarWidth.TabStop = false;
             this.trackbarWidth.Value = 2;
             this.trackbarWidth.Scroll += new System.EventHandler(this.trackbarWidth_Scroll);
             // 
@@ -320,6 +329,7 @@
             this.btnDel.Name = "btnDel";
             this.btnDel.Size = new System.Drawing.Size(94, 57);
             this.btnDel.TabIndex = 27;
+            this.btnDel.TabStop = false;
             this.btnDel.Text = "Delete Figure";
             this.btnDel.UseVisualStyleBackColor = true;
             this.btnDel.Click += new System.EventHandler(this.btnDel_Click);
@@ -335,18 +345,6 @@
             this.grboxFill.TabStop = false;
             this.grboxFill.Text = "Filling";
             // 
-            // rbFillOn
-            // 
-            this.rbFillOn.AutoSize = true;
-            this.rbFillOn.Location = new System.Drawing.Point(6, 19);
-            this.rbFillOn.Name = "rbFillOn";
-            this.rbFillOn.Size = new System.Drawing.Size(56, 17);
-            this.rbFillOn.TabIndex = 0;
-            this.rbFillOn.TabStop = true;
-            this.rbFillOn.Text = "Fill ON";
-            this.rbFillOn.UseVisualStyleBackColor = true;
-            this.rbFillOn.CheckedChanged += new System.EventHandler(this.rbFillOn_CheckedChanged);
-            // 
             // rbFillOff
             // 
             this.rbFillOff.AutoSize = true;
@@ -355,10 +353,20 @@
             this.rbFillOff.Name = "rbFillOff";
             this.rbFillOff.Size = new System.Drawing.Size(60, 17);
             this.rbFillOff.TabIndex = 1;
-            this.rbFillOff.TabStop = true;
             this.rbFillOff.Text = "Fill OFF";
             this.rbFillOff.UseVisualStyleBackColor = true;
             this.rbFillOff.CheckedChanged += new System.EventHandler(this.rbFillOff_CheckedChanged);
+            // 
+            // rbFillOn
+            // 
+            this.rbFillOn.AutoSize = true;
+            this.rbFillOn.Location = new System.Drawing.Point(6, 19);
+            this.rbFillOn.Name = "rbFillOn";
+            this.rbFillOn.Size = new System.Drawing.Size(56, 17);
+            this.rbFillOn.TabIndex = 0;
+            this.rbFillOn.Text = "Fill ON";
+            this.rbFillOn.UseVisualStyleBackColor = true;
+            this.rbFillOn.CheckedChanged += new System.EventHandler(this.rbFillOn_CheckedChanged);
             // 
             // MainForm
             // 
@@ -383,6 +391,7 @@
             this.Controls.Add(this.pictureBox1);
             this.Name = "MainForm";
             this.Text = "MonsterPaint";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.grboxFigures.ResumeLayout(false);
             this.grboxFigures.PerformLayout();

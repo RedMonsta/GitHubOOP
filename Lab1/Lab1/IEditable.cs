@@ -11,7 +11,7 @@ namespace Lab1
     public interface IEditable
     {
         //bool isEditable { get; set; }
-        //void Edit(int pos, MouseEventArgs e);
+        void Edit(int pos, MouseEventArgs e);
         //void ChangeColor(Pen pens);
     }
 }

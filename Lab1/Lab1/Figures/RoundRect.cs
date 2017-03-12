@@ -14,7 +14,9 @@ namespace Lab1
         public RoundRect(Pen pens, int x1, int y1, int x2, int y2) : base(pens, x1, y1, x2, y2)
         {
             Radius = 20;
+            isSelected = false;
         }
+
         public override void Draw(Graphics gr)
         {
             var pn = new Pen(pen.color, pen.Width);
@@ -67,11 +69,9 @@ namespace Lab1
                 gr.DrawLine(pn, X1, Y1 + Radius, X1, Y2 - Radius);
             }
         }
+
         public int Radius { get; set; }
+        public bool isSelected { get; set; }
 
-        public override void Fill(Graphics gr)
-        {
-
-        }
     }
 }

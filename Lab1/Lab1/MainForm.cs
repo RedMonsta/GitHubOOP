@@ -44,13 +44,8 @@ namespace Lab1
             grEdit = Graphics.FromImage(Layers[4]);
             pictureBox1.BackgroundImage = Layers[0];
             pictureBox1.Image = Layers[1];
-
-
-            //var fig = new Rect(CurrPen, 100, 100, 300, 300);
-            //fig.Draw(grTemp);           
-            //Filling(CurrPen, grRez, 0, 0);
-            //grRez.DrawImage(Layers[3], 0, 0);
-            //pictureBox1.Refresh();
+            this.Activate();
+            AcceptButton = btnConfirm;
 
         }
         private Pen CurrPen;
@@ -62,19 +57,6 @@ namespace Lab1
         private int BackSteps = 0, CurrFig = -1;
         private ActivePoints APoints;
         private BinSerializer binser;
-
-        private void Filling(Pen pens, Graphics gr, int X, int Y)
-        {
-            SolidBrush redBrush = new SolidBrush(Color.Red);
-            Point point1 = new Point(100, 100);
-            Point point2 = new Point(200, 50);
-            Point point3 = new Point(250, 200);
-            Point point4 = new Point(50, 150);
-            Point[] points = { point1, point2, point3, point4 };
-            GraphicsPath grp = new GraphicsPath();
-            grp.AddPolygon(points);
-            gr.FillPath(redBrush, grp);
-        }
 
         private int CursorPos { get; set; }
 
@@ -113,7 +95,7 @@ namespace Lab1
             FigList.Last.X2 = ee.X;
             FigList.Last.Y2 = ee.Y;
             FigList.Last.Draw(grTemp);
-            if (FigList.Last is IFillingable && FigList.Last.isFilled) FigList.Last.Fill(grTemp);
+            if (FigList.Last is IFillingable) if (((IFillingable)FigList.Last).isFilled) ((IFillingable)FigList.Last).Fill(grTemp);
             grRez.DrawImage(Layers[2], 0, 0);
             grRez.DrawImage(Layers[3], 0, 0);
             pictureBox1.Refresh();
@@ -130,10 +112,10 @@ namespace Lab1
             grMajor.Clear(Color.Transparent);
             grTemp.Clear(Color.Transparent);
             FigList.DrawAllExcept(grMajor, CurrFig);
-            FigList.Item(CurrFig).Edit(CursorPos, ee);
+            if (FigList.Item(CurrFig) is IEditable) ((IEditable)FigList.Item(CurrFig)).Edit(CursorPos, ee);
             FigList.Item(CurrFig).Draw(grTemp);
-            if (FigList.Item(CurrFig) is IFillingable && FigList.Item(CurrFig).isFilled == true) FigList.Item(CurrFig).Fill(grTemp);
-            FigList.Item(CurrFig).SelectFigure(grEdit);
+            if (FigList.Item(CurrFig) is IFillingable) if (((IFillingable)FigList.Item(CurrFig)).isFilled) ((IFillingable)FigList.Item(CurrFig)).Fill(grTemp);
+            if (FigList.Item(CurrFig) is ISelectable)  ((ISelectable)FigList.Item(CurrFig)).SelectFigure(grEdit);
             grMajor.DrawImage(Layers[3], 0, 0);
             grRez.DrawImage(Layers[2], 0, 0);
             grMajor.DrawImage(Layers[1], 0, 0);
@@ -142,7 +124,7 @@ namespace Lab1
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isPressed && !isPointer) MM_NewFigureDraw(e);
+            if (isPressed && !isPointer && e.Button == MouseButtons.Left) MM_NewFigureDraw(e);
             if (isPointer & !isPressed) 
             {
                 if (CurrFig != -1)
@@ -151,11 +133,11 @@ namespace Lab1
                     Cursor = APoints.ChangeCursor(e, FigList.Item(CurrFig));                  
                 }
             }
-            if (isPointer && isPressed)
+            if (isPointer && isPressed && e.Button == MouseButtons.Left)
             {
                 if (FigList.Item(CurrFig) is IEditable) MM_CurrentFigureEdit(e); 
                 else MessageBoxError("You can't edit this figure.", "Editing error.");
-            }          
+            }
         }
 
         private void lboxFigures_SelectedIndexChanged(object sender, EventArgs e)
@@ -172,11 +154,18 @@ namespace Lab1
                 btnClear.Enabled = false;
                 btnDel.Enabled = true;
                 grRez.DrawImage(Layers[2], 0, 0);
-                FigList.Item(lboxFigures.SelectedIndex).SelectFigure(grEdit);
+                ((ISelectable)FigList.Item(lboxFigures.SelectedIndex)).SelectFigure(grEdit);
                 CurrFig = lboxFigures.SelectedIndex;
                 btnConfirm.Enabled = true;
                 grRez.DrawImage(Layers[4], 0, 0);
                 pictureBox1.Refresh();
+            }
+            else
+            {
+                MessageBoxError("You can't select this figure.", "Selecting error.");
+                //lboxFigures.ClearSelected();
+                lboxFigures.Items.Clear();
+                FigList.PrintList(lboxFigures);
             }
         }
 
@@ -192,13 +181,15 @@ namespace Lab1
             btnConfirm.Enabled = false;
             grboxFigures.Enabled = true;
             lboxFigures.Enabled = true;
+            lboxFigures.Items.Clear();
+            FigList.PrintList(lboxFigures);
             //lboxFigures.SelectedIndex = -1;
             btnBack.Enabled = true;
             btnDel.Enabled = false;
             btnClear.Enabled = true;
         }
 
-        private void btnBack_Click(object sender, EventArgs e)
+        private void BackStep()
         {
             grRez.Clear(Color.Transparent);
             grMajor.Clear(Color.Transparent);
@@ -209,6 +200,12 @@ namespace Lab1
             pictureBox1.Refresh();
             BackSteps++;
             if (BackSteps == 3) btnBack.Enabled = false;
+
+        }
+
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            BackStep();
         }
 
         private void btnClear_Click(object sender, EventArgs e)
@@ -240,6 +237,8 @@ namespace Lab1
             grMajor.DrawImage(Layers[1], 0, 0);
             BackSteps = 0;
             CurrFig = -1;
+
+            this.ActiveControl = btnConfirm;
         }
 
         private void trackbarWidth_Scroll(object sender, EventArgs e)
@@ -259,7 +258,8 @@ namespace Lab1
             FigList.DrawAllExcept(grMajor, CurrFig);
             fig.ChangePen(CurrPen);
             fig.Draw(grTemp);
-            fig.SelectFigure(grEdit);
+            if (fig is IFillingable) if (((IFillingable)fig).isFilled) ((IFillingable)fig).Fill(grTemp);
+            if (fig is ISelectable) ((ISelectable)fig).SelectFigure(grEdit);
             grMajor.DrawImage(Layers[3], 0, 0);
             grRez.DrawImage(Layers[2], 0, 0);
             grMajor.DrawImage(Layers[1], 0, 0);
@@ -303,9 +303,25 @@ namespace Lab1
             if (CurrFig != -1)
             {
                 var eee = new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0);
-                FigList.Item(CurrFig).isFilled = false;
+                if (FigList.Item(CurrFig) is IFillingable) ((IFillingable)FigList.Item(CurrFig)).isFilled = false;
                 MM_CurrentFigureEdit(eee);
             }
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            //if (e.KeyCode == Keys.Z && e.Modifiers == Keys.Control && FigList.Size() > 0) { BackStep(); }
+           // if (e.KeyCode == Keys.Z) label1.Text = "Key Z";
+        }
+
+        private void btnColor_KeyDown(object sender, KeyEventArgs e)
+        {
+         //   if (e.KeyCode == Keys.Z && e.Modifiers == Keys.Control && FigList.Size() > 0) { BackStep(); }
+        }
+
+        private void btnConfirm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Z && e.Modifiers == Keys.Control && FigList.Size() > 0) { BackStep(); }
         }
 
         private void rbFillOn_CheckedChanged(object sender, EventArgs e)
@@ -314,7 +330,7 @@ namespace Lab1
             if (CurrFig != -1)
             {
                 var eee = new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0);
-                FigList.Item(CurrFig).isFilled = true;
+                if (FigList.Item(CurrFig) is IFillingable) ((IFillingable)FigList.Item(CurrFig)).isFilled = true;
                 MM_CurrentFigureEdit(eee);
             }
         }
@@ -324,17 +340,20 @@ namespace Lab1
             grEdit.Clear(Color.Transparent);
             grRez.Clear(Color.Transparent);
             grRez.DrawImage(Layers[2], 0, 0);
-            FigList.Item(CurrFig).SelectFigure(grEdit);
+            if (FigList.Item(CurrFig) is ISelectable) ((ISelectable)FigList.Item(CurrFig)).SelectFigure(grEdit);
             FigList.Item(CurrFig).Check();
             grRez.DrawImage(Layers[4], 0, 0);
             pictureBox1.Refresh();
         }
 
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
-        {           
-            if ( isMoved && !isPointer ) MU_NewFigureDraw(e);
-            if (!isMoved && !isPointer && !isOpenFile) FigList.Remove(FigList.Size() - 1);
-            if (isMoved && isPointer) MU_CurrentFigureEditEnd(e);   
+        {          
+            if (e.Button == MouseButtons.Left)
+            {
+                if (isMoved && !isPointer) MU_NewFigureDraw(e);
+                if (!isMoved && !isPointer && !isOpenFile) FigList.Remove(FigList.Size() - 1);
+                if (isMoved && isPointer) MU_CurrentFigureEditEnd(e);
+            }
             pictureBox1.Refresh();
             isPressed = false;
             CursorPos = -1;
@@ -344,16 +363,19 @@ namespace Lab1
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
             isMoved = false;
-            if (isPointer)
+            if (e.Button == MouseButtons.Left)
             {
-                if (CurrFig == -1) CurrFig = FigList.MouseSelect(e);
-                if (CurrFig != -1)
+                if (isPointer)
                 {
-                    if (FigList.Item(CurrFig) is ISelectable) MD_CurrentFigureSelect(e);
-                    else MessageBoxError("You can't select this figure.", "Selecting error.");
+                    if (CurrFig == -1) CurrFig = FigList.MouseSelect(e);
+                    if (CurrFig != -1)
+                    {
+                        if (FigList.Item(CurrFig) is ISelectable) MD_CurrentFigureSelect(e);
+                        else MessageBoxError("You can't select this figure.", "Selecting error.");
+                    }
                 }
+                else MD_NewFigureBegin(e);
             }
-            else MD_NewFigureBegin(e);
         }
 
         private void MessageBoxError(string message, string caption)
@@ -370,7 +392,7 @@ namespace Lab1
             grRez.Clear(Color.Transparent);
             grRez.DrawImage(Layers[2], 0, 0);
             FigList.AllOff();
-            FigList.Item(CurrFig).SelectFigure(grEdit);
+            if (FigList.Item(CurrFig) is ISelectable) ((ISelectable)FigList.Item(CurrFig)).SelectFigure(grEdit);
             grRez.DrawImage(Layers[4], 0, 0);
             pictureBox1.Refresh();
             isPressed = true;
@@ -379,8 +401,9 @@ namespace Lab1
             APoints = new ActivePoints(FigList.Item(CurrFig));
             trackbarWidth.Value = (int)FigList.Item(CurrFig).pen.Width;
             lblWidth.Text = "Width: " + ((int)FigList.Item(CurrFig).pen.Width).ToString();
-            if (FigList.Item(CurrFig).isFilled == true) rbFillOn.Checked = true;
-            else rbFillOff.Checked = true;
+            if (FigList.Item(CurrFig) is IFillingable)
+                if (((IFillingable)FigList.Item(CurrFig)).isFilled) rbFillOn.Checked = true;
+                else rbFillOff.Checked = true;
             btnColor.BackColor = FigList.Item(CurrFig).pen.color;
             CursorPos = APoints.GetCursorAPoint(ee);
             btnConfirm.Enabled = true;
@@ -394,9 +417,10 @@ namespace Lab1
         {
             
             btnBack.Enabled = true;
-            if (!isChanged) figure = (Figure)Activator.CreateInstance(figure.GetType(), new Object[] { CurrPen, 0, 0, 0, 0 });           
+            if (!isChanged) figure = (Figure)Activator.CreateInstance(figure.GetType(), new Object[] { CurrPen, 0, 0, 0, 0 });
+            //if (figure is IFillingable) ((IFillingable)figure).isFilled = false;  
             FigList.Add(figure);
-            if (FigList.Last is IFillingable) figure.isFilled = isFill;
+            if (FigList.Last is IFillingable) ((IFillingable)figure).isFilled = isFill;
             //label1.Text = "Added a figure";
             FigList.Last.X1 = ee.X;
             FigList.Last.Y1 = ee.Y;

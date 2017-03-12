@@ -11,7 +11,7 @@ namespace Lab1
     {
         public Line(Pen pens, int x1, int y1, int x2, int y2) : base(pens, x1, y1, x2, y2)
         {
-            //isSelectable = false;
+            isSelected = false;
         }
 
         public override void Draw(Graphics gr)
@@ -20,9 +20,7 @@ namespace Lab1
             gr.DrawLine(pn, new Point(X1, Y1), new Point(X2, Y2));
         }
 
-        public override void Fill(Graphics gr)
-        {
+        public bool isSelected { get; set; }
 
-        }
     }
 }

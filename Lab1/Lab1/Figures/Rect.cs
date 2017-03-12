@@ -14,6 +14,8 @@ namespace Lab1
     {
         public Rect(Pen pens, int x1, int y1, int x2, int y2) : base(pens, x1, y1, x2, y2)
         {
+            isFilled = false;
+            isSelected = false;
         }
 
         public override void Draw(Graphics gr)
@@ -26,9 +28,10 @@ namespace Lab1
 
         }
 
-        //public bool isFilled { get; set; }
+        public bool isFilled { get; set; }
+        public bool isSelected { get; set; }
 
-        public override void Fill(Graphics gr)
+        public void Fill(Graphics gr)
         {
             SolidBrush br = new SolidBrush(pen.color);
             Point point1 = new Point(X1, Y1);
