@@ -87,7 +87,6 @@
             this.btnColor.Text = "Choose Color";
             this.btnColor.UseVisualStyleBackColor = false;
             this.btnColor.Click += new System.EventHandler(this.button8_Click);
-            this.btnColor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnColor_KeyDown);
             // 
             // grboxFigures
             // 
@@ -106,6 +105,7 @@
             this.grboxFigures.TabIndex = 12;
             this.grboxFigures.TabStop = false;
             this.grboxFigures.Text = "Figures";
+            this.grboxFigures.Enter += new System.EventHandler(this.grboxFigures_Enter);
             // 
             // rbPointer
             // 
@@ -199,6 +199,7 @@
             this.rbLine.Name = "rbLine";
             this.rbLine.Size = new System.Drawing.Size(53, 21);
             this.rbLine.TabIndex = 0;
+            this.rbLine.TabStop = true;
             this.rbLine.Text = "Line";
             this.rbLine.UseVisualStyleBackColor = true;
             this.rbLine.Click += new System.EventHandler(this.rbLine_Click);
@@ -265,7 +266,6 @@
             this.btnConfirm.Text = "Confirm";
             this.btnConfirm.UseVisualStyleBackColor = true;
             this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
-            this.btnConfirm.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnConfirm_KeyDown);
             // 
             // btnSave
             // 
@@ -309,7 +309,6 @@
             this.trackbarWidth.Name = "trackbarWidth";
             this.trackbarWidth.Size = new System.Drawing.Size(131, 45);
             this.trackbarWidth.TabIndex = 25;
-            this.trackbarWidth.TabStop = false;
             this.trackbarWidth.Value = 2;
             this.trackbarWidth.Scroll += new System.EventHandler(this.trackbarWidth_Scroll);
             // 
@@ -353,6 +352,7 @@
             this.rbFillOff.Name = "rbFillOff";
             this.rbFillOff.Size = new System.Drawing.Size(60, 17);
             this.rbFillOff.TabIndex = 1;
+            this.rbFillOff.TabStop = true;
             this.rbFillOff.Text = "Fill OFF";
             this.rbFillOff.UseVisualStyleBackColor = true;
             this.rbFillOff.CheckedChanged += new System.EventHandler(this.rbFillOff_CheckedChanged);
@@ -391,7 +391,6 @@
             this.Controls.Add(this.pictureBox1);
             this.Name = "MainForm";
             this.Text = "MonsterPaint";
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.grboxFigures.ResumeLayout(false);
             this.grboxFigures.PerformLayout();

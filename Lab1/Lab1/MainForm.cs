@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Drawing.Drawing2D;
+using System.Windows.Input;
 
 namespace Lab1
 {
@@ -44,8 +45,8 @@ namespace Lab1
             grEdit = Graphics.FromImage(Layers[4]);
             pictureBox1.BackgroundImage = Layers[0];
             pictureBox1.Image = Layers[1];
-            this.Activate();
-            AcceptButton = btnConfirm;
+
+            ActiveControl = trackbarWidth;
 
         }
         private Pen CurrPen;
@@ -171,6 +172,11 @@ namespace Lab1
 
         private void btnConfirm_Click(object sender, EventArgs e)
         {
+            Confirmation();    
+        }
+
+        private void Confirmation()
+        {
             grRez.Clear(Color.Transparent);
             grRez.DrawImage(Layers[2], 0, 0);
             grRez.DrawImage(Layers[3], 0, 0);
@@ -238,7 +244,7 @@ namespace Lab1
             BackSteps = 0;
             CurrFig = -1;
 
-            this.ActiveControl = btnConfirm;
+            //this.ActiveControl = btnConfirm;
         }
 
         private void trackbarWidth_Scroll(object sender, EventArgs e)
@@ -308,20 +314,33 @@ namespace Lab1
             }
         }
 
-        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            //if (e.KeyCode == Keys.Z && e.Modifiers == Keys.Control && FigList.Size() > 0) { BackStep(); }
-           // if (e.KeyCode == Keys.Z) label1.Text = "Key Z";
+            bool rez =  base.ProcessCmdKey(ref msg, keyData);
+            //int WM_KEYDOWN = 0x0100;
+
+            //if (keyData == Keys.Z && keyData == Keys.Control) label1.Text = "Ctrl-Z";
+            //if (keyData == Keys.LControlKey) label1.Text = "Ctrl";
+            //if (keyData == Keys.LShiftKey) label1.Text = "Shift";
+            //if (keyData == Keys.Z) label1.Text = "Z";
+            if (keyData == Keys.Delete && CurrFig != -1) DeleteFigure();
+            if (keyData == Keys.Enter && CurrFig != -1) Confirmation();
+            if (keyData == Keys.Back && CurrFig == -1) BackStep();
+            if (keyData == Keys.P) rbPointer.Checked = true;
+            if (keyData == Keys.F && rbFillOff.Checked == true) rbFillOn.Checked = true;
+            if (keyData == Keys.G && rbFillOn.Checked == true) rbFillOff.Checked = true;
+            if (keyData == Keys.W) ActiveControl = trackbarWidth;
+            //if (keyData == Keys.Right && trackbarWidth.Value < 10) trackbarWidth.Value++;
+            //if (keyData == Keys.Left && trackbarWidth.Value > 1) trackbarWidth.Value--;
+            
+            //if (msg.Msg == WM_KEYDOWN && keyData == Keys.Z) label1.Text = "Pressed key Z";
+
+            return rez;
         }
 
-        private void btnColor_KeyDown(object sender, KeyEventArgs e)
+        private void grboxFigures_Enter(object sender, EventArgs e)
         {
-         //   if (e.KeyCode == Keys.Z && e.Modifiers == Keys.Control && FigList.Size() > 0) { BackStep(); }
-        }
-
-        private void btnConfirm_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Z && e.Modifiers == Keys.Control && FigList.Size() > 0) { BackStep(); }
+            ActiveControl = trackbarWidth;
         }
 
         private void rbFillOn_CheckedChanged(object sender, EventArgs e)
