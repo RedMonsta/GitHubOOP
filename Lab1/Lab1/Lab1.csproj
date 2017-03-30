@@ -33,6 +33,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Figure">
+      <HintPath>.\Figure.dll</HintPath>
+    </Reference>
+    <Reference Include="MyInterfaces">
+      <HintPath>.\MyInterfaces.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,15 +54,10 @@
   <ItemGroup>
     <Compile Include="ActivePoints.cs" />
     <Compile Include="BitMaps.cs" />
-    <Compile Include="Figure.cs" />
     <Compile Include="FiguresList.cs" />
     <Compile Include="Figures\Ellipce.cs" />
     <Compile Include="Figures\Hexagon.cs" />
-    <Compile Include="Figures\Line.cs" />
     <Compile Include="Figures\IsoTriangle.cs" />
-    <Compile Include="IEditable.cs" />
-    <Compile Include="IFillingable.cs" />
-    <Compile Include="ISelectable.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

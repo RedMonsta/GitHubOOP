@@ -11,7 +11,7 @@ using System.Drawing.Drawing2D;
 namespace Lab1
 {
     [Serializable]
-    public class IsoTriangle : Figure, ISelectable, IEditable, IFillingable
+    public class IsoTriangle : Figure.Figure, MyInterfaces.ISelectable, MyInterfaces.IEditable, MyInterfaces.IFillingable
     {
         public IsoTriangle(Pen pens, int x1, int y1, int x2, int y2) : base(pens, x1, y1, x2, y2)
         {

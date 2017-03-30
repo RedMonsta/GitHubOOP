@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Lab1
+namespace Figure
 {
     [Serializable]
     public abstract class Figure //: ISelectable, IEditable, IFillingable
@@ -66,15 +62,14 @@ namespace Lab1
 
         public virtual void Edit(int pos, MouseEventArgs e)
         {
-            
             switch (pos)
-                 {
+            {
                 case 1:     //Top-Left
-                     {
-                         X1 = e.X;
-                         Y1 = e.Y;
-                         break;
-                     }
+                    {
+                        X1 = e.X;
+                        Y1 = e.Y;
+                        break;
+                    }
                 case 2:     //Top-Mid
                     {
                         Y1 = e.Y;
@@ -119,8 +114,8 @@ namespace Lab1
                         break;
                     }
 
-                 default: { break; } 
-             }
+                default: { break; }
+            }
         }
 
         public void ChangePen(Pen pens)
@@ -155,6 +150,6 @@ namespace Lab1
             Y1 = e.Y - sY;
             Y2 = e.Y + sY;
         }
-        
     }
 }
+

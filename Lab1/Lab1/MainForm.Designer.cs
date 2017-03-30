@@ -39,7 +39,6 @@
             this.rbIsoTriangle = new System.Windows.Forms.RadioButton();
             this.rbEllipce = new System.Windows.Forms.RadioButton();
             this.rbRect = new System.Windows.Forms.RadioButton();
-            this.rbLine = new System.Windows.Forms.RadioButton();
             this.btnBackColor = new System.Windows.Forms.Button();
             this.colorDialog2 = new System.Windows.Forms.ColorDialog();
             this.btnClear = new System.Windows.Forms.Button();
@@ -97,11 +96,10 @@
             this.grboxFigures.Controls.Add(this.rbIsoTriangle);
             this.grboxFigures.Controls.Add(this.rbEllipce);
             this.grboxFigures.Controls.Add(this.rbRect);
-            this.grboxFigures.Controls.Add(this.rbLine);
             this.grboxFigures.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.grboxFigures.Location = new System.Drawing.Point(27, 25);
             this.grboxFigures.Name = "grboxFigures";
-            this.grboxFigures.Size = new System.Drawing.Size(111, 249);
+            this.grboxFigures.Size = new System.Drawing.Size(111, 312);
             this.grboxFigures.TabIndex = 12;
             this.grboxFigures.TabStop = false;
             this.grboxFigures.Text = "Figures";
@@ -110,7 +108,7 @@
             // rbPointer
             // 
             this.rbPointer.AutoSize = true;
-            this.rbPointer.Location = new System.Drawing.Point(9, 222);
+            this.rbPointer.Location = new System.Drawing.Point(11, 274);
             this.rbPointer.Name = "rbPointer";
             this.rbPointer.Size = new System.Drawing.Size(71, 21);
             this.rbPointer.TabIndex = 22;
@@ -190,20 +188,6 @@
             this.rbRect.UseVisualStyleBackColor = true;
             this.rbRect.CheckedChanged += new System.EventHandler(this.rbRect_CheckedChanged);
             // 
-            // rbLine
-            // 
-            this.rbLine.AutoSize = true;
-            this.rbLine.Checked = true;
-            this.rbLine.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.rbLine.Location = new System.Drawing.Point(9, 19);
-            this.rbLine.Name = "rbLine";
-            this.rbLine.Size = new System.Drawing.Size(53, 21);
-            this.rbLine.TabIndex = 0;
-            this.rbLine.TabStop = true;
-            this.rbLine.Text = "Line";
-            this.rbLine.UseVisualStyleBackColor = true;
-            this.rbLine.Click += new System.EventHandler(this.rbLine_Click);
-            // 
             // btnBackColor
             // 
             this.btnBackColor.Location = new System.Drawing.Point(935, 25);
@@ -240,9 +224,9 @@
             // lboxFigures
             // 
             this.lboxFigures.FormattingEnabled = true;
-            this.lboxFigures.Location = new System.Drawing.Point(30, 373);
+            this.lboxFigures.Location = new System.Drawing.Point(30, 438);
             this.lboxFigures.Name = "lboxFigures";
-            this.lboxFigures.Size = new System.Drawing.Size(101, 251);
+            this.lboxFigures.Size = new System.Drawing.Size(101, 186);
             this.lboxFigures.TabIndex = 20;
             this.lboxFigures.TabStop = false;
             this.lboxFigures.SelectedIndexChanged += new System.EventHandler(this.lboxFigures_SelectedIndexChanged);
@@ -258,7 +242,7 @@
             // 
             // btnConfirm
             // 
-            this.btnConfirm.Location = new System.Drawing.Point(36, 297);
+            this.btnConfirm.Location = new System.Drawing.Point(38, 360);
             this.btnConfirm.Name = "btnConfirm";
             this.btnConfirm.Size = new System.Drawing.Size(88, 54);
             this.btnConfirm.TabIndex = 22;
@@ -413,7 +397,6 @@
         private System.Windows.Forms.RadioButton rbIsoTriangle;
         private System.Windows.Forms.RadioButton rbEllipce;
         private System.Windows.Forms.RadioButton rbRect;
-        private System.Windows.Forms.RadioButton rbLine;
         private System.Windows.Forms.Button btnBackColor;
         private System.Windows.Forms.ColorDialog colorDialog2;
         private System.Windows.Forms.Button btnClear;

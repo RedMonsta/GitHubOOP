@@ -17,7 +17,7 @@ namespace Lab1
 
         private Point[] Arr = new Point[9];
 
-        public ActivePoints(Figure fig)
+        public ActivePoints(Figure.Figure fig)
         {
             Arr[1].X = fig.X1; Arr[1].Y = fig.Y1;
             Arr[2].X = (fig.X1 + fig.X2) / 2; Arr[2].Y = fig.Y1;
@@ -35,7 +35,7 @@ namespace Lab1
         private Cursor[] CursNESW = new Cursor[] { Cursors.SizeAll, Cursors.SizeNESW, Cursors.SizeNS, Cursors.SizeNWSE, Cursors.SizeWE,
                                                Cursors.SizeNESW, Cursors.SizeNS, Cursors.SizeNWSE, Cursors.SizeWE, Cursors.Default };
 
-        public Cursor ChangeCursor(MouseEventArgs e, Figure fig)
+        public Cursor ChangeCursor(MouseEventArgs e, Figure.Figure fig)
         {
             int S = 10;
             switch (fig.Direction)

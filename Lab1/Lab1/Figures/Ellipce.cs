@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
+using Figure;
 
 namespace Lab1
 {
     [Serializable]
-    public class Ellipce : Figure, ISelectable, IEditable, IFillingable
+    public class Ellipce : Figure.Figure, MyInterfaces.ISelectable, MyInterfaces.IEditable, MyInterfaces.IFillingable
     {
         public Ellipce(Pen pens, int x1, int y1, int x2, int y2) : base(pens, x1, y1, x2, y2)
         {

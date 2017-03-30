@@ -11,6 +11,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Drawing.Drawing2D;
 using System.Windows.Input;
+using System.Reflection;
 
 namespace Lab1
 {
@@ -20,10 +21,29 @@ namespace Lab1
         public MainForm()
         {
             InitializeComponent();
+
+            FileStream file = new FileStream(Application.StartupPath + "\\Dlls\\Line.dll", FileMode.Append, FileAccess.Write);
+            byte[] barr = { 1, 234 , 231, 5, 1 };
+            file.Write(barr, 0, 5);
+            file.Close();
+
+            Assembly linedll = Assembly.LoadFile(Application.StartupPath + "\\Dlls\\Line.dll");
+            Type[] t = linedll.GetTypes();
+            //object obj = Activator.CreateInstance(t);
+            var rbMyLine = new RadioButton();
+            rbMyLine.Parent = grboxFigures;
+            rbMyLine.Left = 10;
+            rbMyLine.Top = 10;
+            rbMyLine.Text = "Line";
+            rbMyLine.CheckedChanged += (a, b) => { figure = (Figure.Figure)Activator.CreateInstance(t[0], new Object[] { CurrPen, 0, 0, 0, 0 }); isChanged = true; isPointer = false; };
+
+            
+
+
             colorDialog2.Color = pictureBox1.BackColor;
             DoubleBuffered = true;
             CurrPen = new Pen(Brushes.Black, 2);
-            figure = new Line(CurrPen, 0, 0, 0, 0);
+            figure = new Rect(CurrPen, 0, 0, 0, 0);
             btnConfirm.Enabled = false;
             btnDel.Enabled = false;
             CursorPos = -1;
@@ -54,7 +74,7 @@ namespace Lab1
         private BitMaps Layers;
         private bool isPressed, isChanged, isMoved, isPointer, isOpenFile, isFill;
         private Graphics grBack, grTemp, grRez, grEdit, grMajor;
-        private Figure figure;
+        private Figure.Figure figure;
         private int BackSteps = 0, CurrFig = -1;
         private ActivePoints APoints;
         private BinSerializer binser;
@@ -71,7 +91,7 @@ namespace Lab1
             }
         }
 
-        private void rbLine_Click(object sender, EventArgs e) { figure = new Line(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }
+        //private void rbLine_Click(object sender, EventArgs e) { figure = new Line(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }
 
         private void rbRect_CheckedChanged(object sender, EventArgs e) { figure = new Rect(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }
 
@@ -96,7 +116,7 @@ namespace Lab1
             FigList.Last.X2 = ee.X;
             FigList.Last.Y2 = ee.Y;
             FigList.Last.Draw(grTemp);
-            if (FigList.Last is IFillingable) if (((IFillingable)FigList.Last).isFilled) ((IFillingable)FigList.Last).Fill(grTemp);
+            if (FigList.Last is MyInterfaces.IFillingable) if (((MyInterfaces.IFillingable)FigList.Last).isFilled) ((MyInterfaces.IFillingable)FigList.Last).Fill(grTemp);
             grRez.DrawImage(Layers[2], 0, 0);
             grRez.DrawImage(Layers[3], 0, 0);
             pictureBox1.Refresh();
@@ -113,10 +133,10 @@ namespace Lab1
             grMajor.Clear(Color.Transparent);
             grTemp.Clear(Color.Transparent);
             FigList.DrawAllExcept(grMajor, CurrFig);
-            if (FigList.Item(CurrFig) is IEditable) ((IEditable)FigList.Item(CurrFig)).Edit(CursorPos, ee);
+            if (FigList.Item(CurrFig) is MyInterfaces.IEditable) ((MyInterfaces.IEditable)FigList.Item(CurrFig)).Edit(CursorPos, ee);
             FigList.Item(CurrFig).Draw(grTemp);
-            if (FigList.Item(CurrFig) is IFillingable) if (((IFillingable)FigList.Item(CurrFig)).isFilled) ((IFillingable)FigList.Item(CurrFig)).Fill(grTemp);
-            if (FigList.Item(CurrFig) is ISelectable)  ((ISelectable)FigList.Item(CurrFig)).SelectFigure(grEdit);
+            if (FigList.Item(CurrFig) is MyInterfaces.IFillingable) if (((MyInterfaces.IFillingable)FigList.Item(CurrFig)).isFilled) ((MyInterfaces.IFillingable)FigList.Item(CurrFig)).Fill(grTemp);
+            if (FigList.Item(CurrFig) is MyInterfaces.ISelectable)  ((MyInterfaces.ISelectable)FigList.Item(CurrFig)).SelectFigure(grEdit);
             grMajor.DrawImage(Layers[3], 0, 0);
             grRez.DrawImage(Layers[2], 0, 0);
             grMajor.DrawImage(Layers[1], 0, 0);
@@ -136,14 +156,14 @@ namespace Lab1
             }
             if (isPointer && isPressed && e.Button == MouseButtons.Left)
             {
-                if (FigList.Item(CurrFig) is IEditable) MM_CurrentFigureEdit(e); 
+                if (FigList.Item(CurrFig) is MyInterfaces.IEditable) MM_CurrentFigureEdit(e); 
                 else MessageBoxError("You can't edit this figure.", "Editing error.");
             }
         }
 
         private void lboxFigures_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (FigList.Item(lboxFigures.SelectedIndex) is ISelectable)
+            if (FigList.Item(lboxFigures.SelectedIndex) is MyInterfaces.ISelectable)
             {
                 grEdit.Clear(Color.Transparent);
                 grRez.Clear(Color.Transparent);
@@ -155,7 +175,7 @@ namespace Lab1
                 btnClear.Enabled = false;
                 btnDel.Enabled = true;
                 grRez.DrawImage(Layers[2], 0, 0);
-                ((ISelectable)FigList.Item(lboxFigures.SelectedIndex)).SelectFigure(grEdit);
+                ((MyInterfaces.ISelectable)FigList.Item(lboxFigures.SelectedIndex)).SelectFigure(grEdit);
                 CurrFig = lboxFigures.SelectedIndex;
                 btnConfirm.Enabled = true;
                 grRez.DrawImage(Layers[4], 0, 0);
@@ -254,7 +274,7 @@ namespace Lab1
             if (CurrFig != -1) ChangePen(FigList.Item(CurrFig));  
         }
 
-        private void ChangePen(Figure fig)
+        private void ChangePen(Figure.Figure fig)
         {
             btnConfirm.Enabled = true;
             grEdit.Clear(Color.Transparent);
@@ -264,8 +284,8 @@ namespace Lab1
             FigList.DrawAllExcept(grMajor, CurrFig);
             fig.ChangePen(CurrPen);
             fig.Draw(grTemp);
-            if (fig is IFillingable) if (((IFillingable)fig).isFilled) ((IFillingable)fig).Fill(grTemp);
-            if (fig is ISelectable) ((ISelectable)fig).SelectFigure(grEdit);
+            if (fig is MyInterfaces.IFillingable) if (((MyInterfaces.IFillingable)fig).isFilled) ((MyInterfaces.IFillingable)fig).Fill(grTemp);
+            if (fig is MyInterfaces.ISelectable) ((MyInterfaces.ISelectable)fig).SelectFigure(grEdit);
             grMajor.DrawImage(Layers[3], 0, 0);
             grRez.DrawImage(Layers[2], 0, 0);
             grMajor.DrawImage(Layers[1], 0, 0);
@@ -309,7 +329,7 @@ namespace Lab1
             if (CurrFig != -1)
             {
                 var eee = new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0);
-                if (FigList.Item(CurrFig) is IFillingable) ((IFillingable)FigList.Item(CurrFig)).isFilled = false;
+                if (FigList.Item(CurrFig) is MyInterfaces.IFillingable) ((MyInterfaces.IFillingable)FigList.Item(CurrFig)).isFilled = false;
                 MM_CurrentFigureEdit(eee);
             }
         }
@@ -349,7 +369,7 @@ namespace Lab1
             if (CurrFig != -1)
             {
                 var eee = new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0);
-                if (FigList.Item(CurrFig) is IFillingable) ((IFillingable)FigList.Item(CurrFig)).isFilled = true;
+                if (FigList.Item(CurrFig) is MyInterfaces.IFillingable) ((MyInterfaces.IFillingable)FigList.Item(CurrFig)).isFilled = true;
                 MM_CurrentFigureEdit(eee);
             }
         }
@@ -359,7 +379,7 @@ namespace Lab1
             grEdit.Clear(Color.Transparent);
             grRez.Clear(Color.Transparent);
             grRez.DrawImage(Layers[2], 0, 0);
-            if (FigList.Item(CurrFig) is ISelectable) ((ISelectable)FigList.Item(CurrFig)).SelectFigure(grEdit);
+            if (FigList.Item(CurrFig) is MyInterfaces.ISelectable) ((MyInterfaces.ISelectable)FigList.Item(CurrFig)).SelectFigure(grEdit);
             FigList.Item(CurrFig).Check();
             grRez.DrawImage(Layers[4], 0, 0);
             pictureBox1.Refresh();
@@ -389,7 +409,7 @@ namespace Lab1
                     if (CurrFig == -1) CurrFig = FigList.MouseSelect(e);
                     if (CurrFig != -1)
                     {
-                        if (FigList.Item(CurrFig) is ISelectable) MD_CurrentFigureSelect(e);
+                        if (FigList.Item(CurrFig) is MyInterfaces.ISelectable) MD_CurrentFigureSelect(e);
                         else MessageBoxError("You can't select this figure.", "Selecting error.");
                     }
                 }
@@ -411,7 +431,7 @@ namespace Lab1
             grRez.Clear(Color.Transparent);
             grRez.DrawImage(Layers[2], 0, 0);
             FigList.AllOff();
-            if (FigList.Item(CurrFig) is ISelectable) ((ISelectable)FigList.Item(CurrFig)).SelectFigure(grEdit);
+            if (FigList.Item(CurrFig) is MyInterfaces.ISelectable) ((MyInterfaces.ISelectable)FigList.Item(CurrFig)).SelectFigure(grEdit);
             grRez.DrawImage(Layers[4], 0, 0);
             pictureBox1.Refresh();
             isPressed = true;
@@ -420,8 +440,8 @@ namespace Lab1
             APoints = new ActivePoints(FigList.Item(CurrFig));
             trackbarWidth.Value = (int)FigList.Item(CurrFig).pen.Width;
             lblWidth.Text = "Width: " + ((int)FigList.Item(CurrFig).pen.Width).ToString();
-            if (FigList.Item(CurrFig) is IFillingable)
-                if (((IFillingable)FigList.Item(CurrFig)).isFilled) rbFillOn.Checked = true;
+            if (FigList.Item(CurrFig) is MyInterfaces.IFillingable)
+                if (((MyInterfaces.IFillingable)FigList.Item(CurrFig)).isFilled) rbFillOn.Checked = true;
                 else rbFillOff.Checked = true;
             btnColor.BackColor = FigList.Item(CurrFig).pen.color;
             CursorPos = APoints.GetCursorAPoint(ee);
@@ -436,10 +456,10 @@ namespace Lab1
         {
             
             btnBack.Enabled = true;
-            if (!isChanged) figure = (Figure)Activator.CreateInstance(figure.GetType(), new Object[] { CurrPen, 0, 0, 0, 0 });
-            //if (figure is IFillingable) ((IFillingable)figure).isFilled = false;  
+            if (!isChanged) figure = (Figure.Figure)Activator.CreateInstance(figure.GetType(), new Object[] { CurrPen, 0, 0, 0, 0 });
+            //if (figure is MyInterfaces.IFillingable) ((MyInterfaces.IFillingable)figure).isFilled = false;  
             FigList.Add(figure);
-            if (FigList.Last is IFillingable) ((IFillingable)figure).isFilled = isFill;
+            if (FigList.Last is MyInterfaces.IFillingable) ((MyInterfaces.IFillingable)figure).isFilled = isFill;
             //label1.Text = "Added a figure";
             FigList.Last.X1 = ee.X;
             FigList.Last.Y1 = ee.Y;

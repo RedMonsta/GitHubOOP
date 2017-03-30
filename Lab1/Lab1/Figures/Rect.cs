@@ -10,7 +10,7 @@ using System.Drawing.Drawing2D;
 namespace Lab1
 {
     [Serializable]
-    public class Rect : Figure, ISelectable, IEditable, IFillingable
+    public class Rect : Figure.Figure, MyInterfaces.ISelectable, MyInterfaces.IEditable, MyInterfaces.IFillingable
     {
         public Rect(Pen pens, int x1, int y1, int x2, int y2) : base(pens, x1, y1, x2, y2)
         {
@@ -42,6 +42,11 @@ namespace Lab1
             GraphicsPath grp = new GraphicsPath();
             grp.AddPolygon(points);
             gr.FillPath(br, grp);
+        }
+
+        public override void Edit(int pos, MouseEventArgs e)
+        {
+            throw new ArgumentException();
         }
     }
 }

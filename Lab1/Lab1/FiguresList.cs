@@ -12,20 +12,20 @@ namespace Lab1
     [Serializable]
     public class FigureList
     {
-        private List<Figure> figures;
-        public Figure Last { get { return figures[figures.Count() - 1]; } }
+        private List<Figure.Figure> figures;
+        public Figure.Figure Last { get { return figures[figures.Count() - 1]; } }
 
         public FigureList()
         {
-            figures = new List<Figure>();
+            figures = new List<Figure.Figure>();
         }
 
-        public void Add(Figure item)
+        public void Add(Figure.Figure item)
         {
             figures.Add(item);
         }
 
-        public bool Remove(Figure item)
+        public bool Remove(Figure.Figure item)
         {
             if (figures.Remove(item)) return true;
             else return false;
@@ -37,7 +37,7 @@ namespace Lab1
             else return false;
         }
 
-        public Figure Item(int index)
+        public Figure.Figure Item(int index)
         {
             return figures[index];
         }
@@ -52,7 +52,7 @@ namespace Lab1
             foreach (var fig in figures)
             {
                 fig.Draw(gr);
-                if (fig is IFillingable) if (((IFillingable)fig).isFilled) ((IFillingable)fig).Fill(gr);
+                if (fig is MyInterfaces.IFillingable) if (((MyInterfaces.IFillingable)fig).isFilled) ((MyInterfaces.IFillingable)fig).Fill(gr);
                 //if (fig.isFilled == true) fig.Fill(gr);
             }
         }
@@ -95,7 +95,7 @@ namespace Lab1
         public void AllOff()
         {
             foreach (var fig in figures)
-                if (fig is ISelectable) ((ISelectable)fig).isSelected = false;
+                if (fig is MyInterfaces.ISelectable) ((MyInterfaces.ISelectable)fig).isSelected = false;
         }
 
         public void DrawAllExcept(Graphics gr, int index)
@@ -103,7 +103,7 @@ namespace Lab1
             for (int i = 0; i < figures.Count; i++)
             {
                 if (i != index) figures[i].Draw(gr);
-                if (figures[i] is IFillingable) if (((IFillingable)figures[i]).isFilled) ((IFillingable)figures[i]).Fill(gr);
+                if (figures[i] is MyInterfaces.IFillingable) if (((MyInterfaces.IFillingable)figures[i]).isFilled) ((MyInterfaces.IFillingable)figures[i]).Fill(gr);
             }
         }
 
