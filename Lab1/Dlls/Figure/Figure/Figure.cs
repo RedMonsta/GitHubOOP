@@ -16,6 +16,7 @@ namespace Figure
             pen.color = pens.Color;
             pen.Width = pens.Width;
             Direction = 0;
+            Name = "Figure";
             //isSelected = false;
             //isFilled = false;
         }
@@ -149,6 +150,13 @@ namespace Figure
             X2 = e.X + sX;
             Y1 = e.Y - sY;
             Y2 = e.Y + sY;
+        }
+
+        protected string Name;
+
+        public string GetName()
+        {
+            return Name;
         }
     }
 }

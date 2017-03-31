@@ -22,28 +22,70 @@ namespace Lab1
         {
             InitializeComponent();
 
-            FileStream file = new FileStream(Application.StartupPath + "\\Dlls\\Line.dll", FileMode.Append, FileAccess.Write);
+            /*FileStream file = new FileStream(Application.StartupPath + "\\Dlls\\Line.dll", FileMode.Append, FileAccess.Write);
             byte[] barr = { 1, 234 , 231, 5, 1 };
             file.Write(barr, 0, 5);
-            file.Close();
+            file.Close();*/
 
-            Assembly linedll = Assembly.LoadFile(Application.StartupPath + "\\Dlls\\Line.dll");
+            CurrPen = new Pen(Brushes.Black, 2);
+            colorDialog2.Color = pictureBox1.BackColor;
+            DoubleBuffered = true;
+            DllList = new List<string>();
+            Libraries = new List<Assembly>();
+            Types = new List<Type[]>();
+            RadBtns = new List<RadioButton>();
+            int top = 20;
+
+            Dlls = Directory.GetFiles(Application.StartupPath + "\\Dlls", "*.dll");
+            foreach (var i in Dlls) richTextBox1.AppendText(i.ToString() + "\n");
+            foreach (var lib in Dlls) DllList.Add(lib);
+    //Тут должна быть проверка хэша
+            foreach (var lib in DllList)
+            {
+                //richTextBox1.AppendText(lib.ToString() + "\n");
+                Assembly asm = Assembly.LoadFile(lib);
+                Libraries.Add(asm);
+                Type[] typ = asm.GetTypes();
+                Types.Add(typ);
+                var currrb = new RadioButton();
+                currrb.Parent = grboxFigures;
+                currrb.Left = 10;
+                currrb.Top = top;
+                currrb.Width = 100;
+                figure = (Figure.Figure)Activator.CreateInstance(typ[0], new Object[] { CurrPen, 0, 0, 0, 0 });
+                currrb.Text = figure.GetName();
+                currrb.CheckedChanged += (a, b) => { figure = (Figure.Figure)Activator.CreateInstance(typ[0], new Object[] { CurrPen, 0, 0, 0, 0 }); isChanged = true; isPointer = false; };
+                RadBtns.Add(currrb);
+                top += 30;
+            }
+
+
+                /*Assembly linedll = Assembly.LoadFile(Application.StartupPath + "\\Dlls\\Line.dll");
             Type[] t = linedll.GetTypes();
             //object obj = Activator.CreateInstance(t);
             var rbMyLine = new RadioButton();
             rbMyLine.Parent = grboxFigures;
             rbMyLine.Left = 10;
-            rbMyLine.Top = 10;
-            rbMyLine.Text = "Line";
+            rbMyLine.Top = 20;
+            figure = (Figure.Figure)Activator.CreateInstance(t[0], new Object[] { CurrPen, 0, 0, 0, 0 } );
+            rbMyLine.Text = figure.GetName();
             rbMyLine.CheckedChanged += (a, b) => { figure = (Figure.Figure)Activator.CreateInstance(t[0], new Object[] { CurrPen, 0, 0, 0, 0 }); isChanged = true; isPointer = false; };
 
-            
+            Assembly rectdll = Assembly.LoadFile(Application.StartupPath + "\\Dlls\\Rect.dll");
+            Type[] tr = rectdll.GetTypes();
+            //object obj = Activator.CreateInstance(t);
+            var rbMyRect = new RadioButton();
+            rbMyRect.Parent = grboxFigures;
+            rbMyRect.Left = 10;
+            rbMyRect.Top = 50;
+            figure = (Figure.Figure)Activator.CreateInstance(tr[0], new Object[] { CurrPen, 0, 0, 0, 0 });
+            rbMyRect.Text = figure.GetName();
+            rbMyRect.CheckedChanged += (a, b) => { figure = (Figure.Figure)Activator.CreateInstance(tr[0], new Object[] { CurrPen, 0, 0, 0, 0 }); isChanged = true; isPointer = false; };
+            */
 
 
-            colorDialog2.Color = pictureBox1.BackColor;
-            DoubleBuffered = true;
-            CurrPen = new Pen(Brushes.Black, 2);
-            figure = new Rect(CurrPen, 0, 0, 0, 0);
+            //CurrPen = new Pen(Brushes.Black, 2);
+            //figure = new Rect(CurrPen, 0, 0, 0, 0);
             btnConfirm.Enabled = false;
             btnDel.Enabled = false;
             CursorPos = -1;
@@ -78,6 +120,11 @@ namespace Lab1
         private int BackSteps = 0, CurrFig = -1;
         private ActivePoints APoints;
         private BinSerializer binser;
+        private string[] Dlls;
+        private List<string> DllList;
+        private List<Assembly> Libraries;
+        private List<Type[]> Types;
+        private List<RadioButton> RadBtns;
 
         private int CursorPos { get; set; }
 
@@ -93,7 +140,7 @@ namespace Lab1
 
         //private void rbLine_Click(object sender, EventArgs e) { figure = new Line(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }
 
-        private void rbRect_CheckedChanged(object sender, EventArgs e) { figure = new Rect(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }
+        //private void rbRect_CheckedChanged(object sender, EventArgs e) { figure = new Rect(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }
 
         private void rbEllipce_CheckedChanged(object sender, EventArgs e) { figure = new Ellipce(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }
 

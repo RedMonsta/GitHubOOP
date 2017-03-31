@@ -33,8 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Figure">
-      <HintPath>.\Figure.dll</HintPath>
+    <Reference Include="Figure, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Figure.dll</HintPath>
     </Reference>
     <Reference Include="MyInterfaces">
       <HintPath>.\MyInterfaces.dll</HintPath>
@@ -66,7 +67,6 @@
     </Compile>
     <Compile Include="MainUnit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Figures\Rect.cs" />
     <Compile Include="Figures\RoundRect.cs" />
     <Compile Include="Figures\StarFour.cs" />
     <Compile Include="BinSerializer.cs" />

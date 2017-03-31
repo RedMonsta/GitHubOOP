@@ -38,7 +38,6 @@
             this.rbRoundRect = new System.Windows.Forms.RadioButton();
             this.rbIsoTriangle = new System.Windows.Forms.RadioButton();
             this.rbEllipce = new System.Windows.Forms.RadioButton();
-            this.rbRect = new System.Windows.Forms.RadioButton();
             this.btnBackColor = new System.Windows.Forms.Button();
             this.colorDialog2 = new System.Windows.Forms.ColorDialog();
             this.btnClear = new System.Windows.Forms.Button();
@@ -56,6 +55,7 @@
             this.grboxFill = new System.Windows.Forms.GroupBox();
             this.rbFillOff = new System.Windows.Forms.RadioButton();
             this.rbFillOn = new System.Windows.Forms.RadioButton();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.grboxFigures.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackbarWidth)).BeginInit();
@@ -95,7 +95,6 @@
             this.grboxFigures.Controls.Add(this.rbRoundRect);
             this.grboxFigures.Controls.Add(this.rbIsoTriangle);
             this.grboxFigures.Controls.Add(this.rbEllipce);
-            this.grboxFigures.Controls.Add(this.rbRect);
             this.grboxFigures.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.grboxFigures.Location = new System.Drawing.Point(27, 25);
             this.grboxFigures.Name = "grboxFigures";
@@ -175,18 +174,6 @@
             this.rbEllipce.Text = "Ellipce";
             this.rbEllipce.UseVisualStyleBackColor = true;
             this.rbEllipce.CheckedChanged += new System.EventHandler(this.rbEllipce_CheckedChanged);
-            // 
-            // rbRect
-            // 
-            this.rbRect.AutoSize = true;
-            this.rbRect.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.rbRect.Location = new System.Drawing.Point(9, 44);
-            this.rbRect.Name = "rbRect";
-            this.rbRect.Size = new System.Drawing.Size(90, 21);
-            this.rbRect.TabIndex = 1;
-            this.rbRect.Text = "Rectangle";
-            this.rbRect.UseVisualStyleBackColor = true;
-            this.rbRect.CheckedChanged += new System.EventHandler(this.rbRect_CheckedChanged);
             // 
             // btnBackColor
             // 
@@ -352,12 +339,21 @@
             this.rbFillOn.UseVisualStyleBackColor = true;
             this.rbFillOn.CheckedChanged += new System.EventHandler(this.rbFillOn_CheckedChanged);
             // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(397, 255);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(308, 226);
+            this.richTextBox1.TabIndex = 29;
+            this.richTextBox1.Text = "";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1303, 815);
+            this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.grboxFill);
             this.Controls.Add(this.btnDel);
             this.Controls.Add(this.lblWidth);
@@ -396,7 +392,6 @@
         private System.Windows.Forms.RadioButton rbRoundRect;
         private System.Windows.Forms.RadioButton rbIsoTriangle;
         private System.Windows.Forms.RadioButton rbEllipce;
-        private System.Windows.Forms.RadioButton rbRect;
         private System.Windows.Forms.Button btnBackColor;
         private System.Windows.Forms.ColorDialog colorDialog2;
         private System.Windows.Forms.Button btnClear;
@@ -415,6 +410,7 @@
         private System.Windows.Forms.GroupBox grboxFill;
         private System.Windows.Forms.RadioButton rbFillOff;
         private System.Windows.Forms.RadioButton rbFillOn;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }
 
