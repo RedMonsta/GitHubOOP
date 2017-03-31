@@ -32,47 +32,14 @@ namespace Lab1
             colorDialog2.Color = pictureBox1.BackColor;
             DoubleBuffered = true;
             DllList = new List<string>();
+            NamesList = new List<string>();
             Libraries = new List<Assembly>();
             Types = new List<Type[]>();
             RadBtns = new List<RadioButton>();
-            byte[] SHAKey = new byte[64];
+
             SHAKey = BitConverter.GetBytes(0x67452301EFCDAB89);
 
-            int top = 20;
-
-            Dlls = Directory.GetFiles(Application.StartupPath + "\\Dlls", "*.dll");
-            //foreach (var i in Dlls) richTextBox1.AppendText(i.ToString() + "\n");
-            foreach (var lib in Dlls)
-            {
-                //AddHash(lib, SHAKey);
-                //DllList.Add(lib);
-                if (CheckingAssemblySignature(lib, SHAKey))
-                {
-                    richTextBox1.AppendText(lib.ToString() + "    confirmed\n");
-                    DllList.Add(lib);
-                }
-                else richTextBox1.AppendText(lib.ToString() + "    failed\n");
-
-            }
-    //Тут должна быть проверка хэша
-            foreach (var lib in DllList)
-            {
-                //richTextBox1.AppendText(lib.ToString() + "\n");
-                Assembly asm = Assembly.LoadFile(lib);
-                Libraries.Add(asm);
-                Type[] typ = asm.GetTypes();
-                Types.Add(typ);
-                var currrb = new RadioButton();
-                currrb.Parent = grboxFigures;
-                currrb.Left = 10;
-                currrb.Top = top;
-                currrb.Width = 100;
-                figure = (Figure.Figure)Activator.CreateInstance(typ[0], new Object[] { CurrPen, 0, 0, 0, 0 });
-                currrb.Text = figure.GetName();
-                currrb.CheckedChanged += (a, b) => { figure = (Figure.Figure)Activator.CreateInstance(typ[0], new Object[] { CurrPen, 0, 0, 0, 0 }); isChanged = true; isPointer = false; };
-                RadBtns.Add(currrb);
-                top += 30;              
-            }
+            ConnectFiguresAssemblies();
        
 
 
@@ -114,6 +81,7 @@ namespace Lab1
         private BinSerializer binser;
         private string[] Dlls;
         private List<string> DllList;
+        private List<string> NamesList;
         private List<Assembly> Libraries;
         private List<Type[]> Types;
         private List<RadioButton> RadBtns;
@@ -464,6 +432,22 @@ namespace Lab1
             result = MessageBox.Show(message, caption, buttons);
         }
 
+        private void MessageBoxWrongDll(string message)
+        {
+            MessageBoxButtons buttons = MessageBoxButtons.OK;
+            DialogResult result;
+            result = MessageBox.Show(message, "Assembly error." , buttons);
+        }
+
+        private void MessageBoxException(string ex)
+        {
+            MessageBoxButtons buttons = MessageBoxButtons.OK;
+            DialogResult result;
+            result = MessageBox.Show(ex, "Error!.", buttons);
+        }
+
+
+
         private void MD_CurrentFigureSelect(MouseEventArgs ee)
         {
             lboxFigures.SelectedIndex = CurrFig;
@@ -581,41 +565,89 @@ namespace Lab1
 
         private bool CheckingAssemblySignature(string asm, byte[] key)
         {
-            //OpenFile
             FileStream file = new FileStream(asm, FileMode.Open, FileAccess.ReadWrite);
             if (file.Length < 20) return false;
-            //Get last 20 bytes
             byte[] readhash = new byte[20];
             file.Seek(-20, SeekOrigin.End);
             file.Read(readhash, 0, 20);
-
-            //Del last 20 bytes
-            //file.SetLength(file.Length - 20);
             file.Close();
             RemoveByte(asm, 20);
             file = new FileStream(asm, FileMode.Open, FileAccess.ReadWrite);
-            //Calc curr hash
             HMACSHA1 hmac = new HMACSHA1(key);
             byte[] hashValue = hmac.ComputeHash(file);
-            //Put last 20 bytes
-            
             file.Seek(0, SeekOrigin.End);
             file.Write(readhash, 0, 20);
             file.Close();
             string read = BitConverter.ToString(readhash);
             string calc = BitConverter.ToString(hashValue);
+
             richTextBox1.AppendText("Read: " + read + "\n");
             richTextBox1.AppendText("Calc: " + calc + "\n");
-            //Compare two hashes
+
             for (int i = 0; i < 20; i++)
-            {
-                if (hashValue[i] != readhash[i]) return false;                   
-            }      
-            //Return result
+                if (hashValue[i] != readhash[i]) return false;                       
             return true;
         }
 
+        private void ConnectFiguresAssemblies()
+        {
+            try
+            {
+                int top = 20;
 
+                Dlls = Directory.GetFiles(Application.StartupPath + "\\Dlls", "*.dll");
+                foreach (var lib in Dlls)
+                {
+                    //AddHash(lib, SHAKey);
+                    //DllList.Add(lib);
+                    if (CheckingAssemblySignature(lib, SHAKey))
+                    {
+                        richTextBox1.AppendText(lib.ToString() + "    confirmed\n");
+                        DllList.Add(lib);
+                    }
+                    else
+                    {
+                        MessageBoxWrongDll("Error of connecting " + lib.ToString() + " to application: wrong file.");
+                        richTextBox1.AppendText(lib.ToString() + "    failed\n");
+                    }
+
+                }
+                //Тут должна быть проверка хэша
+                foreach (var lib in DllList)
+                {
+                    //richTextBox1.AppendText(lib.ToString() + "\n");
+                    Assembly asm = Assembly.LoadFile(lib);
+                    Libraries.Add(asm);
+                    Type[] typ = asm.GetTypes();
+                    Types.Add(typ);
+                    figure = (Figure.Figure)Activator.CreateInstance(typ[0], new Object[] { CurrPen, 0, 0, 0, 0 });
+                    bool isExist = false;
+                    foreach (var i in NamesList)
+                    {
+                        if (figure.GetName() == i) isExist = true;
+                    }
+                    if (!isExist)
+                    {
+                        var currrb = new RadioButton();
+                        currrb.Parent = grboxFigures;
+                        currrb.Left = 10;
+                        currrb.Top = top;
+                        currrb.Width = 100;
+                        //figure = (Figure.Figure)Activator.CreateInstance(typ[0], new Object[] { CurrPen, 0, 0, 0, 0 });
+                        currrb.Text = figure.GetName();
+                        currrb.CheckedChanged += (a, b) => { figure = (Figure.Figure)Activator.CreateInstance(typ[0], new Object[] { CurrPen, 0, 0, 0, 0 }); isChanged = true; isPointer = false; };
+                        //RadBtns.Add(currrb);
+                        top += 30;
+                        NamesList.Add(figure.GetName());               
+                    }
+                    else MessageBoxWrongDll("There is a repeated figure name \"" + figure.GetName() + "\" in assemblies.");
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBoxException(e.Message);
+            }
+        }
   
     }
 }
