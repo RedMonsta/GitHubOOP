@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A9AC0A50-198A-437B-9FE5-73DAA22D5A06}</ProjectGuid>
+    <ProjectGuid>{F9A12704-28E3-4655-99C9-E0E79230B8D7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Line</RootNamespace>
-    <AssemblyName>Line</AssemblyName>
+    <RootNamespace>Hexagon</RootNamespace>
+    <AssemblyName>Hexagon</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,12 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Figure, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Figure">
       <HintPath>..\..\..\Lab1\bin\Debug\Figure.dll</HintPath>
     </Reference>
-    <Reference Include="MyInterfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="MyInterfaces">
       <HintPath>..\..\..\Lab1\bin\Debug\MyInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -49,8 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Line.cs" />
+    <Compile Include="Hexagon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

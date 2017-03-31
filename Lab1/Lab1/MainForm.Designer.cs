@@ -33,11 +33,6 @@
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.grboxFigures = new System.Windows.Forms.GroupBox();
             this.rbPointer = new System.Windows.Forms.RadioButton();
-            this.rbStarFour = new System.Windows.Forms.RadioButton();
-            this.rbHexagon = new System.Windows.Forms.RadioButton();
-            this.rbRoundRect = new System.Windows.Forms.RadioButton();
-            this.rbIsoTriangle = new System.Windows.Forms.RadioButton();
-            this.rbEllipce = new System.Windows.Forms.RadioButton();
             this.btnBackColor = new System.Windows.Forms.Button();
             this.colorDialog2 = new System.Windows.Forms.ColorDialog();
             this.btnClear = new System.Windows.Forms.Button();
@@ -55,7 +50,6 @@
             this.grboxFill = new System.Windows.Forms.GroupBox();
             this.rbFillOff = new System.Windows.Forms.RadioButton();
             this.rbFillOn = new System.Windows.Forms.RadioButton();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.grboxFigures.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackbarWidth)).BeginInit();
@@ -90,90 +84,25 @@
             // grboxFigures
             // 
             this.grboxFigures.Controls.Add(this.rbPointer);
-            this.grboxFigures.Controls.Add(this.rbStarFour);
-            this.grboxFigures.Controls.Add(this.rbHexagon);
-            this.grboxFigures.Controls.Add(this.rbRoundRect);
-            this.grboxFigures.Controls.Add(this.rbIsoTriangle);
-            this.grboxFigures.Controls.Add(this.rbEllipce);
             this.grboxFigures.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.grboxFigures.Location = new System.Drawing.Point(27, 25);
             this.grboxFigures.Name = "grboxFigures";
-            this.grboxFigures.Size = new System.Drawing.Size(111, 312);
+            this.grboxFigures.Size = new System.Drawing.Size(111, 268);
             this.grboxFigures.TabIndex = 12;
             this.grboxFigures.TabStop = false;
-            this.grboxFigures.Text = "Figures";
+            this.grboxFigures.Text = "Instruments";
             this.grboxFigures.Enter += new System.EventHandler(this.grboxFigures_Enter);
             // 
             // rbPointer
             // 
             this.rbPointer.AutoSize = true;
-            this.rbPointer.Location = new System.Drawing.Point(11, 274);
+            this.rbPointer.Location = new System.Drawing.Point(9, 21);
             this.rbPointer.Name = "rbPointer";
             this.rbPointer.Size = new System.Drawing.Size(71, 21);
             this.rbPointer.TabIndex = 22;
             this.rbPointer.Text = "Pointer";
             this.rbPointer.UseVisualStyleBackColor = true;
             this.rbPointer.CheckedChanged += new System.EventHandler(this.rbPointer_CheckedChanged);
-            // 
-            // rbStarFour
-            // 
-            this.rbStarFour.AutoSize = true;
-            this.rbStarFour.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.rbStarFour.Location = new System.Drawing.Point(9, 179);
-            this.rbStarFour.Name = "rbStarFour";
-            this.rbStarFour.Size = new System.Drawing.Size(81, 21);
-            this.rbStarFour.TabIndex = 6;
-            this.rbStarFour.Text = "StarFour";
-            this.rbStarFour.UseVisualStyleBackColor = true;
-            this.rbStarFour.CheckedChanged += new System.EventHandler(this.rbSymbolA_CheckedChanged);
-            // 
-            // rbHexagon
-            // 
-            this.rbHexagon.AutoSize = true;
-            this.rbHexagon.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.rbHexagon.Location = new System.Drawing.Point(9, 152);
-            this.rbHexagon.Name = "rbHexagon";
-            this.rbHexagon.Size = new System.Drawing.Size(82, 21);
-            this.rbHexagon.TabIndex = 5;
-            this.rbHexagon.Text = "Hexagon";
-            this.rbHexagon.UseVisualStyleBackColor = true;
-            this.rbHexagon.CheckedChanged += new System.EventHandler(this.rbHexagon_CheckedChanged);
-            // 
-            // rbRoundRect
-            // 
-            this.rbRoundRect.AutoSize = true;
-            this.rbRoundRect.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.rbRoundRect.Location = new System.Drawing.Point(9, 125);
-            this.rbRoundRect.Name = "rbRoundRect";
-            this.rbRoundRect.Size = new System.Drawing.Size(97, 21);
-            this.rbRoundRect.TabIndex = 4;
-            this.rbRoundRect.Text = "RoundRect";
-            this.rbRoundRect.UseVisualStyleBackColor = true;
-            this.rbRoundRect.CheckedChanged += new System.EventHandler(this.rbRoundRect_CheckedChanged);
-            // 
-            // rbIsoTriangle
-            // 
-            this.rbIsoTriangle.AutoSize = true;
-            this.rbIsoTriangle.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.rbIsoTriangle.Location = new System.Drawing.Point(9, 98);
-            this.rbIsoTriangle.Name = "rbIsoTriangle";
-            this.rbIsoTriangle.Size = new System.Drawing.Size(96, 21);
-            this.rbIsoTriangle.TabIndex = 3;
-            this.rbIsoTriangle.Text = "IsoTriangle";
-            this.rbIsoTriangle.UseVisualStyleBackColor = true;
-            this.rbIsoTriangle.CheckedChanged += new System.EventHandler(this.rbArc_CheckedChanged);
-            // 
-            // rbEllipce
-            // 
-            this.rbEllipce.AutoSize = true;
-            this.rbEllipce.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.rbEllipce.Location = new System.Drawing.Point(9, 71);
-            this.rbEllipce.Name = "rbEllipce";
-            this.rbEllipce.Size = new System.Drawing.Size(67, 21);
-            this.rbEllipce.TabIndex = 2;
-            this.rbEllipce.Text = "Ellipce";
-            this.rbEllipce.UseVisualStyleBackColor = true;
-            this.rbEllipce.CheckedChanged += new System.EventHandler(this.rbEllipce_CheckedChanged);
             // 
             // btnBackColor
             // 
@@ -211,9 +140,9 @@
             // lboxFigures
             // 
             this.lboxFigures.FormattingEnabled = true;
-            this.lboxFigures.Location = new System.Drawing.Point(30, 438);
+            this.lboxFigures.Location = new System.Drawing.Point(30, 399);
             this.lboxFigures.Name = "lboxFigures";
-            this.lboxFigures.Size = new System.Drawing.Size(101, 186);
+            this.lboxFigures.Size = new System.Drawing.Size(101, 355);
             this.lboxFigures.TabIndex = 20;
             this.lboxFigures.TabStop = false;
             this.lboxFigures.SelectedIndexChanged += new System.EventHandler(this.lboxFigures_SelectedIndexChanged);
@@ -229,9 +158,9 @@
             // 
             // btnConfirm
             // 
-            this.btnConfirm.Location = new System.Drawing.Point(38, 360);
+            this.btnConfirm.Location = new System.Drawing.Point(27, 313);
             this.btnConfirm.Name = "btnConfirm";
-            this.btnConfirm.Size = new System.Drawing.Size(88, 54);
+            this.btnConfirm.Size = new System.Drawing.Size(104, 63);
             this.btnConfirm.TabIndex = 22;
             this.btnConfirm.TabStop = false;
             this.btnConfirm.Text = "Confirm";
@@ -339,21 +268,12 @@
             this.rbFillOn.UseVisualStyleBackColor = true;
             this.rbFillOn.CheckedChanged += new System.EventHandler(this.rbFillOn_CheckedChanged);
             // 
-            // richTextBox1
-            // 
-            this.richTextBox1.Location = new System.Drawing.Point(397, 255);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(757, 226);
-            this.richTextBox1.TabIndex = 29;
-            this.richTextBox1.Text = "";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1303, 815);
-            this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.grboxFill);
             this.Controls.Add(this.btnDel);
             this.Controls.Add(this.lblWidth);
@@ -387,11 +307,6 @@
         private System.Windows.Forms.Button btnColor;
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.GroupBox grboxFigures;
-        private System.Windows.Forms.RadioButton rbStarFour;
-        private System.Windows.Forms.RadioButton rbHexagon;
-        private System.Windows.Forms.RadioButton rbRoundRect;
-        private System.Windows.Forms.RadioButton rbIsoTriangle;
-        private System.Windows.Forms.RadioButton rbEllipce;
         private System.Windows.Forms.Button btnBackColor;
         private System.Windows.Forms.ColorDialog colorDialog2;
         private System.Windows.Forms.Button btnClear;
@@ -410,7 +325,6 @@
         private System.Windows.Forms.GroupBox grboxFill;
         private System.Windows.Forms.RadioButton rbFillOff;
         private System.Windows.Forms.RadioButton rbFillOn;
-        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }
 

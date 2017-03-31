@@ -56,9 +56,6 @@
     <Compile Include="ActivePoints.cs" />
     <Compile Include="BitMaps.cs" />
     <Compile Include="FiguresList.cs" />
-    <Compile Include="Figures\Ellipce.cs" />
-    <Compile Include="Figures\Hexagon.cs" />
-    <Compile Include="Figures\IsoTriangle.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,8 +64,6 @@
     </Compile>
     <Compile Include="MainUnit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Figures\RoundRect.cs" />
-    <Compile Include="Figures\StarFour.cs" />
     <Compile Include="BinSerializer.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

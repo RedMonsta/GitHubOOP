@@ -33,15 +33,10 @@ namespace Lab1
             DoubleBuffered = true;
             DllList = new List<string>();
             NamesList = new List<string>();
-            Libraries = new List<Assembly>();
-            Types = new List<Type[]>();
-            RadBtns = new List<RadioButton>();
 
             SHAKey = BitConverter.GetBytes(0x67452301EFCDAB89);
 
             ConnectFiguresAssemblies();
-       
-
 
             //CurrPen = new Pen(Brushes.Black, 2);
             //figure = new Rect(CurrPen, 0, 0, 0, 0);
@@ -82,9 +77,6 @@ namespace Lab1
         private string[] Dlls;
         private List<string> DllList;
         private List<string> NamesList;
-        private List<Assembly> Libraries;
-        private List<Type[]> Types;
-        private List<RadioButton> RadBtns;
         private byte[] SHAKey;
 
         private int CursorPos { get; set; }
@@ -103,15 +95,15 @@ namespace Lab1
 
         //private void rbRect_CheckedChanged(object sender, EventArgs e) { figure = new Rect(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }
 
-        private void rbEllipce_CheckedChanged(object sender, EventArgs e) { figure = new Ellipce(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }
+        //private void rbEllipce_CheckedChanged(object sender, EventArgs e) { figure = new Ellipce(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }
 
-        private void rbArc_CheckedChanged(object sender, EventArgs e) { figure = new IsoTriangle(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }
+        //private void rbArc_CheckedChanged(object sender, EventArgs e) { figure = new IsoTriangle(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }
 
-        private void rbRoundRect_CheckedChanged(object sender, EventArgs e) { figure = new RoundRect(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }
+        //private void rbRoundRect_CheckedChanged(object sender, EventArgs e) { figure = new RoundRect(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }
 
-        private void rbHexagon_CheckedChanged(object sender, EventArgs e) { figure = new Hexagon(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }        
+        //private void rbHexagon_CheckedChanged(object sender, EventArgs e) { figure = new Hexagon(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }        
 
-        private void rbSymbolA_CheckedChanged(object sender, EventArgs e) { figure = new StarFour(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }
+        //private void rbSymbolA_CheckedChanged(object sender, EventArgs e) { figure = new StarFour(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }
 
         private void rbPointer_CheckedChanged(object sender, EventArgs e) { isPointer = true; label1.Text = "choosen pointer"; }
 
@@ -581,8 +573,8 @@ namespace Lab1
             string read = BitConverter.ToString(readhash);
             string calc = BitConverter.ToString(hashValue);
 
-            richTextBox1.AppendText("Read: " + read + "\n");
-            richTextBox1.AppendText("Calc: " + calc + "\n");
+            //richTextBox1.AppendText("Read: " + read + "\n");
+            //richTextBox1.AppendText("Calc: " + calc + "\n");
 
             for (int i = 0; i < 20; i++)
                 if (hashValue[i] != readhash[i]) return false;                       
@@ -593,22 +585,21 @@ namespace Lab1
         {
             try
             {
-                int top = 20;
+                int top = 65;
 
                 Dlls = Directory.GetFiles(Application.StartupPath + "\\Dlls", "*.dll");
                 foreach (var lib in Dlls)
                 {
                     //AddHash(lib, SHAKey);
                     //DllList.Add(lib);
+
                     if (CheckingAssemblySignature(lib, SHAKey))
                     {
-                        richTextBox1.AppendText(lib.ToString() + "    confirmed\n");
                         DllList.Add(lib);
                     }
                     else
                     {
                         MessageBoxWrongDll("Error of connecting " + lib.ToString() + " to application: wrong file.");
-                        richTextBox1.AppendText(lib.ToString() + "    failed\n");
                     }
 
                 }
@@ -617,9 +608,9 @@ namespace Lab1
                 {
                     //richTextBox1.AppendText(lib.ToString() + "\n");
                     Assembly asm = Assembly.LoadFile(lib);
-                    Libraries.Add(asm);
+                    //Libraries.Add(asm);
                     Type[] typ = asm.GetTypes();
-                    Types.Add(typ);
+                    //Types.Add(typ);
                     figure = (Figure.Figure)Activator.CreateInstance(typ[0], new Object[] { CurrPen, 0, 0, 0, 0 });
                     bool isExist = false;
                     foreach (var i in NamesList)
@@ -628,16 +619,18 @@ namespace Lab1
                     }
                     if (!isExist)
                     {
-                        var currrb = new RadioButton();
-                        currrb.Parent = grboxFigures;
-                        currrb.Left = 10;
-                        currrb.Top = top;
-                        currrb.Width = 100;
+                        var nextRB = new RadioButton();
+                        nextRB.Parent = grboxFigures;
+                        nextRB.Left = 8;
+                        nextRB.Top = top;
+                        nextRB.Width = 100;
+                        nextRB.Height = 21;
                         //figure = (Figure.Figure)Activator.CreateInstance(typ[0], new Object[] { CurrPen, 0, 0, 0, 0 });
-                        currrb.Text = figure.GetName();
-                        currrb.CheckedChanged += (a, b) => { figure = (Figure.Figure)Activator.CreateInstance(typ[0], new Object[] { CurrPen, 0, 0, 0, 0 }); isChanged = true; isPointer = false; };
+                        if (figure.GetName().Length > 11 ) nextRB.Text = figure.GetName().Substring(0, 10);
+                        else nextRB.Text = figure.GetName();
+                        nextRB.CheckedChanged += (a, b) => { figure = (Figure.Figure)Activator.CreateInstance(typ[0], new Object[] { CurrPen, 0, 0, 0, 0 }); isChanged = true; isPointer = false; };
                         //RadBtns.Add(currrb);
-                        top += 30;
+                        top += 27;
                         NamesList.Add(figure.GetName());               
                     }
                     else MessageBoxWrongDll("There is a repeated figure name \"" + figure.GetName() + "\" in assemblies.");

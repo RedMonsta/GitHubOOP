@@ -62,13 +62,13 @@ namespace Lab1
             lbox.Items.Clear();
             foreach (var fig in figures)
             {
-                lbox.Items.Add((fig.ToString()).Substring(5));          
+                lbox.Items.Add(fig.GetName());          
             }
         }
 
         public void AddOneMore(ListBox lbox)
         {
-            lbox.Items.Add(figures[figures.Count - 1].ToString().Substring(5));
+            lbox.Items.Add(figures[figures.Count - 1].GetName());
         }
 
         public void Clear()

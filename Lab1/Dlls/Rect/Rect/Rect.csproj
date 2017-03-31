@@ -33,8 +33,9 @@
     <Reference Include="Figure">
       <HintPath>..\..\..\Lab1\bin\Debug\Figure.dll</HintPath>
     </Reference>
-    <Reference Include="MyInterfaces">
-      <HintPath>..\..\..\Lab1\MyInterfaces.dll</HintPath>
+    <Reference Include="MyInterfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Lab1\bin\Debug\MyInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
