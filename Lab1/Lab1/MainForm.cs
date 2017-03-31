@@ -12,6 +12,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Drawing.Drawing2D;
 using System.Windows.Input;
 using System.Reflection;
+using System.Security.Cryptography;
 
 namespace Lab1
 {
@@ -34,11 +35,25 @@ namespace Lab1
             Libraries = new List<Assembly>();
             Types = new List<Type[]>();
             RadBtns = new List<RadioButton>();
+            byte[] SHAKey = new byte[64];
+            SHAKey = BitConverter.GetBytes(0x67452301EFCDAB89);
+
             int top = 20;
 
             Dlls = Directory.GetFiles(Application.StartupPath + "\\Dlls", "*.dll");
-            foreach (var i in Dlls) richTextBox1.AppendText(i.ToString() + "\n");
-            foreach (var lib in Dlls) DllList.Add(lib);
+            //foreach (var i in Dlls) richTextBox1.AppendText(i.ToString() + "\n");
+            foreach (var lib in Dlls)
+            {
+                //AddHash(lib, SHAKey);
+                //DllList.Add(lib);
+                if (CheckingAssemblySignature(lib, SHAKey))
+                {
+                    richTextBox1.AppendText(lib.ToString() + "    confirmed\n");
+                    DllList.Add(lib);
+                }
+                else richTextBox1.AppendText(lib.ToString() + "    failed\n");
+
+            }
     //Тут должна быть проверка хэша
             foreach (var lib in DllList)
             {
@@ -56,32 +71,9 @@ namespace Lab1
                 currrb.Text = figure.GetName();
                 currrb.CheckedChanged += (a, b) => { figure = (Figure.Figure)Activator.CreateInstance(typ[0], new Object[] { CurrPen, 0, 0, 0, 0 }); isChanged = true; isPointer = false; };
                 RadBtns.Add(currrb);
-                top += 30;
+                top += 30;              
             }
-
-
-                /*Assembly linedll = Assembly.LoadFile(Application.StartupPath + "\\Dlls\\Line.dll");
-            Type[] t = linedll.GetTypes();
-            //object obj = Activator.CreateInstance(t);
-            var rbMyLine = new RadioButton();
-            rbMyLine.Parent = grboxFigures;
-            rbMyLine.Left = 10;
-            rbMyLine.Top = 20;
-            figure = (Figure.Figure)Activator.CreateInstance(t[0], new Object[] { CurrPen, 0, 0, 0, 0 } );
-            rbMyLine.Text = figure.GetName();
-            rbMyLine.CheckedChanged += (a, b) => { figure = (Figure.Figure)Activator.CreateInstance(t[0], new Object[] { CurrPen, 0, 0, 0, 0 }); isChanged = true; isPointer = false; };
-
-            Assembly rectdll = Assembly.LoadFile(Application.StartupPath + "\\Dlls\\Rect.dll");
-            Type[] tr = rectdll.GetTypes();
-            //object obj = Activator.CreateInstance(t);
-            var rbMyRect = new RadioButton();
-            rbMyRect.Parent = grboxFigures;
-            rbMyRect.Left = 10;
-            rbMyRect.Top = 50;
-            figure = (Figure.Figure)Activator.CreateInstance(tr[0], new Object[] { CurrPen, 0, 0, 0, 0 });
-            rbMyRect.Text = figure.GetName();
-            rbMyRect.CheckedChanged += (a, b) => { figure = (Figure.Figure)Activator.CreateInstance(tr[0], new Object[] { CurrPen, 0, 0, 0, 0 }); isChanged = true; isPointer = false; };
-            */
+       
 
 
             //CurrPen = new Pen(Brushes.Black, 2);
@@ -125,6 +117,7 @@ namespace Lab1
         private List<Assembly> Libraries;
         private List<Type[]> Types;
         private List<RadioButton> RadBtns;
+        private byte[] SHAKey;
 
         private int CursorPos { get; set; }
 
@@ -567,8 +560,62 @@ namespace Lab1
                 }
             }
         }
+
+        private void AddHash(string asm, byte[] key)
+        {
+            FileStream file = new FileStream(asm, FileMode.Open, FileAccess.Read);
+            HMACSHA1 hmac = new HMACSHA1(key);
+            byte[] hashValue = hmac.ComputeHash(file);
+            file.Close();
+            file = new FileStream(asm, FileMode.Append, FileAccess.Write);
+            file.Write(hashValue, 0, hashValue.Length);
+            file.Close();
+        }
+
+        private void RemoveByte(string file, int countOfByte)
+        {
+            var bData = File.ReadAllBytes(file);
+            Array.Resize(ref bData, bData.Length - countOfByte);
+            File.WriteAllBytes(file, bData);
+        }
+
+        private bool CheckingAssemblySignature(string asm, byte[] key)
+        {
+            //OpenFile
+            FileStream file = new FileStream(asm, FileMode.Open, FileAccess.ReadWrite);
+            if (file.Length < 20) return false;
+            //Get last 20 bytes
+            byte[] readhash = new byte[20];
+            file.Seek(-20, SeekOrigin.End);
+            file.Read(readhash, 0, 20);
+
+            //Del last 20 bytes
+            //file.SetLength(file.Length - 20);
+            file.Close();
+            RemoveByte(asm, 20);
+            file = new FileStream(asm, FileMode.Open, FileAccess.ReadWrite);
+            //Calc curr hash
+            HMACSHA1 hmac = new HMACSHA1(key);
+            byte[] hashValue = hmac.ComputeHash(file);
+            //Put last 20 bytes
+            
+            file.Seek(0, SeekOrigin.End);
+            file.Write(readhash, 0, 20);
+            file.Close();
+            string read = BitConverter.ToString(readhash);
+            string calc = BitConverter.ToString(hashValue);
+            richTextBox1.AppendText("Read: " + read + "\n");
+            richTextBox1.AppendText("Calc: " + calc + "\n");
+            //Compare two hashes
+            for (int i = 0; i < 20; i++)
+            {
+                if (hashValue[i] != readhash[i]) return false;                   
+            }      
+            //Return result
+            return true;
+        }
+
+
   
     }
 }
-
-//Need to kill bag when lboxFigures.SelectedIndex = -1 after btnConfirm.Click()
