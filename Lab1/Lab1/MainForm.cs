@@ -36,6 +36,12 @@ namespace Lab1
 
             SHAKey = BitConverter.GetBytes(0x67452301EFCDAB89);
 
+            //byte[] hash = new byte[2];
+            //EncryptHashByRSA( hash , 3 , 5);
+            //DecryptHashByRSA(hash, 3, 5);
+            //byte[] hash = new byte[2];
+            //EncryptHashByRSA(hash, 343, 55973);
+
             ConnectFiguresAssemblies();
 
             //CurrPen = new Pen(Brushes.Black, 2);
@@ -543,9 +549,17 @@ namespace Lab1
             HMACSHA1 hmac = new HMACSHA1(key);
             byte[] hashValue = hmac.ComputeHash(file);
             file.Close();
+
             file = new FileStream(asm, FileMode.Append, FileAccess.Write);
-            file.Write(hashValue, 0, hashValue.Length);
+            byte[] cryptedHash = EncryptHashByRSA(hashValue, 4207, 55973);
+            file.Write(cryptedHash, 0, cryptedHash.Length);
             file.Close();
+
+            string Hash = BitConverter.ToString(hashValue);
+            string Cryp = BitConverter.ToString(cryptedHash);
+
+            richTextBox1.AppendText("Hash: " + Hash + "\n");
+            richTextBox1.AppendText("Cryp: " + Cryp + "\n\n");
         }
 
         private void RemoveByte(string file, int countOfByte)
@@ -559,25 +573,30 @@ namespace Lab1
         {
             FileStream file = new FileStream(asm, FileMode.Open, FileAccess.ReadWrite);
             if (file.Length < 20) return false;
-            byte[] readhash = new byte[20];
-            file.Seek(-20, SeekOrigin.End);
-            file.Read(readhash, 0, 20);
+            byte[] readhash = new byte[40];
+            file.Seek(-40, SeekOrigin.End);
+            file.Read(readhash, 0, 40);
             file.Close();
-            RemoveByte(asm, 20);
+            RemoveByte(asm, 40);
+            byte[] decrhash = new byte[20];
+            decrhash = DecryptHashByRSA(readhash, 343, 55973);
+
             file = new FileStream(asm, FileMode.Open, FileAccess.ReadWrite);
             HMACSHA1 hmac = new HMACSHA1(key);
             byte[] hashValue = hmac.ComputeHash(file);
             file.Seek(0, SeekOrigin.End);
-            file.Write(readhash, 0, 20);
+            file.Write(readhash, 0, 40);
             file.Close();
+            string decr = BitConverter.ToString(decrhash);
             string read = BitConverter.ToString(readhash);
             string calc = BitConverter.ToString(hashValue);
+         
+            richTextBox1.AppendText("Read: " + read + "\n");
+            richTextBox1.AppendText("Decr: " + decr + "\n");
+            richTextBox1.AppendText("Calc: " + calc + "\n\n");
 
-            //richTextBox1.AppendText("Read: " + read + "\n");
-            //richTextBox1.AppendText("Calc: " + calc + "\n");
-
-            for (int i = 0; i < 20; i++)
-                if (hashValue[i] != readhash[i]) return false;                       
+            for (int i = 1; i < 20; i++)
+                if (hashValue[i] != decrhash[i]) return false;                       
             return true;
         }
 
@@ -641,6 +660,70 @@ namespace Lab1
                 MessageBoxException(e.Message);
             }
         }
-  
+
+        private int SwapBytes(ulong num)
+        {
+            byte byte1 = (byte)(num >> 8);
+            byte byte2 = (byte)num;
+            int rez = 0;
+            rez = rez | byte2;
+            rez = rez << 8;
+            rez = rez | byte1;
+            return rez;
+        }
+
+        private byte[] EncryptHashByRSA(byte[] hash, ulong exp, ulong prod)
+        {
+            byte[] crhash = new byte[40];
+            for (int i = 0; i < 20; i++)
+            {
+                hash[0] = 31;
+                ulong word = FastExp(hash[i], exp, prod);
+                //ulong word = FastExp(31, 4207, 55973);
+                //richTextBox1.AppendText("0: " + hash[0] + " : " + word + "\n");
+                richTextBox1.AppendText(i + ": " + hash[i] + " : " + word + "\n");
+                byte byte1 = (byte)(word >> 8);
+                byte byte2 = (byte)word;
+                crhash[i * 2 + 0] = byte1;
+                crhash[i * 2 + 1] = byte2;
+
+            }
+            return crhash;
+        }
+
+        private byte[] DecryptHashByRSA(byte[] hash, ulong exp, ulong prod)
+        {
+            byte[] dechash = new byte[20];
+            for (int i = 0; i < 20; i++)
+            {
+                ulong temp = 0;
+                temp = temp | hash[i * 2 + 0];
+                temp = temp << 8;
+                temp = temp | hash[i * 2 + 1];
+                ulong rez = FastExp(temp, exp, prod);
+                dechash[i] = (byte)rez;
+            }
+            return dechash;
+        }
+
+        private ulong FastExp(ulong a, ulong z, ulong n)
+        {
+            ulong a1 = a;
+            ulong z1 = z;
+            ulong x = 1;
+            while (z1 != 0)
+            {
+                while (z1 % 2 == 0)
+                {
+                    z1 = z1 / 2;
+                    a1 = (a1 * a1) % n;
+                }
+                z1 = z1 - 1;
+                x = ((x * a1) + n) % n;
+            }
+            return x;
+        }
+
+
     }
 }
