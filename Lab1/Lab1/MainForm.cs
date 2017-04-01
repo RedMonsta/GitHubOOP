@@ -23,11 +23,6 @@ namespace Lab1
         {
             InitializeComponent();
 
-            /*FileStream file = new FileStream(Application.StartupPath + "\\Dlls\\Line.dll", FileMode.Append, FileAccess.Write);
-            byte[] barr = { 1, 234 , 231, 5, 1 };
-            file.Write(barr, 0, 5);
-            file.Close();*/
-
             CurrPen = new Pen(Brushes.Black, 2);
             colorDialog2.Color = pictureBox1.BackColor;
             DoubleBuffered = true;
@@ -36,16 +31,8 @@ namespace Lab1
 
             SHAKey = BitConverter.GetBytes(0x67452301EFCDAB89);
 
-            //byte[] hash = new byte[2];
-            //EncryptHashByRSA( hash , 3 , 5);
-            //DecryptHashByRSA(hash, 3, 5);
-            //byte[] hash = new byte[2];
-            //EncryptHashByRSA(hash, 343, 55973);
-
             ConnectFiguresAssemblies();
 
-            //CurrPen = new Pen(Brushes.Black, 2);
-            //figure = new Rect(CurrPen, 0, 0, 0, 0);
             btnConfirm.Enabled = false;
             btnDel.Enabled = false;
             CursorPos = -1;
@@ -96,20 +83,6 @@ namespace Lab1
                 if (CurrFig != -1) ChangePen(FigList.Item(CurrFig));
             }
         }
-
-        //private void rbLine_Click(object sender, EventArgs e) { figure = new Line(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }
-
-        //private void rbRect_CheckedChanged(object sender, EventArgs e) { figure = new Rect(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }
-
-        //private void rbEllipce_CheckedChanged(object sender, EventArgs e) { figure = new Ellipce(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }
-
-        //private void rbArc_CheckedChanged(object sender, EventArgs e) { figure = new IsoTriangle(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }
-
-        //private void rbRoundRect_CheckedChanged(object sender, EventArgs e) { figure = new RoundRect(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }
-
-        //private void rbHexagon_CheckedChanged(object sender, EventArgs e) { figure = new Hexagon(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }        
-
-        //private void rbSymbolA_CheckedChanged(object sender, EventArgs e) { figure = new StarFour(CurrPen, 0, 0, 0, 0); isChanged = true; isPointer = false; }
 
         private void rbPointer_CheckedChanged(object sender, EventArgs e) { isPointer = true; label1.Text = "choosen pointer"; }
 
@@ -555,11 +528,10 @@ namespace Lab1
             file.Write(cryptedHash, 0, cryptedHash.Length);
             file.Close();
 
-            string Hash = BitConverter.ToString(hashValue);
-            string Cryp = BitConverter.ToString(cryptedHash);
-
-            richTextBox1.AppendText("Hash: " + Hash + "\n");
-            richTextBox1.AppendText("Cryp: " + Cryp + "\n\n");
+            //string Hash = BitConverter.ToString(hashValue);
+            //string Cryp = BitConverter.ToString(cryptedHash);
+            //richTextBox1.AppendText("Hash: " + Hash + "\n");
+            //richTextBox1.AppendText("Cryp: " + Cryp + "\n\n");
         }
 
         private void RemoveByte(string file, int countOfByte)
@@ -587,13 +559,13 @@ namespace Lab1
             file.Seek(0, SeekOrigin.End);
             file.Write(readhash, 0, 40);
             file.Close();
-            string decr = BitConverter.ToString(decrhash);
-            string read = BitConverter.ToString(readhash);
-            string calc = BitConverter.ToString(hashValue);
-         
-            richTextBox1.AppendText("Read: " + read + "\n");
-            richTextBox1.AppendText("Decr: " + decr + "\n");
-            richTextBox1.AppendText("Calc: " + calc + "\n\n");
+
+            //string decr = BitConverter.ToString(decrhash);
+            //string read = BitConverter.ToString(readhash);
+            //string calc = BitConverter.ToString(hashValue);       
+            //richTextBox1.AppendText("Read: " + read + "\n");
+            //richTextBox1.AppendText("Decr: " + decr + "\n");
+            //richTextBox1.AppendText("Calc: " + calc + "\n\n");
 
             for (int i = 1; i < 20; i++)
                 if (hashValue[i] != decrhash[i]) return false;                       
@@ -612,24 +584,13 @@ namespace Lab1
                     //AddHash(lib, SHAKey);
                     //DllList.Add(lib);
 
-                    if (CheckingAssemblySignature(lib, SHAKey))
-                    {
-                        DllList.Add(lib);
-                    }
-                    else
-                    {
-                        MessageBoxWrongDll("Error of connecting " + lib.ToString() + " to application: wrong file.");
-                    }
-
+                    if (CheckingAssemblySignature(lib, SHAKey)) DllList.Add(lib);
+                    else MessageBoxWrongDll("Error of connecting " + lib.ToString() + " to application: wrong file.");
                 }
-                //Тут должна быть проверка хэша
                 foreach (var lib in DllList)
                 {
-                    //richTextBox1.AppendText(lib.ToString() + "\n");
                     Assembly asm = Assembly.LoadFile(lib);
-                    //Libraries.Add(asm);
                     Type[] typ = asm.GetTypes();
-                    //Types.Add(typ);
                     figure = (Figure.Figure)Activator.CreateInstance(typ[0], new Object[] { CurrPen, 0, 0, 0, 0 });
                     bool isExist = false;
                     foreach (var i in NamesList)
@@ -648,8 +609,8 @@ namespace Lab1
                         if (figure.GetName().Length > 11 ) nextRB.Text = figure.GetName().Substring(0, 10);
                         else nextRB.Text = figure.GetName();
                         nextRB.CheckedChanged += (a, b) => { figure = (Figure.Figure)Activator.CreateInstance(typ[0], new Object[] { CurrPen, 0, 0, 0, 0 }); isChanged = true; isPointer = false; };
-                        //RadBtns.Add(currrb);
                         top += 27;
+                        nextRB.Checked = true;
                         NamesList.Add(figure.GetName());               
                     }
                     else MessageBoxWrongDll("There is a repeated figure name \"" + figure.GetName() + "\" in assemblies.");
@@ -677,11 +638,11 @@ namespace Lab1
             byte[] crhash = new byte[40];
             for (int i = 0; i < 20; i++)
             {
-                hash[0] = 31;
+                //hash[0] = 31;
                 ulong word = FastExp(hash[i], exp, prod);
                 //ulong word = FastExp(31, 4207, 55973);
                 //richTextBox1.AppendText("0: " + hash[0] + " : " + word + "\n");
-                richTextBox1.AppendText(i + ": " + hash[i] + " : " + word + "\n");
+                //richTextBox1.AppendText(i + ": " + hash[i] + " : " + word + "\n");
                 byte byte1 = (byte)(word >> 8);
                 byte byte2 = (byte)word;
                 crhash[i * 2 + 0] = byte1;
