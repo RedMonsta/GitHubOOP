@@ -28,11 +28,10 @@ namespace Lab1
             DoubleBuffered = true;
             DllList = new List<string>();
             NamesList = new List<string>();
-            SerFigsList = new SerialFiguresList();
             TypesList = new List<Type>();
 
-            SHAKey = BitConverter.GetBytes(0x67452301EFCDAB89);
-
+            var Connecter = new AssembliesCollector();
+            DllList = Connecter.GetRightFiguresAssemblies(Application.StartupPath + "\\Dlls");
             ConnectFiguresAssemblies();
 
             btnConfirm.Enabled = false;
@@ -40,7 +39,7 @@ namespace Lab1
             CursorPos = -1;
             isOpenFile = false;
             isFill = false;
-            FigList = new FigureList();
+            FigList = new FiguresList.FigureList();
             lblWidth.Text = "Width: 2";
 
             Layers = new BitMaps();
@@ -58,24 +57,20 @@ namespace Lab1
             pictureBox1.Image = Layers[1];
 
             ActiveControl = trackbarWidth;
-
         }
+
         private Pen CurrPen;
-        private FigureList FigList;
+        private FiguresList.FigureList FigList;
         private BitMaps Layers;
         private bool isPressed, isChanged, isMoved, isPointer, isOpenFile, isFill;
         private Graphics grBack, grTemp, grRez, grEdit, grMajor;
         private Figure.Figure figure;
         private int BackSteps = 0, CurrFig = -1;
         private ActivePoints APoints;
-        private BinSerializer binser;
-        private string[] Dlls;
+        private MyCustomFiguresListBinarySerializer binser;
         private List<string> DllList;
-        private List<string> NamesList;
-        private byte[] SHAKey;
-        private SerialFiguresList SerFigsList;
-        private SerialFigure serfig;
-        private List<Type> TypesList;
+        private List<string> NamesList;  
+        public List<Type> TypesList;
 
         private int CursorPos { get; set; }
 
@@ -320,13 +315,7 @@ namespace Lab1
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            bool rez =  base.ProcessCmdKey(ref msg, keyData);
-            //int WM_KEYDOWN = 0x0100;
-
-            //if (keyData == Keys.Z && keyData == Keys.Control) label1.Text = "Ctrl-Z";
-            //if (keyData == Keys.LControlKey) label1.Text = "Ctrl";
-            //if (keyData == Keys.LShiftKey) label1.Text = "Shift";
-            //if (keyData == Keys.Z) label1.Text = "Z";
+            bool rez = base.ProcessCmdKey(ref msg, keyData);
             if (keyData == Keys.Delete && CurrFig != -1) DeleteFigure();
             if (keyData == Keys.Enter && CurrFig != -1) Confirmation();
             if (keyData == Keys.Back && CurrFig == -1) BackStep();
@@ -334,11 +323,6 @@ namespace Lab1
             if (keyData == Keys.F && rbFillOff.Checked == true) rbFillOn.Checked = true;
             if (keyData == Keys.G && rbFillOn.Checked == true) rbFillOff.Checked = true;
             if (keyData == Keys.W) ActiveControl = trackbarWidth;
-            //if (keyData == Keys.Right && trackbarWidth.Value < 10) trackbarWidth.Value++;
-            //if (keyData == Keys.Left && trackbarWidth.Value > 1) trackbarWidth.Value--;
-            
-            //if (msg.Msg == WM_KEYDOWN && keyData == Keys.Z) label1.Text = "Pressed key Z";
-
             return rez;
         }
 
@@ -373,7 +357,7 @@ namespace Lab1
         {          
             if (e.Button == MouseButtons.Left)
             {
-                if (isMoved && !isPointer) MU_NewFigureDraw(e);
+                if (isMoved && !isPointer && !isOpenFile) MU_NewFigureDraw(e);
                 if (!isMoved && !isPointer && !isOpenFile) FigList.Remove(FigList.Size() - 1);
                 if (isMoved && isPointer) MU_CurrentFigureEditEnd(e);
             }
@@ -406,20 +390,20 @@ namespace Lab1
             MessageBoxButtons buttons = MessageBoxButtons.OK;
             DialogResult result;
             result = MessageBox.Show(message, caption, buttons);
-        }
-
-        private void MessageBoxWrongDll(string message)
-        {
-            MessageBoxButtons buttons = MessageBoxButtons.OK;
-            DialogResult result;
-            result = MessageBox.Show(message, "Assembly error." , buttons);
-        }
+        }       
 
         private void MessageBoxException(string ex)
         {
             MessageBoxButtons buttons = MessageBoxButtons.OK;
             DialogResult result;
             result = MessageBox.Show(ex, "Error!.", buttons);
+        }
+
+        private void MessageBoxWrongDll(string message)
+        {
+            MessageBoxButtons buttons = MessageBoxButtons.OK;
+            DialogResult result;
+            result = MessageBox.Show(message, "Assembly error.", buttons);
         }
 
         private void MD_CurrentFigureSelect(MouseEventArgs ee)
@@ -480,29 +464,17 @@ namespace Lab1
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            isOpenFile = true;
             sfdlgSave.InitialDirectory = Application.StartupPath.ToString() + "\\SavedPictures";
             if (sfdlgSave.ShowDialog() != DialogResult.Cancel)
             {
                 if (sfdlgSave.FileName != "")
                 {
                     FileStream fs = (FileStream)sfdlgSave.OpenFile();
-                    //FileStream fs = new FileStream("./rez.txt", FileMode.Open, FileAccess.ReadWrite);
-                    binser = new BinSerializer();
-                    //fs.Close();
-
-                    for (int i = 0; i< FigList.Size(); i++)
-                    {
-                        serfig = new SerialFigure(FigList.Item(i));
-                        SerFigsList.Add(serfig);
-                        
-                    }
-
-                    binser.SaveFig(fs, SerFigsList);
-                    //binser.SaveFig(fs, figure);
-
-                    //binser.Save(fs, FigList);
-                    //binser.Save("./rez1.txt", FigList);
+                    binser = new MyCustomFiguresListBinarySerializer();
+                    binser.SaveFiguresList(fs, FigList);
                     fs.Close();
+              
                 }
             }
         }
@@ -517,9 +489,8 @@ namespace Lab1
                 {                
                     FileStream fs = (FileStream)ofdlgLoad.OpenFile();
 
-                    binser = new BinSerializer();
+                    binser = new MyCustomFiguresListBinarySerializer();
                     FigList.Clear();
-                    SerFigsList.Clear();
                     lboxFigures.Items.Clear();
                     CurrFig = -1;
                     isPressed = false;
@@ -527,32 +498,7 @@ namespace Lab1
                     isChanged = false;
                     try
                     {
-                        //FigList = (FiguresList.FigureList)binser.Load(fs);
-                        //FileStream fs = new FileStream("./rez.txt", FileMode.Open, FileAccess.ReadWrite);
-
-                        SerFigsList = (SerialFiguresList)binser.LoadFig(fs);
-                        for (int i = 0; i < SerFigsList.Size(); i++)
-                        {
-                            Type typ = null;
-                            //Type typ = Type.GetType(SerFigsList.Item(i).figtype);
-                            for (int j = 0; j < TypesList.Count(); j++)
-                            {
-                                if (TypesList[j].FullName == SerFigsList.Item(i).figtype) typ = TypesList[j];
-                            }
-                            richTextBox1.AppendText(SerFigsList.Item(i).figtype + " " + SerFigsList.Item(i).Name + " " + SerFigsList.Item(i).penColor + "\n");
-                            
-                            richTextBox1.AppendText(typ.Name + "\n");
-                            var pen = new Pen(SerFigsList.Item(i).penColor, SerFigsList.Item(i).penWidth);
-                            var fig = (Figure.Figure)Activator.CreateInstance(typ, new Object[] { pen, SerFigsList.Item(i).X1, SerFigsList.Item(i).Y1, SerFigsList.Item(i).X2, SerFigsList.Item(i).Y2 });
-                            if (fig is MyInterfaces.IFillingable) ((MyInterfaces.IFillingable)fig).isFilled = SerFigsList.Item(i).isFilled;
-                            FigList.Add(fig);
-                        }
-
-                        //figure = (Figure.Figure)binser.Load(fs);
-                        //FigList.Add(figure);
-                        //FileStream fs = new FileStream("./rez.txt", FileMode.Open, FileAccess.ReadWrite);
-                        //figure = binser.LoadFig(fs);
-                        //binser.Load(ofdlgLoad.FileName);
+                        FigList = binser.LoadFiguresList(fs, TypesList);
                         fs.Close();
                     }
                     catch (System.Runtime.Serialization.SerializationException ee)
@@ -561,8 +507,6 @@ namespace Lab1
                         DialogResult result;
                         result = MessageBox.Show(ee.Message, "Loading error.", buttons);
                     }
-
-                    FigList.Add(figure);
                     FigList.PrintList(lboxFigures);
                     grRez.Clear(Color.Transparent);
                     grMajor.Clear(Color.Transparent);
@@ -572,78 +516,13 @@ namespace Lab1
                 }
             }
         }
-
-        private void AddHash(string asm, byte[] key)
-        {
-            FileStream file = new FileStream(asm, FileMode.Open, FileAccess.Read);
-            HMACSHA1 hmac = new HMACSHA1(key);
-            byte[] hashValue = hmac.ComputeHash(file);
-            file.Close();
-
-            file = new FileStream(asm, FileMode.Append, FileAccess.Write);
-            byte[] cryptedHash = EncryptHashByRSA(hashValue, 4207, 55973);
-            file.Write(cryptedHash, 0, cryptedHash.Length);
-            file.Close();
-
-            //string Hash = BitConverter.ToString(hashValue);
-            //string Cryp = BitConverter.ToString(cryptedHash);
-            //richTextBox1.AppendText("Hash: " + Hash + "\n");
-            //richTextBox1.AppendText("Cryp: " + Cryp + "\n\n");
-        }
-
-        private void RemoveByte(string file, int countOfByte)
-        {
-            var bData = File.ReadAllBytes(file);
-            Array.Resize(ref bData, bData.Length - countOfByte);
-            File.WriteAllBytes(file, bData);
-        }
-
-        private bool CheckingAssemblySignature(string asm, byte[] key)
-        {
-            FileStream file = new FileStream(asm, FileMode.Open, FileAccess.ReadWrite);
-            if (file.Length < 20) return false;
-            byte[] readhash = new byte[40];
-            file.Seek(-40, SeekOrigin.End);
-            file.Read(readhash, 0, 40);
-            file.Close();
-            RemoveByte(asm, 40);
-            byte[] decrhash = new byte[20];
-            decrhash = DecryptHashByRSA(readhash, 343, 55973);
-
-            file = new FileStream(asm, FileMode.Open, FileAccess.ReadWrite);
-            HMACSHA1 hmac = new HMACSHA1(key);
-            byte[] hashValue = hmac.ComputeHash(file);
-            file.Seek(0, SeekOrigin.End);
-            file.Write(readhash, 0, 40);
-            file.Close();
-
-            //string decr = BitConverter.ToString(decrhash);
-            //string read = BitConverter.ToString(readhash);
-            //string calc = BitConverter.ToString(hashValue);       
-            //richTextBox1.AppendText("Read: " + read + "\n");
-            //richTextBox1.AppendText("Decr: " + decr + "\n");
-            //richTextBox1.AppendText("Calc: " + calc + "\n\n");
-
-            for (int i = 1; i < 20; i++)
-                if (hashValue[i] != decrhash[i]) return false;                       
-            return true;
-        }
-
+    
         private void ConnectFiguresAssemblies()
         {
             try
             {
                 int top = 65;
-
-                Dlls = Directory.GetFiles(Application.StartupPath + "\\Dlls", "*.dll");
-                foreach (var lib in Dlls)
-                {
-                    //AddHash(lib, SHAKey);
-                    //DllList.Add(lib);
-
-                    if (CheckingAssemblySignature(lib, SHAKey)) DllList.Add(lib);
-                    else MessageBoxWrongDll("Error of connecting " + lib.ToString() + " to application: wrong file.");
-                }
+            
                 foreach (var lib in DllList)
                 {
                     Assembly asm = Assembly.LoadFile(lib);
@@ -664,76 +543,20 @@ namespace Lab1
                         nextRB.Height = 21;
                         TypesList.Add(typ[0]);
                         //figure = (Figure.Figure)Activator.CreateInstance(typ[0], new Object[] { CurrPen, 0, 0, 0, 0 });
-                        if (figure.GetName().Length > 11 ) nextRB.Text = figure.GetName().Substring(0, 10);
+                        if (figure.GetName().Length > 11) nextRB.Text = figure.GetName().Substring(0, 10);
                         else nextRB.Text = figure.GetName();
                         nextRB.CheckedChanged += (a, b) => { figure = (Figure.Figure)Activator.CreateInstance(typ[0], new Object[] { CurrPen, 0, 0, 0, 0 }); isChanged = true; isPointer = false; };
                         top += 27;
                         nextRB.Checked = true;
-                        NamesList.Add(figure.GetName());               
+                        NamesList.Add(figure.GetName());
                     }
                     else MessageBoxWrongDll("There is a repeated figure name \"" + figure.GetName() + "\" in assemblies.");
-                }
-                foreach (var typ in TypesList)
-                {
-                    richTextBox1.AppendText(typ.FullName + "\n");
                 }
             }
             catch (Exception e)
             {
                 MessageBoxException(e.Message);
             }
-        }
-
-        private byte[] EncryptHashByRSA(byte[] hash, ulong exp, ulong prod)
-        {
-            byte[] crhash = new byte[40];
-            for (int i = 0; i < 20; i++)
-            {
-                //hash[0] = 31;
-                ulong word = FastExp(hash[i], exp, prod);
-                //ulong word = FastExp(31, 4207, 55973);
-                //richTextBox1.AppendText("0: " + hash[0] + " : " + word + "\n");
-                //richTextBox1.AppendText(i + ": " + hash[i] + " : " + word + "\n");
-                byte byte1 = (byte)(word >> 8);
-                byte byte2 = (byte)word;
-                crhash[i * 2 + 0] = byte1;
-                crhash[i * 2 + 1] = byte2;
-
-            }
-            return crhash;
-        }
-
-        private byte[] DecryptHashByRSA(byte[] hash, ulong exp, ulong prod)
-        {
-            byte[] dechash = new byte[20];
-            for (int i = 0; i < 20; i++)
-            {
-                ulong temp = 0;
-                temp = temp | hash[i * 2 + 0];
-                temp = temp << 8;
-                temp = temp | hash[i * 2 + 1];
-                ulong rez = FastExp(temp, exp, prod);
-                dechash[i] = (byte)rez;
-            }
-            return dechash;
-        }
-
-        private ulong FastExp(ulong a, ulong z, ulong n)
-        {
-            ulong a1 = a;
-            ulong z1 = z;
-            ulong x = 1;
-            while (z1 != 0)
-            {
-                while (z1 % 2 == 0)
-                {
-                    z1 = z1 / 2;
-                    a1 = (a1 * a1) % n;
-                }
-                z1 = z1 - 1;
-                x = ((x * a1) + n) % n;
-            }
-            return x;
         }
 
     }

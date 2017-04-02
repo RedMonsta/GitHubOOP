@@ -8,76 +8,47 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace Lab1
 {
-    public class BinSerializer
+    public class MyCustomFiguresListBinarySerializer
     {
         private BinaryFormatter formatter { get; set; }
 
-        public BinSerializer()
+        public MyCustomFiguresListBinarySerializer()
         {
             formatter = new BinaryFormatter();
         }
 
-        public void Save(string destname, FigureList figs)
+        public void SaveFiguresList(FileStream fs, FiguresList.FigureList figs)
         {
-            File.Delete(destname);
+            SerialFiguresList SerFigsList = new SerialFiguresList(); ;
             for (int i = 0; i < figs.Size(); i++)
             {
-                FileStream tempfile = new FileStream("./temp.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
-                formatter.Serialize(tempfile, figs.Item(i));
-                tempfile.Close();
-                StreamReader reader = new StreamReader("./temp.txt", Encoding.UTF8);              
-                StreamWriter sw = File.AppendText(destname);
-                sw.WriteLine("{");
-                sw.Write(reader.ReadToEnd());
-                sw.WriteLine();
-                sw.WriteLine("}");
-                sw.Close();
-                reader.Close();
-                //File.Delete("./temp.txt");
+                SerialFigure serfig = new SerialFigure(figs.Item(i));
+                SerFigsList.Add(serfig);
             }
-
+            formatter.Serialize(fs, SerFigsList);
         }
 
-        //public void Load(string srcname)
-        //{
-        //    StreamReader reader = new StreamReader(srcname, Encoding.UTF8);
-        //    //StreamWriter sw = File.AppendText("./rez.txt");
-        //    StreamWriter sw = File.CreateText("./rez1.txt");
-        //    while (!reader.EndOfStream)
-        //    {
-        //        string temp = reader.ReadLine();
-        //        if (temp == "{")
-        //        {
-        //            string line = "";
-        //            while (true)
-        //            {
-        //                line = reader.ReadLine();
-        //                if (line == "}") break;
-        //                else sw.WriteLine(line);
-        //            }
-        //            break;
-        //        }
-
-        //    }
-        //    sw.Close();
-        //    reader.Close();
-        //}
-
-
-        public void SaveFig(FileStream fs, object obj)
+        public FiguresList.FigureList LoadFiguresList(FileStream fs, List<Type> types)
         {
-            formatter.Serialize(fs, obj);
+            FiguresList.FigureList Rezlist = new FiguresList.FigureList();
+            SerialFiguresList SerFigsList = (SerialFiguresList)formatter.Deserialize(fs);
+            for (int i = 0; i < SerFigsList.Size(); i++)
+            {
+                Type typ = null;
+                for (int j = 0; j < types.Count(); j++)
+                {
+                    if (types[j].FullName == SerFigsList.Item(i).figtype) typ = types[j];
+                }
+                var pen = new Pen(SerFigsList.Item(i).penColor, SerFigsList.Item(i).penWidth);
+                var fig = (Figure.Figure)Activator.CreateInstance(typ, new Object[] { pen, SerFigsList.Item(i).X1, SerFigsList.Item(i).Y1, SerFigsList.Item(i).X2, SerFigsList.Item(i).Y2 });
+                if (fig is MyInterfaces.IFillingable) ((MyInterfaces.IFillingable)fig).isFilled = SerFigsList.Item(i).isFilled;
+                Rezlist.Add(fig);
+            }
+            return Rezlist;           
         }
-
-        public object LoadFig(FileStream fs)
-        {
-            return formatter.Deserialize(fs);
-        }
-
-    }
-
-    
+    }   
 }

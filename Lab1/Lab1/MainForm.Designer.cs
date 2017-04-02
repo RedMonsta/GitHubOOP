@@ -316,7 +316,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button btnColor;
         private System.Windows.Forms.ColorDialog colorDialog1;
-        private System.Windows.Forms.GroupBox grboxFigures;
         private System.Windows.Forms.Button btnBackColor;
         private System.Windows.Forms.ColorDialog colorDialog2;
         private System.Windows.Forms.Button btnClear;
@@ -335,7 +334,8 @@
         private System.Windows.Forms.GroupBox grboxFill;
         private System.Windows.Forms.RadioButton rbFillOff;
         private System.Windows.Forms.RadioButton rbFillOn;
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        public System.Windows.Forms.RichTextBox richTextBox1;
+        public System.Windows.Forms.GroupBox grboxFigures;
     }
 }
 
