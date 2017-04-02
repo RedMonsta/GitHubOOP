@@ -50,6 +50,7 @@
             this.grboxFill = new System.Windows.Forms.GroupBox();
             this.rbFillOff = new System.Windows.Forms.RadioButton();
             this.rbFillOn = new System.Windows.Forms.RadioButton();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.grboxFigures.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackbarWidth)).BeginInit();
@@ -268,12 +269,21 @@
             this.rbFillOn.UseVisualStyleBackColor = true;
             this.rbFillOn.CheckedChanged += new System.EventHandler(this.rbFillOn_CheckedChanged);
             // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(397, 347);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(751, 234);
+            this.richTextBox1.TabIndex = 29;
+            this.richTextBox1.Text = "";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1303, 815);
+            this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.grboxFill);
             this.Controls.Add(this.btnDel);
             this.Controls.Add(this.lblWidth);
@@ -325,6 +335,7 @@
         private System.Windows.Forms.GroupBox grboxFill;
         private System.Windows.Forms.RadioButton rbFillOff;
         private System.Windows.Forms.RadioButton rbFillOn;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }
 

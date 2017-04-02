@@ -28,6 +28,8 @@ namespace Lab1
             DoubleBuffered = true;
             DllList = new List<string>();
             NamesList = new List<string>();
+            SerFigsList = new SerialFiguresList();
+            TypesList = new List<Type>();
 
             SHAKey = BitConverter.GetBytes(0x67452301EFCDAB89);
 
@@ -71,6 +73,9 @@ namespace Lab1
         private List<string> DllList;
         private List<string> NamesList;
         private byte[] SHAKey;
+        private SerialFiguresList SerFigsList;
+        private SerialFigure serfig;
+        private List<Type> TypesList;
 
         private int CursorPos { get; set; }
 
@@ -242,7 +247,7 @@ namespace Lab1
             grMajor.DrawImage(Layers[1], 0, 0);
             BackSteps = 0;
             CurrFig = -1;
-
+            //richTextBox1.AppendText(FigList.Last.GetType().ToString() + "\n");
             //this.ActiveControl = btnConfirm;
         }
 
@@ -417,8 +422,6 @@ namespace Lab1
             result = MessageBox.Show(ex, "Error!.", buttons);
         }
 
-
-
         private void MD_CurrentFigureSelect(MouseEventArgs ee)
         {
             lboxFigures.SelectedIndex = CurrFig;
@@ -483,8 +486,23 @@ namespace Lab1
                 if (sfdlgSave.FileName != "")
                 {
                     FileStream fs = (FileStream)sfdlgSave.OpenFile();
+                    //FileStream fs = new FileStream("./rez.txt", FileMode.Open, FileAccess.ReadWrite);
                     binser = new BinSerializer();
-                    binser.Save(fs, FigList);
+                    //fs.Close();
+
+                    for (int i = 0; i< FigList.Size(); i++)
+                    {
+                        serfig = new SerialFigure(FigList.Item(i));
+                        SerFigsList.Add(serfig);
+                        
+                    }
+
+                    binser.SaveFig(fs, SerFigsList);
+                    //binser.SaveFig(fs, figure);
+
+                    //binser.Save(fs, FigList);
+                    //binser.Save("./rez1.txt", FigList);
+                    fs.Close();
                 }
             }
         }
@@ -498,14 +516,53 @@ namespace Lab1
                 if (ofdlgLoad.FileName != "")
                 {                
                     FileStream fs = (FileStream)ofdlgLoad.OpenFile();
+
                     binser = new BinSerializer();
                     FigList.Clear();
+                    SerFigsList.Clear();
                     lboxFigures.Items.Clear();
                     CurrFig = -1;
                     isPressed = false;
                     isMoved = false;
                     isChanged = false;
-                    FigList = (FigureList)binser.Load(fs);
+                    try
+                    {
+                        //FigList = (FiguresList.FigureList)binser.Load(fs);
+                        //FileStream fs = new FileStream("./rez.txt", FileMode.Open, FileAccess.ReadWrite);
+
+                        SerFigsList = (SerialFiguresList)binser.LoadFig(fs);
+                        for (int i = 0; i < SerFigsList.Size(); i++)
+                        {
+                            Type typ = null;
+                            //Type typ = Type.GetType(SerFigsList.Item(i).figtype);
+                            for (int j = 0; j < TypesList.Count(); j++)
+                            {
+                                if (TypesList[j].FullName == SerFigsList.Item(i).figtype) typ = TypesList[j];
+                            }
+                            richTextBox1.AppendText(SerFigsList.Item(i).figtype + " " + SerFigsList.Item(i).Name + " " + SerFigsList.Item(i).penColor + "\n");
+                            
+                            richTextBox1.AppendText(typ.Name + "\n");
+                            var pen = new Pen(SerFigsList.Item(i).penColor, SerFigsList.Item(i).penWidth);
+                            var fig = (Figure.Figure)Activator.CreateInstance(typ, new Object[] { pen, SerFigsList.Item(i).X1, SerFigsList.Item(i).Y1, SerFigsList.Item(i).X2, SerFigsList.Item(i).Y2 });
+                            if (fig is MyInterfaces.IFillingable) ((MyInterfaces.IFillingable)fig).isFilled = SerFigsList.Item(i).isFilled;
+                            FigList.Add(fig);
+                        }
+
+                        //figure = (Figure.Figure)binser.Load(fs);
+                        //FigList.Add(figure);
+                        //FileStream fs = new FileStream("./rez.txt", FileMode.Open, FileAccess.ReadWrite);
+                        //figure = binser.LoadFig(fs);
+                        //binser.Load(ofdlgLoad.FileName);
+                        fs.Close();
+                    }
+                    catch (System.Runtime.Serialization.SerializationException ee)
+                    {
+                        MessageBoxButtons buttons = MessageBoxButtons.OK;
+                        DialogResult result;
+                        result = MessageBox.Show(ee.Message, "Loading error.", buttons);
+                    }
+
+                    FigList.Add(figure);
                     FigList.PrintList(lboxFigures);
                     grRez.Clear(Color.Transparent);
                     grMajor.Clear(Color.Transparent);
@@ -605,6 +662,7 @@ namespace Lab1
                         nextRB.Top = top;
                         nextRB.Width = 100;
                         nextRB.Height = 21;
+                        TypesList.Add(typ[0]);
                         //figure = (Figure.Figure)Activator.CreateInstance(typ[0], new Object[] { CurrPen, 0, 0, 0, 0 });
                         if (figure.GetName().Length > 11 ) nextRB.Text = figure.GetName().Substring(0, 10);
                         else nextRB.Text = figure.GetName();
@@ -615,22 +673,15 @@ namespace Lab1
                     }
                     else MessageBoxWrongDll("There is a repeated figure name \"" + figure.GetName() + "\" in assemblies.");
                 }
+                foreach (var typ in TypesList)
+                {
+                    richTextBox1.AppendText(typ.FullName + "\n");
+                }
             }
             catch (Exception e)
             {
                 MessageBoxException(e.Message);
             }
-        }
-
-        private int SwapBytes(ulong num)
-        {
-            byte byte1 = (byte)(num >> 8);
-            byte byte2 = (byte)num;
-            int rez = 0;
-            rez = rez | byte2;
-            rez = rez << 8;
-            rez = rez | byte1;
-            return rez;
         }
 
         private byte[] EncryptHashByRSA(byte[] hash, ulong exp, ulong prod)
@@ -684,7 +735,6 @@ namespace Lab1
             }
             return x;
         }
-
 
     }
 }
