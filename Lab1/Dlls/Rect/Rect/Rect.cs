@@ -42,7 +42,9 @@ namespace Rect
 
         public override Figure.Figure Copy()
         {
-            return new Rect(new Pen(pen.color, pen.Width), X1, Y1, X2, Y2);
+            var rect = new Rect(new Pen(pen.color, pen.Width), X1, Y1, X2, Y2);
+            rect.isFilled = isFilled;
+            return rect;
         }
     }
 }
