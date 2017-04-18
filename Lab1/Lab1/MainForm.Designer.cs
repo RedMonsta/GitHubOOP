@@ -51,6 +51,8 @@
             this.rbFillOff = new System.Windows.Forms.RadioButton();
             this.rbFillOn = new System.Windows.Forms.RadioButton();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.btnMkUsrFig = new System.Windows.Forms.Button();
+            this.btnLdUsrFig = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.grboxFigures.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackbarWidth)).BeginInit();
@@ -88,7 +90,7 @@
             this.grboxFigures.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.grboxFigures.Location = new System.Drawing.Point(27, 25);
             this.grboxFigures.Name = "grboxFigures";
-            this.grboxFigures.Size = new System.Drawing.Size(111, 268);
+            this.grboxFigures.Size = new System.Drawing.Size(111, 293);
             this.grboxFigures.TabIndex = 12;
             this.grboxFigures.TabStop = false;
             this.grboxFigures.Text = "Instruments";
@@ -141,9 +143,9 @@
             // lboxFigures
             // 
             this.lboxFigures.FormattingEnabled = true;
-            this.lboxFigures.Location = new System.Drawing.Point(30, 399);
+            this.lboxFigures.Location = new System.Drawing.Point(30, 438);
             this.lboxFigures.Name = "lboxFigures";
-            this.lboxFigures.Size = new System.Drawing.Size(101, 355);
+            this.lboxFigures.Size = new System.Drawing.Size(101, 316);
             this.lboxFigures.TabIndex = 20;
             this.lboxFigures.TabStop = false;
             this.lboxFigures.SelectedIndexChanged += new System.EventHandler(this.lboxFigures_SelectedIndexChanged);
@@ -159,7 +161,7 @@
             // 
             // btnConfirm
             // 
-            this.btnConfirm.Location = new System.Drawing.Point(27, 313);
+            this.btnConfirm.Location = new System.Drawing.Point(27, 347);
             this.btnConfirm.Name = "btnConfirm";
             this.btnConfirm.Size = new System.Drawing.Size(104, 63);
             this.btnConfirm.TabIndex = 22;
@@ -170,7 +172,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(1096, 26);
+            this.btnSave.Location = new System.Drawing.Point(1096, 4);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(91, 58);
             this.btnSave.TabIndex = 23;
@@ -188,7 +190,7 @@
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(1193, 26);
+            this.btnLoad.Location = new System.Drawing.Point(1193, 5);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(85, 56);
             this.btnLoad.TabIndex = 24;
@@ -277,12 +279,34 @@
             this.richTextBox1.TabIndex = 29;
             this.richTextBox1.Text = "";
             // 
+            // btnMkUsrFig
+            // 
+            this.btnMkUsrFig.Location = new System.Drawing.Point(1096, 68);
+            this.btnMkUsrFig.Name = "btnMkUsrFig";
+            this.btnMkUsrFig.Size = new System.Drawing.Size(91, 43);
+            this.btnMkUsrFig.TabIndex = 30;
+            this.btnMkUsrFig.Text = "MkUsrFig";
+            this.btnMkUsrFig.UseVisualStyleBackColor = true;
+            this.btnMkUsrFig.Click += new System.EventHandler(this.btnMkUsrFig_Click);
+            // 
+            // btnLdUsrFig
+            // 
+            this.btnLdUsrFig.Location = new System.Drawing.Point(1202, 68);
+            this.btnLdUsrFig.Name = "btnLdUsrFig";
+            this.btnLdUsrFig.Size = new System.Drawing.Size(75, 42);
+            this.btnLdUsrFig.TabIndex = 31;
+            this.btnLdUsrFig.Text = "LdUsrFig";
+            this.btnLdUsrFig.UseVisualStyleBackColor = true;
+            this.btnLdUsrFig.Click += new System.EventHandler(this.btnLdUsrFig_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1303, 815);
+            this.Controls.Add(this.btnLdUsrFig);
+            this.Controls.Add(this.btnMkUsrFig);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.grboxFill);
             this.Controls.Add(this.btnDel);
@@ -336,6 +360,8 @@
         private System.Windows.Forms.RadioButton rbFillOn;
         public System.Windows.Forms.RichTextBox richTextBox1;
         public System.Windows.Forms.GroupBox grboxFigures;
+        private System.Windows.Forms.Button btnMkUsrFig;
+        private System.Windows.Forms.Button btnLdUsrFig;
     }
 }
 

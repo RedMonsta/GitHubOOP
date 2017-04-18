@@ -28,6 +28,7 @@ namespace Figure
         }
 
         public abstract void Draw(Graphics gr);
+        public abstract Figure Copy();
         //public abstract void Fill(Graphics gr);
 
         public void Check()
@@ -119,7 +120,7 @@ namespace Figure
             }
         }
 
-        public void ChangePen(Pen pens)
+        public virtual void ChangePen(Pen pens)
         {
             pen.color = pens.Color;
             pen.Width = pens.Width;

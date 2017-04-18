@@ -35,7 +35,7 @@
   <ItemGroup>
     <Reference Include="Figure, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Figure.dll</HintPath>
+      <HintPath>..\Dlls\Figure\Figure\bin\Debug\Figure.dll</HintPath>
     </Reference>
     <Reference Include="FiguresList, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -72,6 +72,7 @@
     <Compile Include="BinSerializer.cs" />
     <Compile Include="SerialFigure.cs" />
     <Compile Include="SerialFiguresList.cs" />
+    <Compile Include="UserFigure.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

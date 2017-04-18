@@ -34,7 +34,7 @@ namespace Lab1
 
         public FiguresList.FigureList LoadFiguresList(FileStream fs, List<Type> types)
         {
-            FiguresList.FigureList Rezlist = new FiguresList.FigureList();
+            FiguresList.FigureList Rezlist = new FiguresList.FigureList();          
             SerialFiguresList SerFigsList = (SerialFiguresList)formatter.Deserialize(fs);
             for (int i = 0; i < SerFigsList.Size(); i++)
             {
@@ -43,12 +43,17 @@ namespace Lab1
                 {
                     if (types[j].FullName == SerFigsList.Item(i).figtype) typ = types[j];
                 }
+                if (typ == null)
+                {
+                    throw new System.Runtime.Serialization.SerializationException("Unable to load item " + SerFigsList.Item(i).figtype + ": Assembly is not found.");
+                }
                 var pen = new Pen(SerFigsList.Item(i).penColor, SerFigsList.Item(i).penWidth);
                 var fig = (Figure.Figure)Activator.CreateInstance(typ, new Object[] { pen, SerFigsList.Item(i).X1, SerFigsList.Item(i).Y1, SerFigsList.Item(i).X2, SerFigsList.Item(i).Y2 });
                 if (fig is MyInterfaces.IFillingable) ((MyInterfaces.IFillingable)fig).isFilled = SerFigsList.Item(i).isFilled;
                 Rezlist.Add(fig);
             }
-            return Rezlist;           
+            return Rezlist;      
+                
         }
     }   
 }

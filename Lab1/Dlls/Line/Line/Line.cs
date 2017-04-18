@@ -19,5 +19,10 @@ namespace Line
         }
 
         public bool isSelected { get; set; }
+
+        public override Figure.Figure Copy()
+        {
+            return new Line(new Pen(pen.color, pen.Width), X1, Y1, X2, Y2);
+        }
     }
 }

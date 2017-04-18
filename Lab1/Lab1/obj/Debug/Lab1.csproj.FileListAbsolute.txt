@@ -33,4 +33,6 @@ D:\БГУИР\GitHub\GitHubOOP\Lab1\Lab1\bin\Debug\Lab1.pdb
 D:\БГУИР\GitHub\GitHubOOP\Lab1\Lab1\obj\Debug\Lab1.MainForm.resources
 D:\БГУИР\GitHub\GitHubOOP\Lab1\Lab1\obj\Debug\Lab1.Properties.Resources.resources
 D:\БГУИР\GitHub\GitHubOOP\Lab1\Lab1\obj\Debug\Lab1.csproj.GenerateResource.Cache
+D:\БГУИР\GitHub\GitHubOOP\Lab1\Lab1\bin\Debug\Figure.dll
+D:\БГУИР\GitHub\GitHubOOP\Lab1\Lab1\bin\Debug\Figure.pdb
 D:\БГУИР\GitHub\GitHubOOP\Lab1\Lab1\obj\Debug\Lab1.csprojResolveAssemblyReference.cache

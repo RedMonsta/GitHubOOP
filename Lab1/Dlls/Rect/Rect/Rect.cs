@@ -39,5 +39,10 @@ namespace Rect
             grp.AddPolygon(points);
             gr.FillPath(br, grp);
         }
+
+        public override Figure.Figure Copy()
+        {
+            return new Rect(new Pen(pen.color, pen.Width), X1, Y1, X2, Y2);
+        }
     }
 }
