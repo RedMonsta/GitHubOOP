@@ -69,11 +69,11 @@ namespace Lab1
         private int BackSteps = 0, CurrFig = -1;
         private ActivePoints APoints;
         private MyCustomFiguresListBinarySerializer binser;
+        private MyCustomFiguresBinarySerializer userfigsbinser;
         private List<string> DllList;
         private List<string> NamesList;  
         public List<Type> TypesList;
         private UserFigure UserFig;
-        private int minx = 0, miny = 0, maxx = 0, maxy = 0;
         private Type typ;
 
         private int CursorPos { get; set; }
@@ -379,14 +379,18 @@ namespace Lab1
             isOpenFile = true;
             sfdlgSave.InitialDirectory = Application.StartupPath.ToString() + "\\UserFigures";
             if (sfdlgSave.ShowDialog() != DialogResult.Cancel)
+            //string name = Microsoft.VisualBasic.Interaction.InputBox("Creating figure...", "Enter name:");
             {
                 if (sfdlgSave.FileName != "")
+                //if (name != "")
                 {
+
                     FileStream fs = (FileStream)sfdlgSave.OpenFile();
                     binser = new MyCustomFiguresListBinarySerializer();
                     binser.SaveFiguresList(fs, FigList);
                     fs.Close();
                 }
+                //else MessageBoxError("Field couldn't be empty.", "Error");
             }
         }
 
@@ -394,6 +398,7 @@ namespace Lab1
         {
             isOpenFile = true;
             ofdlgLoad.InitialDirectory = Application.StartupPath.ToString() + "\\UserFigures";
+            int length = (Application.StartupPath.ToString() + "\\UserFigures").Length;
             if (ofdlgLoad.ShowDialog() != DialogResult.Cancel)
             {
                 if (ofdlgLoad.FileName != "")
@@ -421,16 +426,6 @@ namespace Lab1
                         result = MessageBox.Show(ee.Message, "Loading error.", buttons);
                     }
 
-
-
-                    minx = GetMinX1(usrlst);
-                    miny = GetMinY1(usrlst);
-                    maxx = GetMaxX2(usrlst);
-                    maxy = GetMaxY2(usrlst);
-
-                    //var usrfig = new UserFigure(usrlst, CurrPen, 0, 0, 0, 0, 1, 2, 3, 4);
-
-                    //UserFig = new UserFigure()
                     typ = Type.GetType("Lab1.UserFigure");
                     //typ = usrfig.GetType();
 
@@ -441,8 +436,10 @@ namespace Lab1
                     nextRB.Top = 120;
                     nextRB.Width = 100;
                     nextRB.Height = 21;
-                    nextRB.Text = "UserFigure";
-                    usrlst.PrintList(lboxFigures);
+                    //nextRB.Text = "UserFigure";
+                    string tmpstr = ofdlgLoad.FileName.Substring(length + 1);
+                    nextRB.Text = tmpstr.Remove(tmpstr.Length - 4);
+                    //usrlst.PrintList(lboxFigures);
                     nextRB.CheckedChanged += (a, b) => {
                         try
                         {
@@ -451,6 +448,7 @@ namespace Lab1
                                 figure = (Figure.Figure)Activator.CreateInstance(typ, new Object[] { usrlst, CurrPen, 0, 0, 0, 0 });
                                 isChanged = true;
                                 isPointer = false;
+                                
                             }
                         }
                         catch (Exception ee)
@@ -597,8 +595,18 @@ namespace Lab1
                 if (sfdlgSave.FileName != "")
                 {
                     FileStream fs = (FileStream)sfdlgSave.OpenFile();
-                    binser = new MyCustomFiguresListBinarySerializer();
-                    binser.SaveFiguresList(fs, FigList);
+                    //binser = new MyCustomFiguresListBinarySerializer();
+                    //binser.SaveFiguresList(fs, FigList);
+                    for (int i = 0; i < FigList.Size(); i++)
+                    {
+                        richTextBox1.AppendText(FigList.Item(i).GetName() + "\n");
+                        for (int j = 0; j < ((UserFigure)FigList.Item(i)).SourceFigures.Size(); j++)
+                        {
+                            richTextBox1.AppendText("   " + ((UserFigure)FigList.Item(i)).SourceFigures.Item(j).GetName() + "\n");
+                        }
+                    }
+                    userfigsbinser = new MyCustomFiguresBinarySerializer();
+                    userfigsbinser.SaveFiguresList(fs, FigList);
                     fs.Close();
               
                 }
@@ -615,7 +623,8 @@ namespace Lab1
                 {
                     FileStream fs = (FileStream)ofdlgLoad.OpenFile();
 
-                    binser = new MyCustomFiguresListBinarySerializer();
+                    //binser = new MyCustomFiguresListBinarySerializer();
+                    userfigsbinser = new MyCustomFiguresBinarySerializer();
                     FigList.Clear();
                     lboxFigures.Items.Clear();
                     CurrFig = -1;
@@ -624,7 +633,8 @@ namespace Lab1
                     isChanged = false;
                     try
                     {
-                        FigList = binser.LoadFiguresList(fs, TypesList);
+                        //FigList = binser.LoadFiguresList(fs, TypesList);
+                        FigList = userfigsbinser.LoadFiguresList(fs, TypesList);
                         fs.Close();
                     }
                     catch (System.Runtime.Serialization.SerializationException ee)
@@ -637,6 +647,11 @@ namespace Lab1
                     grRez.Clear(Color.Transparent);
                     grMajor.Clear(Color.Transparent);
                     FigList.DrawAll(grMajor);
+                    for (int i = 0; i < FigList.Size(); i++)
+                    {
+                        richTextBox1.AppendText(FigList.Item(i).X1.ToString() + " " + FigList.Item(i).Y1.ToString() + " " + FigList.Item(i).X2.ToString() + " " + FigList.Item(i).Y2.ToString() + "\n");
+
+                    }
                     grRez.DrawImage(Layers[2], 0, 0);
                     btnBack.Enabled = false;
                 }

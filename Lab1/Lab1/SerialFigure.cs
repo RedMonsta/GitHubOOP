@@ -18,6 +18,7 @@ namespace Lab1
         public int Direction { get; set; }
 
         public bool isFilled { get; set; }
+        public bool isUserFigure { get; set; }
 
         public string figtype { get; set; }
 
@@ -33,6 +34,7 @@ namespace Lab1
             Direction = fig.Direction;
             if (fig is MyInterfaces.IFillingable) isFilled = ((MyInterfaces.IFillingable)fig).isFilled;
             figtype = fig.GetType().ToString();
+            isUserFigure = fig.isUserFigure;
         }
     }
 }

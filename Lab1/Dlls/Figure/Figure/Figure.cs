@@ -17,6 +17,7 @@ namespace Figure
             pen.Width = pens.Width;
             Direction = 0;
             Name = "Figure";
+            isUserFigure = false;
             //isSelected = false;
             //isFilled = false;
         }
@@ -133,6 +134,7 @@ namespace Figure
 
         public Mypen pen;
         public int Direction { get; set; }
+        public bool isUserFigure { get; set; }
         //public bool isSelected { get; set; }
         //public bool isFilled { get; set; }
 
@@ -158,6 +160,11 @@ namespace Figure
         public string GetName()
         {
             return Name;
+        }
+
+        public void SetName(string name)
+        {
+            Name = name;
         }
     }
 }

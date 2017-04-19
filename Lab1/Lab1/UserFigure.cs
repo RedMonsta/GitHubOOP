@@ -8,10 +8,8 @@ using System.Windows.Forms;
 
 namespace Lab1
 {
-    public class UserFigure : Figure.Figure, MyInterfaces.ISelectable, MyInterfaces.IEditable, MyInterfaces.IFillingable//, MyInterfaces.IEditable, MyInterfaces.IFillingable, MyInterfaces.ISelectable
+    public class UserFigure : Figure.Figure, MyInterfaces.ISelectable, MyInterfaces.IEditable, MyInterfaces.IFillingable
     {
-        //public List<Figure.Figure> Primitives { get; set; }
-        // public List<Figure.Figure> SourceFigure { get; set; }
         public FiguresList.FigureList Primitives { get; set; }
         public FiguresList.FigureList SourceFigures { get; set; }
         public bool isSelected { get; set; }
@@ -25,16 +23,36 @@ namespace Lab1
 
         public UserFigure(FiguresList.FigureList srclist, Pen pens, int x1, int y1, int x2, int y2) : base(pens, x1, y1, x2, y2)
         {
-            SourceFigures = srclist;
+            //SourceFigures = srclist;
             Primitives = new FiguresList.FigureList();
             SourceFigures = new FiguresList.FigureList();
-            SourceFigures = srclist;
+            for (int i = 0; i < srclist.Size(); i++)
+            {
+                SourceFigures.Add(srclist.Item(i).Copy());
+            }
             for (int i = 0; i < srclist.Size(); i++)
             {
                 Primitives.Add(srclist.Item(i).Copy());
             }
             Name = "UserFigure";
             GetEdgeCoordinates();
+            GetRelativeCoords();
+        }
+
+        public UserFigure(Pen pens, int x1, int y1, int x2, int y2) : base(pens, x1, y1, x2, y2)
+        {
+            Primitives = new FiguresList.FigureList();
+            SourceFigures = new FiguresList.FigureList();
+            Name = "UserFigure";
+        }
+
+        public void OnDeserialize()
+        {
+            GetEdgeCoordinates();
+            for (int i = 0; i < SourceFigures.Size(); i++)
+            {
+                Primitives.Add(SourceFigures.Item(i).Copy());
+            }
             GetRelativeCoords();
         }
 
@@ -87,43 +105,35 @@ namespace Lab1
             //return new UserFigure( new Pen(pen.color, pen.Width), X1, Y1, X2, Y2);
         }
 
-        
-        public List<string> GetPrimitives()
-        {
-            var list = new List<string>();
-            for (int i = 0; i < Primitives.Size(); i++)
-            {
-                list.Add(Primitives.Item(i).GetName());
-            }
-            return list;
-
-        }
-
         private void GetEdgeCoordinates()
         {
-            MinX = SourceFigures.Item(0).X1;
-            for (int i = 0; i < SourceFigures.Size(); i++)
+            if (SourceFigures.Size() > 0)
             {
-                if (SourceFigures.Item(i).X1 < MinX) MinX = SourceFigures.Item(i).X1;
-            }
+                MinX = SourceFigures.Item(0).X1;
+                for (int i = 0; i < SourceFigures.Size(); i++)
+                {
+                    if (SourceFigures.Item(i).X1 < MinX) MinX = SourceFigures.Item(i).X1;
+                }
 
-            MinY = SourceFigures.Item(0).Y1;
-            for (int i = 0; i < SourceFigures.Size(); i++)
-            {
-                if (SourceFigures.Item(i).Y1 < MinY) MinY = SourceFigures.Item(i).Y1;
-            }
+                MinY = SourceFigures.Item(0).Y1;
+                for (int i = 0; i < SourceFigures.Size(); i++)
+                {
+                    if (SourceFigures.Item(i).Y1 < MinY) MinY = SourceFigures.Item(i).Y1;
+                }
 
-            MaxX = SourceFigures.Item(0).X2;
-            for (int i = 0; i < SourceFigures.Size(); i++)
-            {
-                if (SourceFigures.Item(i).X2 > MaxX) MaxX = SourceFigures.Item(i).X2;
-            }
+                MaxX = SourceFigures.Item(0).X2;
+                for (int i = 0; i < SourceFigures.Size(); i++)
+                {
+                    if (SourceFigures.Item(i).X2 > MaxX) MaxX = SourceFigures.Item(i).X2;
+                }
 
-            MaxY = SourceFigures.Item(0).Y2;
-            for (int i = 0; i < SourceFigures.Size(); i++)
-            {
-                if (SourceFigures.Item(i).Y2 > MaxY) MaxY = SourceFigures.Item(i).Y2;
+                MaxY = SourceFigures.Item(0).Y2;
+                for (int i = 0; i < SourceFigures.Size(); i++)
+                {
+                    if (SourceFigures.Item(i).Y2 > MaxY) MaxY = SourceFigures.Item(i).Y2;
+                }
             }
+            
         }
 
 

@@ -23,7 +23,7 @@ namespace Lab1
 
         public void SaveFiguresList(FileStream fs, FiguresList.FigureList figs)
         {
-            SerialFiguresList SerFigsList = new SerialFiguresList(); ;
+            SerialFiguresList SerFigsList = new SerialFiguresList(); 
             for (int i = 0; i < figs.Size(); i++)
             {
                 SerialFigure serfig = new SerialFigure(figs.Item(i));
@@ -45,7 +45,7 @@ namespace Lab1
                 }
                 if (typ == null)
                 {
-                    throw new System.Runtime.Serialization.SerializationException("Unable to load item " + SerFigsList.Item(i).figtype + ": Assembly is not found.");
+                    throw new SerializationException("Unable to load item " + SerFigsList.Item(i).figtype + ": Assembly is not found.");
                 }
                 var pen = new Pen(SerFigsList.Item(i).penColor, SerFigsList.Item(i).penWidth);
                 var fig = (Figure.Figure)Activator.CreateInstance(typ, new Object[] { pen, SerFigsList.Item(i).X1, SerFigsList.Item(i).Y1, SerFigsList.Item(i).X2, SerFigsList.Item(i).Y2 });
