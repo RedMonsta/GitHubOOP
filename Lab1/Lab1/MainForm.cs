@@ -27,12 +27,22 @@ namespace Lab1
             colorDialog2.Color = pictureBox1.BackColor;
             DoubleBuffered = true;
             DllList = new List<string>();
+            UserFigsList = new List<string>();
             NamesList = new List<string>();
+            UserNamesList = new List<string>();
             TypesList = new List<Type>();
+            SourceLists = new List<FiguresList.FigureList>();
+            CurrentList = new FiguresList.FigureList();
+            
 
             var Connecter = new AssembliesCollector();
             DllList = Connecter.GetRightFiguresAssemblies(Application.StartupPath + "\\Dlls");
             ConnectFiguresAssemblies();
+
+            var UserConnecter = new UserFiguresCollector();
+            UserFigsList = UserConnecter.GetRightFiguresAssemblies(Application.StartupPath + "\\UserFigures");
+            ConnectUserFigures();
+            
 
             btnConfirm.Enabled = false;
             btnDel.Enabled = false;
@@ -68,13 +78,19 @@ namespace Lab1
         private Figure.Figure figure;
         private int BackSteps = 0, CurrFig = -1;
         private ActivePoints APoints;
-        private MyCustomFiguresListBinarySerializer binser;
         private MyCustomFiguresBinarySerializer userfigsbinser;
         private List<string> DllList;
-        private List<string> NamesList;  
+        private List<string> UserFigsList;
+        private List<string> NamesList;
+        public List<string> UserNamesList;
+        public List<FiguresList.FigureList> SourceLists;
+        private FiguresList.FigureList CurrentList;
+        private string CurrentName;
+
+
         public List<Type> TypesList;
-        private UserFigure UserFig;
         private Type typ;
+        private int StartRBPos = 65;
 
         private int CursorPos { get; set; }
 
@@ -146,30 +162,33 @@ namespace Lab1
 
         private void lboxFigures_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (FigList.Item(lboxFigures.SelectedIndex) is MyInterfaces.ISelectable)
+            if (lboxFigures.SelectedIndex != -1)
             {
-                grEdit.Clear(Color.Transparent);
-                grRez.Clear(Color.Transparent);
-                lboxFigures.Enabled = false;
-                isPointer = true;
-                rbPointer.Checked = true;
-                grboxFigures.Enabled = false;
-                btnBack.Enabled = false;
-                btnClear.Enabled = false;
-                btnDel.Enabled = true;
-                grRez.DrawImage(Layers[2], 0, 0);
-                ((MyInterfaces.ISelectable)FigList.Item(lboxFigures.SelectedIndex)).SelectFigure(grEdit);
-                CurrFig = lboxFigures.SelectedIndex;
-                btnConfirm.Enabled = true;
-                grRez.DrawImage(Layers[4], 0, 0);
-                pictureBox1.Refresh();
-            }
-            else
-            {
-                MessageBoxError("You can't select this figure.", "Selecting error.");
-                //lboxFigures.ClearSelected();
-                lboxFigures.Items.Clear();
-                FigList.PrintList(lboxFigures);
+                if (FigList.Item(lboxFigures.SelectedIndex) is MyInterfaces.ISelectable)
+                {
+                    grEdit.Clear(Color.Transparent);
+                    grRez.Clear(Color.Transparent);
+                    lboxFigures.Enabled = false;
+                    isPointer = true;
+                    rbPointer.Checked = true;
+                    grboxFigures.Enabled = false;
+                    btnBack.Enabled = false;
+                    btnClear.Enabled = false;
+                    btnDel.Enabled = true;
+                    grRez.DrawImage(Layers[2], 0, 0);
+                    ((MyInterfaces.ISelectable)FigList.Item(lboxFigures.SelectedIndex)).SelectFigure(grEdit);
+                    CurrFig = lboxFigures.SelectedIndex;
+                    btnConfirm.Enabled = true;
+                    grRez.DrawImage(Layers[4], 0, 0);
+                    pictureBox1.Refresh();
+                }
+                else
+                {
+                    MessageBoxError("You can't select this figure.", "Selecting error.");
+                    //lboxFigures.ClearSelected();
+                    lboxFigures.Items.Clear();
+                    FigList.PrintList(lboxFigures);
+                }
             }
         }
 
@@ -237,6 +256,11 @@ namespace Lab1
 
         private void MU_NewFigureDraw(MouseEventArgs ee)
         {
+            for (int i = 0; i < FigList.Size(); i++)
+            {
+                richTextBox1.AppendText(FigList.Item(i).GetName() + "1\n");
+            }
+
             grRez.Clear(Color.Transparent);
             FigList.Last.Draw(grTemp);
             FigList.Last.Check();
@@ -246,6 +270,11 @@ namespace Lab1
             grMajor.DrawImage(Layers[1], 0, 0);
             BackSteps = 0;
             CurrFig = -1;
+
+            for (int i = 0; i < FigList.Size(); i++)
+            {
+                richTextBox1.AppendText(FigList.Item(i).GetName() + "2\n");
+            }
 
             //richTextBox1.AppendText(minx.ToString() + " " + miny.ToString() + " " + maxx.ToString() + " " + maxy.ToString() + "\n");
             richTextBox1.AppendText(FigList.Last.X1.ToString() + " " + FigList.Last.Y1.ToString() + " " + FigList.Last.X2.ToString() + " " + FigList.Last.Y2.ToString() + "\n");
@@ -333,10 +362,10 @@ namespace Lab1
             return rez;
         }
 
-        private void grboxFigures_Enter(object sender, EventArgs e)
-        {
-            ActiveControl = trackbarWidth;
-        }
+        //private void grboxFigures_Enter(object sender, EventArgs e)
+        //{
+        //    ActiveControl = trackbarWidth;
+        //}
 
         private void rbFillOn_CheckedChanged(object sender, EventArgs e)
         {
@@ -364,7 +393,7 @@ namespace Lab1
         {          
             if (e.Button == MouseButtons.Left)
             {
-                if (isMoved && !isPointer && !isOpenFile) MU_NewFigureDraw(e);
+                if (isMoved && !isPointer && !isOpenFile) MU_NewFigureDraw(e); 
                 if (!isMoved && !isPointer && !isOpenFile) FigList.Remove(FigList.Size() - 1);
                 if (isMoved && isPointer) MU_CurrentFigureEditEnd(e);
             }
@@ -377,106 +406,64 @@ namespace Lab1
         private void btnMkUsrFig_Click(object sender, EventArgs e)
         {
             isOpenFile = true;
-            sfdlgSave.InitialDirectory = Application.StartupPath.ToString() + "\\UserFigures";
-            if (sfdlgSave.ShowDialog() != DialogResult.Cancel)
-            //string name = Microsoft.VisualBasic.Interaction.InputBox("Creating figure...", "Enter name:");
+            //sfdlgSave.InitialDirectory = Application.StartupPath.ToString() + "\\UserFigures";
+            //if (sfdlgSave.ShowDialog() != DialogResult.Cancel)
+            string name = Microsoft.VisualBasic.Interaction.InputBox("Creating figure...", "Enter name:");
+            //richTextBox1.AppendText(name + "\n");
             {
-                if (sfdlgSave.FileName != "")
-                //if (name != "")
+                //if (sfdlgSave.FileName != "")
+                if (name != "")
                 {
-
-                    FileStream fs = (FileStream)sfdlgSave.OpenFile();
-                    binser = new MyCustomFiguresListBinarySerializer();
-                    binser.SaveFiguresList(fs, FigList);
-                    fs.Close();
-                }
-                //else MessageBoxError("Field couldn't be empty.", "Error");
-            }
-        }
-
-        private void btnLdUsrFig_Click(object sender, EventArgs e)
-        {
-            isOpenFile = true;
-            ofdlgLoad.InitialDirectory = Application.StartupPath.ToString() + "\\UserFigures";
-            int length = (Application.StartupPath.ToString() + "\\UserFigures").Length;
-            if (ofdlgLoad.ShowDialog() != DialogResult.Cancel)
-            {
-                if (ofdlgLoad.FileName != "")
-                {
-                    FileStream fs = (FileStream)ofdlgLoad.OpenFile();
-                    binser = new MyCustomFiguresListBinarySerializer();
-                    //FigList.Clear();
-                    //var UserFig = new UserFigure()
-
-                    lboxFigures.Items.Clear();
-                    CurrFig = -1;
-                    isPressed = false;
-                    isMoved = false;
-                    isChanged = false;
-                    try
+                    if (!IsExistName(name))
                     {
-                        usrlst = binser.LoadFiguresList(fs, TypesList);
-                        //FigList = binser.LoadFiguresList(fs, TypesList);
+                        FileStream fs = new FileStream(Application.StartupPath.ToString() + "\\UserFigures\\" + name + ".ufg", FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                        userfigsbinser = new MyCustomFiguresBinarySerializer();
+                        var transformer = new UserFiguresTransformer();
+                        var tmplist = transformer.TransformToFullList(FigList);
+                        userfigsbinser.SaveFiguresList(fs, tmplist);
                         fs.Close();
-                    }
-                    catch (System.Runtime.Serialization.SerializationException ee)
-                    {
-                        MessageBoxButtons buttons = MessageBoxButtons.OK;
-                        DialogResult result;
-                        result = MessageBox.Show(ee.Message, "Loading error.", buttons);
-                    }
 
-                    typ = Type.GetType("Lab1.UserFigure");
-                    //typ = usrfig.GetType();
-
-                    //typ = Type.GetType("Figure.Figure");
-                    var nextRB = new RadioButton();
-                    nextRB.Parent = grboxFigures;
-                    nextRB.Left = 8;
-                    nextRB.Top = 120;
-                    nextRB.Width = 100;
-                    nextRB.Height = 21;
-                    //nextRB.Text = "UserFigure";
-                    string tmpstr = ofdlgLoad.FileName.Substring(length + 1);
-                    nextRB.Text = tmpstr.Remove(tmpstr.Length - 4);
-                    //usrlst.PrintList(lboxFigures);
-                    nextRB.CheckedChanged += (a, b) => {
-                        try
+                        for (int i = 0; i < tmplist.Size(); i++)
                         {
-                            //if (Type.GetType("UserFigure") != null)
+                            usrlst.Add(tmplist.Item(i).Copy());
+                        }
+
+                        SourceLists.Add(usrlst);
+                        typ = Type.GetType("Lab1.UserFigure");
+                        var nextRB = new RadioButton();
+                        nextRB.Parent = grboxFigures;
+                        nextRB.Left = 8;
+                        nextRB.Top = StartRBPos;
+                        StartRBPos += 27;
+                        nextRB.Width = 100;
+                        nextRB.Height = 21;
+                        nextRB.Text = name;
+                        UserNamesList.Add(name);
+
+                        nextRB.CheckedChanged += (a, b) =>
+                        {
+                            try
                             {
-                                figure = (Figure.Figure)Activator.CreateInstance(typ, new Object[] { usrlst, CurrPen, 0, 0, 0, 0 });
+                                CurrentList = usrlst;
+                                CurrentName = name;
+                                figure = (Figure.Figure)Activator.CreateInstance(typ, new Object[] { CurrentName, CurrentList, CurrPen, 0, 0, 0, 0 });
                                 isChanged = true;
                                 isPointer = false;
-                                
                             }
-                        }
-                        catch (Exception ee)
-                        {
-                            MessageBoxException(ee.Message);
-                        }
-                        //else MessageBoxError("Null usrlst", "Error");
-                    };
-                    //nextRB.CheckedChanged += (a, b) => { figure = (Figure.Figure)Activator.CreateInstance(typ[0], new Object[] { CurrPen, 0, 0, 0, 0 }); isChanged = true; isPointer = false; };
+                            catch (Exception ee)
+                            {
+                                MessageBoxException(ee.Message);
+                            }
+                        };
+                        isOpenFile = false;
 
-                    grRez.Clear(Color.Transparent);
-                    grMajor.Clear(Color.Transparent);
-                    //FigList.DrawAll(grMajor);
-                    grRez.DrawImage(Layers[2], 0, 0);
-                    btnBack.Enabled = false;
-
-                    //UserFig = (UserFigure)figure;
-                    //List<string> primlist = new List<string>();
-                    //primlist = UserFig.GetPrimitives();
-                    //foreach (var item in primlist)
-                    //{
-                    //    richTextBox1.AppendText(item + "\n");
-                    //}
-                   
+                    }
+                    else MessageBoxError("Such name is already exist.", "Error");
                 }
-                
+                else MessageBoxError("Field couldn't be empty.", "Error");
             }
         }
+        
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
@@ -492,7 +479,37 @@ namespace Lab1
                         else MessageBoxError("You can't select this figure.", "Selecting error.");
                     }
                 }
-                else MD_NewFigureBegin(e);
+                else MD_NewFigureBegin(e); 
+            }
+        }
+
+        private void btnLdUsrFig_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnTransform_Click(object sender, EventArgs e)
+        {
+            if (lboxFigures.SelectedIndex != -1)
+            {
+                var transformer = new UserFiguresTransformer();
+                var tmplist = transformer.TransformOneFigureToPrimitives(FigList, CurrFig);
+                FigList.Clear();
+                for (int i = 0; i < tmplist.Size(); i++)
+                {
+                    FigList.Add(tmplist.Item(i));
+                }
+                lboxFigures.Items.Clear();
+                CurrFig = -1;
+                isPressed = false;
+                isMoved = false;
+                isChanged = false;
+                FigList.PrintList(lboxFigures);
+                grRez.Clear(Color.Transparent);
+                grMajor.Clear(Color.Transparent);
+                FigList.DrawAll(grMajor);
+                grRez.DrawImage(Layers[2], 0, 0);
+                btnBack.Enabled = false;
             }
         }
 
@@ -507,7 +524,7 @@ namespace Lab1
         {
             MessageBoxButtons buttons = MessageBoxButtons.OK;
             DialogResult result;
-            result = MessageBox.Show(ex, "Error!.", buttons);
+            result = MessageBox.Show(ex, "Error!", buttons);
         }
 
         private void MessageBoxWrongDll(string message)
@@ -553,7 +570,7 @@ namespace Lab1
             {
                 if (figure.GetType().ToString() == "Lab1.UserFigure")
                 {
-                    figure = (Figure.Figure)Activator.CreateInstance(figure.GetType(), new Object[] { usrlst, CurrPen, 0, 0, 0, 0 });
+                    figure = (Figure.Figure)Activator.CreateInstance(figure.GetType(), new Object[] { CurrentName, CurrentList, CurrPen, 0, 0, 0, 0 });///////////////////////////////////////////посмотреть что можно сделать
                 }
                 else
                 {
@@ -597,14 +614,14 @@ namespace Lab1
                     FileStream fs = (FileStream)sfdlgSave.OpenFile();
                     //binser = new MyCustomFiguresListBinarySerializer();
                     //binser.SaveFiguresList(fs, FigList);
-                    for (int i = 0; i < FigList.Size(); i++)
-                    {
-                        richTextBox1.AppendText(FigList.Item(i).GetName() + "\n");
-                        for (int j = 0; j < ((UserFigure)FigList.Item(i)).SourceFigures.Size(); j++)
-                        {
-                            richTextBox1.AppendText("   " + ((UserFigure)FigList.Item(i)).SourceFigures.Item(j).GetName() + "\n");
-                        }
-                    }
+                    //for (int i = 0; i < FigList.Size(); i++)
+                    //{
+                    //    richTextBox1.AppendText(FigList.Item(i).GetName() + "\n");
+                    //    for (int j = 0; j < ((UserFigure)FigList.Item(i)).SourceFigures.Size(); j++)
+                    //    {
+                    //        richTextBox1.AppendText("   " + ((UserFigure)FigList.Item(i)).SourceFigures.Item(j).GetName() + "\n");
+                    //    }
+                    //}
                     userfigsbinser = new MyCustomFiguresBinarySerializer();
                     userfigsbinser.SaveFiguresList(fs, FigList);
                     fs.Close();
@@ -634,7 +651,7 @@ namespace Lab1
                     try
                     {
                         //FigList = binser.LoadFiguresList(fs, TypesList);
-                        FigList = userfigsbinser.LoadFiguresList(fs, TypesList);
+                        FigList = userfigsbinser.LoadFiguresList(fs, TypesList, UserNamesList);
                         fs.Close();
                     }
                     catch (System.Runtime.Serialization.SerializationException ee)
@@ -662,8 +679,6 @@ namespace Lab1
         {
             try
             {
-                int top = 65;
-            
                 foreach (var lib in DllList)
                 {
                     Assembly asm = Assembly.LoadFile(lib);
@@ -679,7 +694,7 @@ namespace Lab1
                         var nextRB = new RadioButton();
                         nextRB.Parent = grboxFigures;
                         nextRB.Left = 8;
-                        nextRB.Top = top;
+                        nextRB.Top = StartRBPos;
                         nextRB.Width = 100;
                         nextRB.Height = 21;
                         TypesList.Add(typ[0]);
@@ -687,7 +702,7 @@ namespace Lab1
                         if (figure.GetName().Length > 11) nextRB.Text = figure.GetName().Substring(0, 10);
                         else nextRB.Text = figure.GetName();
                         nextRB.CheckedChanged += (a, b) => { figure = (Figure.Figure)Activator.CreateInstance(typ[0], new Object[] { CurrPen, 0, 0, 0, 0 }); isChanged = true; isPointer = false; };
-                        top += 27;
+                        StartRBPos += 27;
                         nextRB.Checked = true;
                         NamesList.Add(figure.GetName());
                     }
@@ -700,46 +715,65 @@ namespace Lab1
             }
         }
 
-        public int GetMinX1(FiguresList.FigureList figs)
+        private void ConnectUserFigures()
         {
-            int minc = 1000;
-            for (int i = 0; i < figs.Size(); i++)
+            try
             {
-                if (figs.Item(i).X1 < minc) minc = figs.Item(i).X1;
+                foreach (var figpath in UserFigsList)
+                {
+                    var fs = new FileStream(figpath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                    userfigsbinser = new MyCustomFiguresBinarySerializer();
+                    var tmplist = userfigsbinser.LoadFiguresList(fs, TypesList, UserNamesList);
+                    fs.Close();
+                    SourceLists.Add(tmplist);
+                    int length = (Application.StartupPath.ToString() + "\\UserFigures").Length;
+
+                    //var alist = new FiguresList.FigureList();
+                    //alist = tmplist;
+
+                    typ = Type.GetType("Lab1.UserFigure");
+                    var nextRB = new RadioButton();
+                    nextRB.Parent = grboxFigures;
+                    nextRB.Left = 8;
+                    nextRB.Top = StartRBPos;
+                    StartRBPos += 27;
+                    nextRB.Width = 100;
+                    nextRB.Height = 21;
+                    string tmpstr = figpath.Substring(length + 1);
+                    var name = tmpstr.Remove(tmpstr.Length - 4);
+                    nextRB.Text = name;
+                    UserNamesList.Add(name);
+                    
+                    nextRB.CheckedChanged += (a, b) => {
+                        try
+                        {
+                            CurrentList = tmplist;
+                            CurrentName = name;
+                            figure = (Figure.Figure)Activator.CreateInstance(typ, new Object[] { CurrentName, CurrentList, CurrPen, 0, 0, 0, 0 });
+                            isChanged = true;
+                            isPointer = false;
+                        }
+                        catch (Exception ee)
+                        {
+                            MessageBoxException(ee.Message);
+                        }
+                    };
+                }
             }
-            if (minc == 1000) minc = 0;
-            return minc;
+            catch (Exception e)
+            {
+                MessageBoxException(e.Message);
+            }
         }
 
-        public int GetMinY1(FiguresList.FigureList figs)
+        private bool IsExistName(string name)
         {
-            int minc = 1000;
-            for (int i = 0; i < figs.Size(); i++)
+            bool result = false;
+            for (int i = 0; i < UserNamesList.Count; i++)
             {
-                if (figs.Item(i).Y1 < minc) minc = figs.Item(i).Y1;
+                if (name == UserNamesList[i]) result = true;
             }
-            if (minc == 1000) minc = 0;
-            return minc;
-        }
-
-        public int GetMaxX2(FiguresList.FigureList figs)
-        {
-            int maxc = 0;
-            for (int i = 0; i < figs.Size(); i++)
-            {
-                if (figs.Item(i).X2 > maxc) maxc = figs.Item(i).X2;
-            }
-            return maxc;
-        }
-
-        public int GetMaxY2(FiguresList.FigureList figs)
-        {
-            int maxc = 0;
-            for (int i = 0; i < figs.Size(); i++)
-            {
-                if (figs.Item(i).Y2 > maxc) maxc = figs.Item(i).Y2;
-            }
-            return maxc;
+            return result;
         }
 
     }

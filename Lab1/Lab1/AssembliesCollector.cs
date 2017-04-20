@@ -35,9 +35,7 @@ namespace Lab1
             }
             catch (Exception e)
             {
-                MessageBoxButtons buttons = MessageBoxButtons.OK;
-                DialogResult result;
-                result = MessageBox.Show(e.Message, "Error!.", buttons);
+                DialogResult result = MessageBox.Show(e.Message, "Error!", MessageBoxButtons.OK);
             }
             return DllList;
         }

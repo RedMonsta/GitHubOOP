@@ -21,7 +21,7 @@ namespace Lab1
         private int MaxY { get; set; }
 
 
-        public UserFigure(FiguresList.FigureList srclist, Pen pens, int x1, int y1, int x2, int y2) : base(pens, x1, y1, x2, y2)
+        public UserFigure(string srcname, FiguresList.FigureList srclist, Pen pens, int x1, int y1, int x2, int y2) : base(pens, x1, y1, x2, y2)
         {
             //SourceFigures = srclist;
             Primitives = new FiguresList.FigureList();
@@ -34,16 +34,18 @@ namespace Lab1
             {
                 Primitives.Add(srclist.Item(i).Copy());
             }
-            Name = "UserFigure";
+            //Name = "UserFigure";
+            Name = srcname;
             GetEdgeCoordinates();
             GetRelativeCoords();
         }
 
-        public UserFigure(Pen pens, int x1, int y1, int x2, int y2) : base(pens, x1, y1, x2, y2)
+        public UserFigure(string srcname, Pen pens, int x1, int y1, int x2, int y2) : base(pens, x1, y1, x2, y2)
         {
             Primitives = new FiguresList.FigureList();
             SourceFigures = new FiguresList.FigureList();
-            Name = "UserFigure";
+            //Name = "UserFigure";
+            Name = srcname;
         }
 
         public void OnDeserialize()
@@ -78,6 +80,7 @@ namespace Lab1
 
         public void Fill(Graphics gr)
         {
+            return;
         }
 
         public override void Draw(Graphics gr)
@@ -112,13 +115,17 @@ namespace Lab1
                 MinX = SourceFigures.Item(0).X1;
                 for (int i = 0; i < SourceFigures.Size(); i++)
                 {
+                    //if (SourceFigures.Item(i).Direction == 0 || SourceFigures.Item(i).Direction == 3) if (SourceFigures.Item(i).X1 < MinX) MinX = SourceFigures.Item(i).X1;
+                    //if (SourceFigures.Item(i).Direction == 1 || SourceFigures.Item(i).Direction == 2) if (SourceFigures.Item(i).X2 < MinX) MinX = SourceFigures.Item(i).X2;
                     if (SourceFigures.Item(i).X1 < MinX) MinX = SourceFigures.Item(i).X1;
+                    if (SourceFigures.Item(i).X2 < MinX) MinX = SourceFigures.Item(i).X2;
                 }
 
                 MinY = SourceFigures.Item(0).Y1;
                 for (int i = 0; i < SourceFigures.Size(); i++)
                 {
                     if (SourceFigures.Item(i).Y1 < MinY) MinY = SourceFigures.Item(i).Y1;
+                    if (SourceFigures.Item(i).Y2 < MinY) MinY = SourceFigures.Item(i).Y2;
                 }
 
                 MaxX = SourceFigures.Item(0).X2;
