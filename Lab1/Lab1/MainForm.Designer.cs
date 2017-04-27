@@ -54,9 +54,13 @@
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.btnSettings = new System.Windows.Forms.Button();
             this.pnlSettings = new System.Windows.Forms.Panel();
-            this.tboxWidth = new System.Windows.Forms.TextBox();
-            this.tboxHeight = new System.Windows.Forms.TextBox();
+            this.btnButtonsColor = new System.Windows.Forms.Button();
+            this.btnWindowColor = new System.Windows.Forms.Button();
             this.btnSaveSettings = new System.Windows.Forms.Button();
+            this.tboxHeight = new System.Windows.Forms.TextBox();
+            this.tboxWidth = new System.Windows.Forms.TextBox();
+            this.colorDialog3 = new System.Windows.Forms.ColorDialog();
+            this.colorDialog4 = new System.Windows.Forms.ColorDialog();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.grboxFigures.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackbarWidth)).BeginInit();
@@ -68,8 +72,10 @@
             // 
             this.pictureBox1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.pictureBox1.Location = new System.Drawing.Point(169, 136);
+            this.pictureBox1.MaximumSize = new System.Drawing.Size(1500, 800);
+            this.pictureBox1.MinimumSize = new System.Drawing.Size(300, 200);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1253, 728);
+            this.pictureBox1.Size = new System.Drawing.Size(1000, 200);
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
@@ -167,7 +173,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.BackColor = System.Drawing.Color.Red;
+            this.btnSave.BackColor = System.Drawing.Color.Gainsboro;
             this.btnSave.Location = new System.Drawing.Point(846, 19);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(108, 71);
@@ -307,6 +313,9 @@
             // 
             // pnlSettings
             // 
+            this.pnlSettings.BackColor = System.Drawing.SystemColors.Menu;
+            this.pnlSettings.Controls.Add(this.btnButtonsColor);
+            this.pnlSettings.Controls.Add(this.btnWindowColor);
             this.pnlSettings.Controls.Add(this.btnSaveSettings);
             this.pnlSettings.Controls.Add(this.tboxHeight);
             this.pnlSettings.Controls.Add(this.tboxWidth);
@@ -315,19 +324,25 @@
             this.pnlSettings.Size = new System.Drawing.Size(761, 344);
             this.pnlSettings.TabIndex = 35;
             // 
-            // tboxWidth
+            // btnButtonsColor
             // 
-            this.tboxWidth.Location = new System.Drawing.Point(104, 35);
-            this.tboxWidth.Name = "tboxWidth";
-            this.tboxWidth.Size = new System.Drawing.Size(174, 20);
-            this.tboxWidth.TabIndex = 0;
+            this.btnButtonsColor.Location = new System.Drawing.Point(550, 51);
+            this.btnButtonsColor.Name = "btnButtonsColor";
+            this.btnButtonsColor.Size = new System.Drawing.Size(101, 77);
+            this.btnButtonsColor.TabIndex = 4;
+            this.btnButtonsColor.Text = "button2";
+            this.btnButtonsColor.UseVisualStyleBackColor = true;
+            this.btnButtonsColor.Click += new System.EventHandler(this.btnButtonsColor_Click);
             // 
-            // tboxHeight
+            // btnWindowColor
             // 
-            this.tboxHeight.Location = new System.Drawing.Point(101, 98);
-            this.tboxHeight.Name = "tboxHeight";
-            this.tboxHeight.Size = new System.Drawing.Size(176, 20);
-            this.tboxHeight.TabIndex = 1;
+            this.btnWindowColor.Location = new System.Drawing.Point(360, 45);
+            this.btnWindowColor.Name = "btnWindowColor";
+            this.btnWindowColor.Size = new System.Drawing.Size(104, 72);
+            this.btnWindowColor.TabIndex = 3;
+            this.btnWindowColor.Text = "button1";
+            this.btnWindowColor.UseVisualStyleBackColor = true;
+            this.btnWindowColor.Click += new System.EventHandler(this.btnWindowColor_Click);
             // 
             // btnSaveSettings
             // 
@@ -339,12 +354,31 @@
             this.btnSaveSettings.UseVisualStyleBackColor = true;
             this.btnSaveSettings.Click += new System.EventHandler(this.btnSaveSettings_Click);
             // 
+            // tboxHeight
+            // 
+            this.tboxHeight.Location = new System.Drawing.Point(101, 98);
+            this.tboxHeight.Name = "tboxHeight";
+            this.tboxHeight.Size = new System.Drawing.Size(176, 20);
+            this.tboxHeight.TabIndex = 1;
+            // 
+            // tboxWidth
+            // 
+            this.tboxWidth.Location = new System.Drawing.Point(104, 35);
+            this.tboxWidth.Name = "tboxWidth";
+            this.tboxWidth.Size = new System.Drawing.Size(174, 20);
+            this.tboxWidth.TabIndex = 0;
+            // 
+            // colorDialog3
+            // 
+            this.colorDialog3.Color = System.Drawing.SystemColors.ActiveCaption;
+            this.colorDialog3.SolidColorOnly = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(1424, 865);
+            this.ClientSize = new System.Drawing.Size(1684, 961);
             this.Controls.Add(this.pnlSettings);
             this.Controls.Add(this.btnBack);
             this.Controls.Add(this.btnSettings);
@@ -364,10 +398,11 @@
             this.Controls.Add(this.grboxFigures);
             this.Controls.Add(this.btnColor);
             this.Controls.Add(this.pictureBox1);
+            this.DoubleBuffered = true;
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MonsterPaint";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
-            this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.grboxFigures.ResumeLayout(false);
             this.grboxFigures.PerformLayout();
@@ -411,6 +446,10 @@
         private System.Windows.Forms.TextBox tboxHeight;
         private System.Windows.Forms.TextBox tboxWidth;
         private System.Windows.Forms.Button btnSaveSettings;
+        private System.Windows.Forms.ColorDialog colorDialog3;
+        private System.Windows.Forms.ColorDialog colorDialog4;
+        private System.Windows.Forms.Button btnButtonsColor;
+        private System.Windows.Forms.Button btnWindowColor;
     }
 }
 

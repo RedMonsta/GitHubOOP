@@ -47,20 +47,28 @@ namespace Lab1
         {
             InitializeComponent();
 
-            settings.GetSettingsFromXMLFile();
+            try
+            {
+                settings.GetSettingsFromXMLFile();
+                ApplySettings();
+            }
+            catch (System.Xml.XmlException e)
+            {
+                MessageBoxException(e.Message);
+            }
+            catch (System.FormatException e)
+            {
+                MessageBoxException("XML-document contains incorrect values.");
+            }
             richTextBox1.AppendText(settings.Width.ToString() + "\n");
             richTextBox1.AppendText(settings.ButtonsColor + "\n");
             richTextBox1.AppendText(settings.WindowColor + "\n");
+            //richTextBox1.AppendText(settings.WindowColor + "\n");
 
             tboxHeight.Text = settings.Height.ToString();
             tboxWidth.Text = settings.Width.ToString();
 
-            this.Width = settings.Width;
-            this.Height = settings.Height;
-            foreach (var item in this.Controls)
-            {
-                if (item is Button) ((Button)item).BackColor = settings.ButtonsColor;
-            }
+            
 
             colorDialog2.Color = pictureBox1.BackColor;
             DoubleBuffered = true;
@@ -529,19 +537,11 @@ namespace Lab1
 
             settings.SaveSettingsToXMLFile();
 
-            this.Width = settings.Width;
-            this.Height = settings.Height;
-        }
 
-        private void MainForm_SizeChanged(object sender, EventArgs e)
-        {
-            tboxHeight.Text = Height.ToString();
-            tboxWidth.Text = Width.ToString();
+                ApplySettings();           
 
-            settings.Height = Convert.ToInt32(tboxHeight.Text);
-            settings.Width = Convert.ToInt32(tboxWidth.Text);
-
-            settings.SaveSettingsToXMLFile();
+            pictureBox1.Width = settings.Width;
+            pictureBox1.Height = settings.Height;
         }
 
         private void MessageBoxException(string ex)
@@ -549,6 +549,30 @@ namespace Lab1
             MessageBoxButtons buttons = MessageBoxButtons.OK;
             DialogResult result;
             result = MessageBox.Show(ex, "Error!", buttons);
+        }
+
+        private void btnWindowColor_Click(object sender, EventArgs e)
+        {
+            if (colorDialog3.ShowDialog() == DialogResult.OK)
+            {
+                settings.WindowColor = colorDialog3.Color;
+                btnWindowColor.Text = "WindowColor: " + colorDialog3.Color.Name;
+                btnWindowColor.BackColor = colorDialog3.Color;
+                if (colorDialog3.Color == Color.Black) btnWindowColor.ForeColor = Color.White;
+                else btnWindowColor.ForeColor = Color.Black;
+            }
+        }
+
+        private void btnButtonsColor_Click(object sender, EventArgs e)
+        {
+            if (colorDialog4.ShowDialog() == DialogResult.OK)
+            {
+                settings.ButtonsColor = colorDialog4.Color;
+                btnButtonsColor.Text = "ButtonsColor: " + colorDialog4.Color.Name;
+                btnButtonsColor.BackColor = colorDialog4.Color;
+                if (colorDialog4.Color == Color.Black) btnButtonsColor.ForeColor = Color.White;
+                else btnButtonsColor.ForeColor = Color.Black;
+            }
         }
 
         private void MessageBoxWrongDll(string message)
@@ -771,6 +795,38 @@ namespace Lab1
                 if (name == UserNamesList[i]) result = true;
             }
             return result;
+        }
+
+        private void ApplySettings()
+        {
+            pictureBox1.Width = settings.Width;
+            pictureBox1.Height = settings.Height;
+            btnWindowColor.BackColor = settings.WindowColor;
+            btnButtonsColor.BackColor = settings.ButtonsColor;
+
+            tboxHeight.Text = settings.Height.ToString();
+            tboxWidth.Text = settings.Width.ToString();
+
+            //pictureBox1.Location.X = 169 + (this.Width - 169);
+            pictureBox1.Left = 155 + (this.Width - 169 - pictureBox1.Width) / 2;
+            pictureBox1.Top = 120 + (this.Height - 136 - pictureBox1.Height) / 2;
+
+
+            foreach (var item in this.Controls)
+            {
+                if (item is Button) (item as Button).BackColor = settings.ButtonsColor;
+            }
+
+            try
+            {
+                this.BackColor = settings.WindowColor;
+            }
+            catch (ArgumentException e)
+            {
+                MessageBoxException(e.Message);
+                this.BackColor = Color.LightBlue;
+                settings.WindowColor = Color.LightBlue;
+            }
         }
 
     }

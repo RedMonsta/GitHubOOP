@@ -38,4 +38,3 @@ D:\БГУИР\GitHub\GitHubOOP\Lab1\Lab1\bin\Debug\Figure.pdb
 D:\БГУИР\GitHub\GitHubOOP\Lab1\Lab1\obj\Debug\Lab1.csprojResolveAssemblyReference.cache
 D:\БГУИР\GitHub\GitHubOOP\Lab1\Lab1\bin\Debug\FiguresList.dll
 D:\БГУИР\GitHub\GitHubOOP\Lab1\Lab1\bin\Debug\FiguresList.pdb
-D:\БГУИР\GitHub\GitHubOOP\Lab1\Lab1\obj\Debug\Lab1.FormSettings.resources

@@ -22,6 +22,11 @@ namespace Lab1
         public string SavedPicturesExtension { get; set; }
         public string DefaultSaveLoadPath { get; set; }
 
+        private readonly int MinHeight = 200;
+        private readonly int MaxHeight = 800;
+        private readonly int MinWidth = 300;
+        private readonly int MaxWidth = 1500;
+
         public void GetSettingsFromXMLFile()
         {
             //Дописать trycatch
@@ -32,28 +37,51 @@ namespace Lab1
                 XmlElement xRoot = xDoc.DocumentElement;
                 foreach (XmlNode xnode in xRoot)
                 {
-                    foreach (XmlNode childnode in xnode.ChildNodes)
+                    if (xnode.Name == "VisualOptions")
                     {
-                        if (childnode.Name == "SizeOptions")
+                        foreach (XmlNode childnode in xnode.ChildNodes)
                         {
-                            foreach (XmlNode child in childnode.ChildNodes)
+                            if (childnode.Name == "SizeOptions")
                             {
-                                if (child.Name == "Width") Width = Convert.ToInt32(child.InnerText);
-                                if (child.Name == "Height") Height = Convert.ToInt32(child.InnerText);
+                                foreach (XmlNode child in childnode.ChildNodes)
+                                {
+                                    if (child.Name == "Width") Width = Convert.ToInt32(child.InnerText);
+                                    if (child.Name == "Height") Height = Convert.ToInt32(child.InnerText);
+                                }
                             }
-                        }
-                        if (childnode.Name == "ColorOptions")
-                        {
-                            foreach (XmlNode child in childnode.ChildNodes)
+                            if (childnode.Name == "ColorOptions")
                             {
-                                if (child.Name == "WindowColor") WindowColor = Color.FromName(child.InnerText.Trim());
-                                if (child.Name == "ButtonsColor") ButtonsColor = Color.FromName(child.InnerText.Trim());
+                                foreach (XmlNode child in childnode.ChildNodes)
+                                {
+                                    if (child.Name == "WindowColor") WindowColor = Color.FromName(child.InnerText.Trim());
+                                    if (child.Name == "ButtonsColor") ButtonsColor = Color.FromName(child.InnerText.Trim());
+                                }
                             }
                         }
                     }
-
-
+                    if (xnode.Name == "FilesOptions")
+                    {
+                        foreach (XmlNode childnode in xnode.ChildNodes)
+                        {
+                            if (childnode.Name == "DLLsPath") DLLsPath = childnode.InnerText;
+                            if (childnode.Name == "UserFiguresPath") UserFiguresPath = childnode.InnerText;
+                            if (childnode.Name == "UserFiguresExtension") UserFiguresExtension = childnode.InnerText;
+                            if (childnode.Name == "SavedPicturesExtension") SavedPicturesExtension = childnode.InnerText;
+                            if (childnode.Name == "DefaultSaveLoadPath") DefaultSaveLoadPath = childnode.InnerText;
+                        }
+                    }
                 }
+
+                if (Width < MinWidth) Width = MinWidth;
+                if (Width > MaxWidth) Width = MaxWidth;
+                if (Height < MinHeight) Height = MinHeight;
+                if (Height > MaxHeight) Height = MaxHeight;
+
+                //XmlNode childnode = xRoot.SelectSingleNode("//VisualOptions/SizeOptions/Width");
+                //Width = Convert.ToInt32(childnode.InnerText);
+                //childnode = xRoot.SelectSingleNode("//VisualOptions/SizeOptions/Height");
+                //Height = Convert.ToInt32(childnode.InnerText);
+
             }
             finally
             {
@@ -65,6 +93,11 @@ namespace Lab1
         {
             try
             {
+                if (Width < MinWidth) Width = MinWidth;
+                if (Width > MaxWidth) Width = MaxWidth;
+                if (Height < MinHeight) Height = MinHeight;
+                if (Height > MaxHeight) Height = MaxHeight;
+
                 var xDoc = new XmlDocument();
                 xDoc.Load("Config.xml");
                 XmlElement xRoot = xDoc.DocumentElement;
@@ -80,14 +113,14 @@ namespace Lab1
                                 if (child.Name == "Height") child.InnerText = Height.ToString();
                             }
                         }
-                        //if (childnode.Name == "ColorOptions")
-                        //{
-                        //    foreach (XmlNode child in childnode.ChildNodes)
-                        //    {
-                        //        if (child.Name == "WindowColor") WindowColor = Color.FromName(child.InnerText.Trim());
-                        //        if (child.Name == "ButtonsColor") ButtonsColor = Color.FromName(child.InnerText.Trim());
-                        //    }
-                        //}
+                        if (childnode.Name == "ColorOptions")
+                        {
+                            foreach (XmlNode child in childnode.ChildNodes)
+                            {
+                                if (child.Name == "WindowColor") child.InnerText = WindowColor.Name.ToString();
+                                if (child.Name == "ButtonsColor") child.InnerText = ButtonsColor.Name.ToString();
+                            }
+                        }
                     }
 
                     xDoc.Save("Config.xml");
