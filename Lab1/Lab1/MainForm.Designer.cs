@@ -51,10 +51,17 @@
             this.rbFillOn = new System.Windows.Forms.RadioButton();
             this.btnMkUsrFig = new System.Windows.Forms.Button();
             this.btnTransform = new System.Windows.Forms.Button();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.btnSettings = new System.Windows.Forms.Button();
+            this.pnlSettings = new System.Windows.Forms.Panel();
+            this.tboxWidth = new System.Windows.Forms.TextBox();
+            this.tboxHeight = new System.Windows.Forms.TextBox();
+            this.btnSaveSettings = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.grboxFigures.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackbarWidth)).BeginInit();
             this.grboxFill.SuspendLayout();
+            this.pnlSettings.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -160,13 +167,14 @@
             // 
             // btnSave
             // 
+            this.btnSave.BackColor = System.Drawing.Color.Red;
             this.btnSave.Location = new System.Drawing.Point(846, 19);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(108, 71);
             this.btnSave.TabIndex = 23;
             this.btnSave.TabStop = false;
             this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // sfdlgSave
@@ -279,12 +287,68 @@
             this.btnTransform.UseVisualStyleBackColor = true;
             this.btnTransform.Click += new System.EventHandler(this.btnTransform_Click);
             // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(804, 572);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(414, 176);
+            this.richTextBox1.TabIndex = 33;
+            this.richTextBox1.Text = "";
+            // 
+            // btnSettings
+            // 
+            this.btnSettings.Location = new System.Drawing.Point(1340, 34);
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Size = new System.Drawing.Size(59, 55);
+            this.btnSettings.TabIndex = 34;
+            this.btnSettings.Text = "button1";
+            this.btnSettings.UseVisualStyleBackColor = true;
+            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
+            // 
+            // pnlSettings
+            // 
+            this.pnlSettings.Controls.Add(this.btnSaveSettings);
+            this.pnlSettings.Controls.Add(this.tboxHeight);
+            this.pnlSettings.Controls.Add(this.tboxWidth);
+            this.pnlSettings.Location = new System.Drawing.Point(607, 150);
+            this.pnlSettings.Name = "pnlSettings";
+            this.pnlSettings.Size = new System.Drawing.Size(761, 344);
+            this.pnlSettings.TabIndex = 35;
+            // 
+            // tboxWidth
+            // 
+            this.tboxWidth.Location = new System.Drawing.Point(104, 35);
+            this.tboxWidth.Name = "tboxWidth";
+            this.tboxWidth.Size = new System.Drawing.Size(174, 20);
+            this.tboxWidth.TabIndex = 0;
+            // 
+            // tboxHeight
+            // 
+            this.tboxHeight.Location = new System.Drawing.Point(101, 98);
+            this.tboxHeight.Name = "tboxHeight";
+            this.tboxHeight.Size = new System.Drawing.Size(176, 20);
+            this.tboxHeight.TabIndex = 1;
+            // 
+            // btnSaveSettings
+            // 
+            this.btnSaveSettings.Location = new System.Drawing.Point(98, 228);
+            this.btnSaveSettings.Name = "btnSaveSettings";
+            this.btnSaveSettings.Size = new System.Drawing.Size(121, 70);
+            this.btnSaveSettings.TabIndex = 2;
+            this.btnSaveSettings.Text = "Apply";
+            this.btnSaveSettings.UseVisualStyleBackColor = true;
+            this.btnSaveSettings.Click += new System.EventHandler(this.btnSaveSettings_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1424, 865);
+            this.Controls.Add(this.pnlSettings);
+            this.Controls.Add(this.btnBack);
+            this.Controls.Add(this.btnSettings);
+            this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.btnTransform);
             this.Controls.Add(this.btnMkUsrFig);
             this.Controls.Add(this.grboxFill);
@@ -295,7 +359,6 @@
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnConfirm);
             this.Controls.Add(this.lboxFigures);
-            this.Controls.Add(this.btnBack);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.btnBackColor);
             this.Controls.Add(this.grboxFigures);
@@ -304,12 +367,15 @@
             this.Name = "MainForm";
             this.Text = "MonsterPaint";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.grboxFigures.ResumeLayout(false);
             this.grboxFigures.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackbarWidth)).EndInit();
             this.grboxFill.ResumeLayout(false);
             this.grboxFill.PerformLayout();
+            this.pnlSettings.ResumeLayout(false);
+            this.pnlSettings.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -339,6 +405,12 @@
         public System.Windows.Forms.GroupBox grboxFigures;
         private System.Windows.Forms.Button btnMkUsrFig;
         private System.Windows.Forms.Button btnTransform;
+        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.Button btnSettings;
+        private System.Windows.Forms.Panel pnlSettings;
+        private System.Windows.Forms.TextBox tboxHeight;
+        private System.Windows.Forms.TextBox tboxWidth;
+        private System.Windows.Forms.Button btnSaveSettings;
     }
 }
 

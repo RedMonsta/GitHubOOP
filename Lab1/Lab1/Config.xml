@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<Settings>
+    <VisualOptions>
+        <SizeOptions>
+            <Width>
+                1440
+            </Width>
+            <Height>
+                904
+            </Height>
+        </SizeOptions>
+        <ColorOptions>
+            <WindowColor>
+                ActiveCaption
+            </WindowColor>
+            <ButtonsColor>
+                Red
+            </ButtonsColor>
+        </ColorOptions>
+    </VisualOptions>
+    <FilesOptions>
+        <DLLsPath>
+            \\Dlls
+        </DLLsPath>
+        <UserFiguresPath>
+            \\UserFigures
+        </UserFiguresPath>
+        <UserFiguresExtension>
+            ufg
+        </UserFiguresExtension>
+        <SavedPicturesExtension>
+            mpp
+        </SavedPicturesExtension>
+        <DefaultSaveLoadPath>
+            \\SavedPictures
+        </DefaultSaveLoadPath>
+    </FilesOptions>
+</Settings>

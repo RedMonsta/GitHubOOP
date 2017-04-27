@@ -41,9 +41,26 @@ namespace Lab1
         private int StartRBPos = 65;
         private int CursorPos { get; set; } = -1;
 
+        private static Settings settings = new Settings();
+
         public MainForm()
         {
             InitializeComponent();
+
+            settings.GetSettingsFromXMLFile();
+            richTextBox1.AppendText(settings.Width.ToString() + "\n");
+            richTextBox1.AppendText(settings.ButtonsColor + "\n");
+            richTextBox1.AppendText(settings.WindowColor + "\n");
+
+            tboxHeight.Text = settings.Height.ToString();
+            tboxWidth.Text = settings.Width.ToString();
+
+            this.Width = settings.Width;
+            this.Height = settings.Height;
+            foreach (var item in this.Controls)
+            {
+                if (item is Button) ((Button)item).BackColor = settings.ButtonsColor;
+            }
 
             colorDialog2.Color = pictureBox1.BackColor;
             DoubleBuffered = true;
@@ -324,7 +341,7 @@ namespace Lab1
             bool rez = base.ProcessCmdKey(ref msg, keyData);
             if (keyData == Keys.Delete && CurrFig != -1) DeleteFigure();
             if (keyData == Keys.Enter && CurrFig != -1) Confirmation();
-            if (keyData == Keys.Back && CurrFig == -1) BackStep();
+            //if (keyData == Keys.Back && CurrFig == -1) BackStep();
             if (keyData == Keys.P) rbPointer.Checked = true;
             if (keyData == Keys.F && rbFillOff.Checked == true) rbFillOn.Checked = true;
             if (keyData == Keys.G && rbFillOn.Checked == true) rbFillOff.Checked = true;
@@ -498,7 +515,34 @@ namespace Lab1
             MessageBoxButtons buttons = MessageBoxButtons.OK;
             DialogResult result;
             result = MessageBox.Show(message, caption, buttons);
-        }       
+        }
+
+        private void btnSettings_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnSaveSettings_Click(object sender, EventArgs e)
+        {
+            settings.Height = Convert.ToInt32(tboxHeight.Text);
+            settings.Width = Convert.ToInt32(tboxWidth.Text);
+
+            settings.SaveSettingsToXMLFile();
+
+            this.Width = settings.Width;
+            this.Height = settings.Height;
+        }
+
+        private void MainForm_SizeChanged(object sender, EventArgs e)
+        {
+            tboxHeight.Text = Height.ToString();
+            tboxWidth.Text = Width.ToString();
+
+            settings.Height = Convert.ToInt32(tboxHeight.Text);
+            settings.Width = Convert.ToInt32(tboxWidth.Text);
+
+            settings.SaveSettingsToXMLFile();
+        }
 
         private void MessageBoxException(string ex)
         {
