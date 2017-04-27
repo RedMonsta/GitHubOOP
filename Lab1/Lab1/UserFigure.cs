@@ -20,10 +20,8 @@ namespace Lab1
         private int MaxX { get; set; }
         private int MaxY { get; set; }
 
-
         public UserFigure(string srcname, FiguresList.FigureList srclist, Pen pens, int x1, int y1, int x2, int y2) : base(pens, x1, y1, x2, y2)
         {
-            //SourceFigures = srclist;
             Primitives = new FiguresList.FigureList();
             SourceFigures = new FiguresList.FigureList();
             for (int i = 0; i < srclist.Size(); i++)
@@ -34,17 +32,15 @@ namespace Lab1
             {
                 Primitives.Add(srclist.Item(i).Copy());
             }
-            //Name = "UserFigure";
             Name = srcname;
             GetEdgeCoordinates();
-            GetRelativeCoords();
+            GetRelativeCoords();          
         }
 
         public UserFigure(string srcname, Pen pens, int x1, int y1, int x2, int y2) : base(pens, x1, y1, x2, y2)
         {
             Primitives = new FiguresList.FigureList();
             SourceFigures = new FiguresList.FigureList();
-            //Name = "UserFigure";
             Name = srcname;
         }
 
@@ -105,7 +101,6 @@ namespace Lab1
         public override Figure.Figure Copy()
         {
             return null;
-            //return new UserFigure( new Pen(pen.color, pen.Width), X1, Y1, X2, Y2);
         }
 
         private void GetEdgeCoordinates()
@@ -115,8 +110,6 @@ namespace Lab1
                 MinX = SourceFigures.Item(0).X1;
                 for (int i = 0; i < SourceFigures.Size(); i++)
                 {
-                    //if (SourceFigures.Item(i).Direction == 0 || SourceFigures.Item(i).Direction == 3) if (SourceFigures.Item(i).X1 < MinX) MinX = SourceFigures.Item(i).X1;
-                    //if (SourceFigures.Item(i).Direction == 1 || SourceFigures.Item(i).Direction == 2) if (SourceFigures.Item(i).X2 < MinX) MinX = SourceFigures.Item(i).X2;
                     if (SourceFigures.Item(i).X1 < MinX) MinX = SourceFigures.Item(i).X1;
                     if (SourceFigures.Item(i).X2 < MinX) MinX = SourceFigures.Item(i).X2;
                 }
@@ -132,17 +125,18 @@ namespace Lab1
                 for (int i = 0; i < SourceFigures.Size(); i++)
                 {
                     if (SourceFigures.Item(i).X2 > MaxX) MaxX = SourceFigures.Item(i).X2;
+                    if (SourceFigures.Item(i).X1 > MaxX) MaxX = SourceFigures.Item(i).X1;
+
                 }
 
                 MaxY = SourceFigures.Item(0).Y2;
                 for (int i = 0; i < SourceFigures.Size(); i++)
                 {
                     if (SourceFigures.Item(i).Y2 > MaxY) MaxY = SourceFigures.Item(i).Y2;
+                    if (SourceFigures.Item(i).Y1 > MaxY) MaxY = SourceFigures.Item(i).Y1;
                 }
-            }
-            
+            }           
         }
-
 
     }
 }

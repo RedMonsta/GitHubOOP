@@ -40,6 +40,13 @@ namespace Hexagon
             gr.FillPath(br, grp);
         }
 
+        public override Figure.Figure Copy()
+        {
+            var hex = new Hexagon(new Pen(pen.color, pen.Width), X1, Y1, X2, Y2);
+            hex.isFilled = isFilled;
+            return hex;
+        }
+
         public bool isFilled { get; set; }
         public bool isSelected { get; set; }
     }

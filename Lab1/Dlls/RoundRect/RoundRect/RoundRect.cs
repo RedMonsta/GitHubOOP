@@ -66,6 +66,13 @@ namespace RoundRect
             }
         }
 
+        public override Figure.Figure Copy()
+        {
+            var rrect = new RoundRect(new Pen(pen.color, pen.Width), X1, Y1, X2, Y2);
+            //rrect.isFilled = isFilled;
+            return rrect;
+        }
+
         public int Radius { get; set; }
         public bool isSelected { get; set; }
 

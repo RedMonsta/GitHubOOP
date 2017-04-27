@@ -104,5 +104,23 @@ namespace FiguresList
             }
         }
 
+        public long CalculateHash()
+        {
+            long Result = 1;
+            long temp = 0;
+
+            for (int i = 0; i < figures.Count(); i++)
+            {
+                temp = figures[i].X1 + figures[i].X2 + figures[i].Y1 + figures[i].Y2;
+                temp = temp + figures[i].pen.color.ToArgb() + (int)figures[i].pen.Width;
+                if (figures[i] is MyInterfaces.IFillingable) temp = temp + Convert.ToInt32(((MyInterfaces.IFillingable)figures[i]).isFilled);
+                Result += temp;
+            }
+            Result = Result * figures.Count();
+            return Result;
+        }
+
+
+
     }
 }

@@ -39,7 +39,7 @@
     </Reference>
     <Reference Include="FiguresList, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\FiguresList.dll</HintPath>
+      <HintPath>..\Dlls\FiguresList\FiguresList\bin\Debug\FiguresList.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="MyInterfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -71,7 +71,6 @@
     <Compile Include="MainUnit.cs" />
     <Compile Include="MyCustomFiguresBinarySerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="BinSerializer.cs" />
     <Compile Include="SerialFigure.cs" />
     <Compile Include="SerialFiguresList.cs" />
     <Compile Include="UserFigure.cs" />

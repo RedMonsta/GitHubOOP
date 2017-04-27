@@ -46,9 +46,11 @@ namespace Lab1
 
             btnConfirm.Enabled = false;
             btnDel.Enabled = false;
+            btnTransform.Enabled = false;
             CursorPos = -1;
             isOpenFile = false;
             isFill = false;
+            isError = false;
             FigList = new FiguresList.FigureList();
             usrlst = new FiguresList.FigureList();
             lblWidth.Text = "Width: 2";
@@ -73,7 +75,7 @@ namespace Lab1
         private Pen CurrPen;
         private FiguresList.FigureList FigList, usrlst;
         private BitMaps Layers;
-        private bool isPressed, isChanged, isMoved, isPointer, isOpenFile, isFill;
+        private bool isPressed, isChanged, isMoved, isPointer, isOpenFile, isFill, isError;
         private Graphics grBack, grTemp, grRez, grEdit, grMajor;
         private Figure.Figure figure;
         private int BackSteps = 0, CurrFig = -1;
@@ -86,6 +88,7 @@ namespace Lab1
         public List<FiguresList.FigureList> SourceLists;
         private FiguresList.FigureList CurrentList;
         private string CurrentName;
+        private Object[] FigParams;
 
 
         public List<Type> TypesList;
@@ -181,6 +184,8 @@ namespace Lab1
                     btnConfirm.Enabled = true;
                     grRez.DrawImage(Layers[4], 0, 0);
                     pictureBox1.Refresh();
+                    if (FigList.Item(lboxFigures.SelectedIndex) is UserFigure) btnTransform.Enabled = true;
+                    else btnTransform.Enabled = false;
                 }
                 else
                 {
@@ -268,8 +273,9 @@ namespace Lab1
             grRez.DrawImage(Layers[2], 0, 0);
             grRez.DrawImage(Layers[3], 0, 0);
             grMajor.DrawImage(Layers[1], 0, 0);
+            pictureBox1.Refresh();
             BackSteps = 0;
-            CurrFig = -1;
+            CurrFig = -1;         
 
             for (int i = 0; i < FigList.Size(); i++)
             {
@@ -446,7 +452,9 @@ namespace Lab1
                             {
                                 CurrentList = usrlst;
                                 CurrentName = name;
-                                figure = (Figure.Figure)Activator.CreateInstance(typ, new Object[] { CurrentName, CurrentList, CurrPen, 0, 0, 0, 0 });
+                                FigParams = new Object[] { CurrentName, CurrentList, CurrPen, 0, 0, 0, 0 };
+                                figure = (Figure.Figure)Activator.CreateInstance(typ, FigParams);
+                                //figure = (Figure.Figure)Activator.CreateInstance(typ, new Object[] { CurrentName, CurrentList, CurrPen, 0, 0, 0, 0 });
                                 isChanged = true;
                                 isPointer = false;
                             }
@@ -455,13 +463,14 @@ namespace Lab1
                                 MessageBoxException(ee.Message);
                             }
                         };
-                        isOpenFile = false;
+                       // isOpenFile = false;
 
                     }
                     else MessageBoxError("Such name is already exist.", "Error");
                 }
                 else MessageBoxError("Field couldn't be empty.", "Error");
             }
+            isOpenFile = false;
         }
         
 
@@ -485,6 +494,7 @@ namespace Lab1
 
         private void btnLdUsrFig_Click(object sender, EventArgs e)
         {
+            
 
         }
 
@@ -568,14 +578,17 @@ namespace Lab1
             btnBack.Enabled = true;
             if (!isChanged)
             {
-                if (figure.GetType().ToString() == "Lab1.UserFigure")
-                {
-                    figure = (Figure.Figure)Activator.CreateInstance(figure.GetType(), new Object[] { CurrentName, CurrentList, CurrPen, 0, 0, 0, 0 });///////////////////////////////////////////посмотреть что можно сделать
-                }
-                else
-                {
-                    figure = (Figure.Figure)Activator.CreateInstance(figure.GetType(), new Object[] { CurrPen, 0, 0, 0, 0 });
-                }
+                //if (figure.GetType().ToString() == "Lab1.UserFigure")
+                //{
+                //    figure = (Figure.Figure)Activator.CreateInstance(figure.GetType(), new Object[] { CurrentName, CurrentList, CurrPen, 0, 0, 0, 0 });///////////////////////////////////////////посмотреть что можно сделать
+                //}
+                //else
+                //{
+                //    figure = (Figure.Figure)Activator.CreateInstance(figure.GetType(), new Object[] { CurrPen, 0, 0, 0, 0 });
+                //}
+
+                figure = (Figure.Figure)Activator.CreateInstance(figure.GetType(), FigParams);
+
             }
             //if (figure is MyInterfaces.IFillingable) ((MyInterfaces.IFillingable)figure).isFilled = false;  
             FigList.Add(figure);
@@ -612,22 +625,14 @@ namespace Lab1
                 if (sfdlgSave.FileName != "")
                 {
                     FileStream fs = (FileStream)sfdlgSave.OpenFile();
-                    //binser = new MyCustomFiguresListBinarySerializer();
-                    //binser.SaveFiguresList(fs, FigList);
-                    //for (int i = 0; i < FigList.Size(); i++)
-                    //{
-                    //    richTextBox1.AppendText(FigList.Item(i).GetName() + "\n");
-                    //    for (int j = 0; j < ((UserFigure)FigList.Item(i)).SourceFigures.Size(); j++)
-                    //    {
-                    //        richTextBox1.AppendText("   " + ((UserFigure)FigList.Item(i)).SourceFigures.Item(j).GetName() + "\n");
-                    //    }
-                    //}
                     userfigsbinser = new MyCustomFiguresBinarySerializer();
                     userfigsbinser.SaveFiguresList(fs, FigList);
                     fs.Close();
-              
+                    
                 }
             }
+            rbPointer.Checked = true;
+            //isOpenFile = false;
         }
 
         private void btnLoad_Click(object sender, EventArgs e)
@@ -644,6 +649,9 @@ namespace Lab1
                     userfigsbinser = new MyCustomFiguresBinarySerializer();
                     FigList.Clear();
                     lboxFigures.Items.Clear();
+                    grRez.Clear(Color.Transparent);
+                    grMajor.Clear(Color.Transparent);
+                    pictureBox1.Refresh();
                     CurrFig = -1;
                     isPressed = false;
                     isMoved = false;
@@ -651,7 +659,7 @@ namespace Lab1
                     try
                     {
                         //FigList = binser.LoadFiguresList(fs, TypesList);
-                        FigList = userfigsbinser.LoadFiguresList(fs, TypesList, UserNamesList);
+                        FigList = userfigsbinser.LoadFiguresList(fs, TypesList, UserNamesList, SourceLists);
                         fs.Close();
                     }
                     catch (System.Runtime.Serialization.SerializationException ee)
@@ -659,20 +667,27 @@ namespace Lab1
                         MessageBoxButtons buttons = MessageBoxButtons.OK;
                         DialogResult result;
                         result = MessageBox.Show(ee.Message, "Loading error.", buttons);
+                        rbPointer.Checked = true;
+                        //isError = true;
                     }
-                    FigList.PrintList(lboxFigures);
-                    grRez.Clear(Color.Transparent);
-                    grMajor.Clear(Color.Transparent);
+                    FigList.PrintList(lboxFigures);                   
                     FigList.DrawAll(grMajor);
+                    
+                    //this.ActiveControl = this.pictureBox1;
+                    grRez.DrawImage(Layers[2], 0, 0);
+                    pictureBox1.Refresh();
+                    btnBack.Enabled = false;
+
                     for (int i = 0; i < FigList.Size(); i++)
                     {
                         richTextBox1.AppendText(FigList.Item(i).X1.ToString() + " " + FigList.Item(i).Y1.ToString() + " " + FigList.Item(i).X2.ToString() + " " + FigList.Item(i).Y2.ToString() + "\n");
 
                     }
-                    grRez.DrawImage(Layers[2], 0, 0);
-                    btnBack.Enabled = false;
+                    
                 }
             }
+            rbPointer.Checked = true;
+            //isOpenFile = false;
         }
     
         private void ConnectFiguresAssemblies()
@@ -701,7 +716,13 @@ namespace Lab1
                         //figure = (Figure.Figure)Activator.CreateInstance(typ[0], new Object[] { CurrPen, 0, 0, 0, 0 });
                         if (figure.GetName().Length > 11) nextRB.Text = figure.GetName().Substring(0, 10);
                         else nextRB.Text = figure.GetName();
-                        nextRB.CheckedChanged += (a, b) => { figure = (Figure.Figure)Activator.CreateInstance(typ[0], new Object[] { CurrPen, 0, 0, 0, 0 }); isChanged = true; isPointer = false; };
+                        nextRB.CheckedChanged += (a, b) => {
+                            FigParams = new Object[] { CurrPen, 0, 0, 0, 0 };
+                            //figure = (Figure.Figure)Activator.CreateInstance(typ[0], new Object[] { CurrPen, 0, 0, 0, 0 });
+                            figure = (Figure.Figure)Activator.CreateInstance(typ[0], FigParams);
+                            isChanged = true;
+                            isPointer = false;
+                        };
                         StartRBPos += 27;
                         nextRB.Checked = true;
                         NamesList.Add(figure.GetName());
@@ -721,9 +742,10 @@ namespace Lab1
             {
                 foreach (var figpath in UserFigsList)
                 {
+                    
                     var fs = new FileStream(figpath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
                     userfigsbinser = new MyCustomFiguresBinarySerializer();
-                    var tmplist = userfigsbinser.LoadFiguresList(fs, TypesList, UserNamesList);
+                    var tmplist = userfigsbinser.LoadFiguresList(fs, TypesList, UserNamesList, SourceLists);
                     fs.Close();
                     SourceLists.Add(tmplist);
                     int length = (Application.StartupPath.ToString() + "\\UserFigures").Length;
@@ -749,7 +771,9 @@ namespace Lab1
                         {
                             CurrentList = tmplist;
                             CurrentName = name;
-                            figure = (Figure.Figure)Activator.CreateInstance(typ, new Object[] { CurrentName, CurrentList, CurrPen, 0, 0, 0, 0 });
+                            FigParams = new Object[] { CurrentName, CurrentList, CurrPen, 0, 0, 0, 0 };
+                            figure = (Figure.Figure)Activator.CreateInstance(typ, FigParams);
+                            // figure = (Figure.Figure)Activator.CreateInstance(typ, new Object[] { CurrentName, CurrentList, CurrPen, 0, 0, 0, 0 });
                             isChanged = true;
                             isPointer = false;
                         }

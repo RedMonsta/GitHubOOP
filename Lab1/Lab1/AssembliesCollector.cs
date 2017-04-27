@@ -28,9 +28,9 @@ namespace Lab1
                 foreach (var lib in Dlls)
                 {
                     //AddHash(lib, SHAKey);
-                    DllList.Add(lib);
-                   // if (CheckingAssemblySignature(lib, SHAKey)) DllList.Add(lib);
-                   // else MessageBoxWrongDll("Error of connecting " + lib.ToString() + " to application: wrong file.");
+                    //DllList.Add(lib);
+                    if (CheckingAssemblySignature(lib, SHAKey)) DllList.Add(lib);
+                    else MessageBoxWrongDll("Error of connecting " + lib.ToString() + " to application: wrong file.");
                 }            
             }
             catch (Exception e)

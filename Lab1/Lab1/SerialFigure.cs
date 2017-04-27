@@ -6,21 +6,22 @@ namespace Lab1
     [Serializable]
     public class SerialFigure
     {
-        public int X1 { get; set; }
-        public int X2 { get; set; }
-        public int Y1 { get; set; }
-        public int Y2 { get; set; }
+        public int X1 { get;  }
+        public int X2 { get; }
+        public int Y1 { get; }
+        public int Y2 { get; }
 
-        public Color penColor { get; set; }
-        public float penWidth { get; set; }
+        public Color penColor { get; }
+        public float penWidth { get; }
 
-        public string Name { get; set; }
-        public int Direction { get; set; }
+        public string Name { get; }
+        public int Direction { get; }
 
-        public bool isFilled { get; set; }
-        public bool isUserFigure { get; set; }
+        public bool isFilled { get; }
+        public bool isUserFigure { get; }
 
-        public string figtype { get; set; }
+        public string figtype { get; }
+        public long Hash { get; }
 
         public SerialFigure(Figure.Figure fig)
         {
@@ -35,6 +36,8 @@ namespace Lab1
             if (fig is MyInterfaces.IFillingable) isFilled = ((MyInterfaces.IFillingable)fig).isFilled;
             figtype = fig.GetType().ToString();
             isUserFigure = fig.isUserFigure;
+            if (fig is UserFigure) Hash = ((UserFigure)fig).SourceFigures.CalculateHash();
+            else Hash = 0;
         }
     }
 }

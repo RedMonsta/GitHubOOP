@@ -25,6 +25,13 @@ namespace Ellipce
             gr.FillEllipse(br, X1, Y1, (X2 - X1), (Y2 - Y1));
         }
 
+        public override Figure.Figure Copy()
+        {
+            var ellipce = new Ellipce(new Pen(pen.color, pen.Width), X1, Y1, X2, Y2);
+            ellipce.isFilled = isFilled;
+            return ellipce;
+        }
+
         public bool isFilled { get; set; }
         public bool isSelected { get; set; }
     }

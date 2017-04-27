@@ -34,6 +34,13 @@ namespace IsoTriangle
             gr.FillPath(br, grp);
         }
 
+        public override Figure.Figure Copy()
+        {
+            var isot = new IsoTriangle(new Pen(pen.color, pen.Width), X1, Y1, X2, Y2);
+            isot.isFilled = isFilled;
+            return isot;
+        }
+
         public bool isFilled { get; set; }
         public bool isSelected { get; set; }
     }

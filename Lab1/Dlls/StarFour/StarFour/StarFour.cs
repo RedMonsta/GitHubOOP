@@ -45,6 +45,13 @@ namespace StarFour
             gr.FillPath(br, grp);
         }
 
+        public override Figure.Figure Copy()
+        {
+            var sfour = new StarFour(new Pen(pen.color, pen.Width), X1, Y1, X2, Y2);
+            sfour.isFilled = isFilled;
+            return sfour;
+        }
+
         public bool isFilled { get; set; }
         public bool isSelected { get; set; }
     }
