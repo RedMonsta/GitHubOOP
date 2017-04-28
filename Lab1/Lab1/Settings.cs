@@ -20,18 +20,29 @@ namespace Lab1
         public string UserFiguresPath { get; set; }
         public string UserFiguresExtension { get; set; }
         public string SavedPicturesExtension { get; set; }
-        public string DefaultSaveLoadPath { get; set; }
+        public string SaveLoadPath { get; set; }
 
         private readonly int MinHeight = 200;
         private readonly int MaxHeight = 800;
         private readonly int MinWidth = 300;
         private readonly int MaxWidth = 1500;
+        private readonly string DefaultDLLsPath = "Dlls";
+        private readonly string DefaultUserFiguresPath = "UserFigures";
+        private readonly string DefaultUserFiguresExtension = "ufg";
+        private readonly string DefaultSavedPicturesExtension = "mpp";
+        private readonly string DefaultSaveLoadPath = "SavedPictures";
+
 
         public void GetSettingsFromXMLFile()
         {
-            //Дописать trycatch
             try
             {
+                DLLsPath = DefaultDLLsPath;
+                UserFiguresPath = DefaultUserFiguresPath;
+                UserFiguresExtension = DefaultUserFiguresExtension;
+                SavedPicturesExtension = DefaultSavedPicturesExtension;
+                SaveLoadPath = DefaultSaveLoadPath;
+
                 var xDoc = new XmlDocument();
                 xDoc.Load("Config.xml");
                 XmlElement xRoot = xDoc.DocumentElement;
@@ -67,7 +78,7 @@ namespace Lab1
                             if (childnode.Name == "UserFiguresPath") UserFiguresPath = childnode.InnerText;
                             if (childnode.Name == "UserFiguresExtension") UserFiguresExtension = childnode.InnerText;
                             if (childnode.Name == "SavedPicturesExtension") SavedPicturesExtension = childnode.InnerText;
-                            if (childnode.Name == "DefaultSaveLoadPath") DefaultSaveLoadPath = childnode.InnerText;
+                            if (childnode.Name == "SaveLoadPath") SaveLoadPath = childnode.InnerText;
                         }
                     }
                 }

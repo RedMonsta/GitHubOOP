@@ -51,7 +51,6 @@
             this.rbFillOn = new System.Windows.Forms.RadioButton();
             this.btnMkUsrFig = new System.Windows.Forms.Button();
             this.btnTransform = new System.Windows.Forms.Button();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.btnSettings = new System.Windows.Forms.Button();
             this.pnlSettings = new System.Windows.Forms.Panel();
             this.btnButtonsColor = new System.Windows.Forms.Button();
@@ -61,6 +60,10 @@
             this.tboxWidth = new System.Windows.Forms.TextBox();
             this.colorDialog3 = new System.Windows.Forms.ColorDialog();
             this.colorDialog4 = new System.Windows.Forms.ColorDialog();
+            this.btnCancelSettings = new System.Windows.Forms.Button();
+            this.lbllWidth = new System.Windows.Forms.Label();
+            this.lblHeight = new System.Windows.Forms.Label();
+            this.lblSettings = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.grboxFigures.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackbarWidth)).BeginInit();
@@ -275,9 +278,9 @@
             // 
             // btnMkUsrFig
             // 
-            this.btnMkUsrFig.Location = new System.Drawing.Point(1089, 23);
+            this.btnMkUsrFig.Location = new System.Drawing.Point(1089, 21);
             this.btnMkUsrFig.Name = "btnMkUsrFig";
-            this.btnMkUsrFig.Size = new System.Drawing.Size(103, 67);
+            this.btnMkUsrFig.Size = new System.Drawing.Size(103, 69);
             this.btnMkUsrFig.TabIndex = 30;
             this.btnMkUsrFig.Text = "MkUsrFig";
             this.btnMkUsrFig.UseVisualStyleBackColor = true;
@@ -285,50 +288,46 @@
             // 
             // btnTransform
             // 
-            this.btnTransform.Location = new System.Drawing.Point(1210, 25);
+            this.btnTransform.Location = new System.Drawing.Point(1210, 21);
             this.btnTransform.Name = "btnTransform";
-            this.btnTransform.Size = new System.Drawing.Size(102, 65);
+            this.btnTransform.Size = new System.Drawing.Size(102, 69);
             this.btnTransform.TabIndex = 32;
             this.btnTransform.Text = "Transform";
             this.btnTransform.UseVisualStyleBackColor = true;
             this.btnTransform.Click += new System.EventHandler(this.btnTransform_Click);
             // 
-            // richTextBox1
-            // 
-            this.richTextBox1.Location = new System.Drawing.Point(804, 572);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(414, 176);
-            this.richTextBox1.TabIndex = 33;
-            this.richTextBox1.Text = "";
-            // 
             // btnSettings
             // 
-            this.btnSettings.Location = new System.Drawing.Point(1340, 34);
+            this.btnSettings.Location = new System.Drawing.Point(1333, 21);
             this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(59, 55);
+            this.btnSettings.Size = new System.Drawing.Size(103, 69);
             this.btnSettings.TabIndex = 34;
-            this.btnSettings.Text = "button1";
+            this.btnSettings.Text = "Settings";
             this.btnSettings.UseVisualStyleBackColor = true;
             this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
             // 
             // pnlSettings
             // 
             this.pnlSettings.BackColor = System.Drawing.SystemColors.Menu;
+            this.pnlSettings.Controls.Add(this.lblSettings);
+            this.pnlSettings.Controls.Add(this.lblHeight);
+            this.pnlSettings.Controls.Add(this.lbllWidth);
+            this.pnlSettings.Controls.Add(this.btnCancelSettings);
             this.pnlSettings.Controls.Add(this.btnButtonsColor);
             this.pnlSettings.Controls.Add(this.btnWindowColor);
             this.pnlSettings.Controls.Add(this.btnSaveSettings);
             this.pnlSettings.Controls.Add(this.tboxHeight);
             this.pnlSettings.Controls.Add(this.tboxWidth);
-            this.pnlSettings.Location = new System.Drawing.Point(607, 150);
+            this.pnlSettings.Location = new System.Drawing.Point(419, 207);
             this.pnlSettings.Name = "pnlSettings";
-            this.pnlSettings.Size = new System.Drawing.Size(761, 344);
+            this.pnlSettings.Size = new System.Drawing.Size(603, 244);
             this.pnlSettings.TabIndex = 35;
             // 
             // btnButtonsColor
             // 
-            this.btnButtonsColor.Location = new System.Drawing.Point(550, 51);
+            this.btnButtonsColor.Location = new System.Drawing.Point(461, 51);
             this.btnButtonsColor.Name = "btnButtonsColor";
-            this.btnButtonsColor.Size = new System.Drawing.Size(101, 77);
+            this.btnButtonsColor.Size = new System.Drawing.Size(101, 79);
             this.btnButtonsColor.TabIndex = 4;
             this.btnButtonsColor.Text = "button2";
             this.btnButtonsColor.UseVisualStyleBackColor = true;
@@ -336,9 +335,9 @@
             // 
             // btnWindowColor
             // 
-            this.btnWindowColor.Location = new System.Drawing.Point(360, 45);
+            this.btnWindowColor.Location = new System.Drawing.Point(291, 51);
             this.btnWindowColor.Name = "btnWindowColor";
-            this.btnWindowColor.Size = new System.Drawing.Size(104, 72);
+            this.btnWindowColor.Size = new System.Drawing.Size(117, 79);
             this.btnWindowColor.TabIndex = 3;
             this.btnWindowColor.Text = "button1";
             this.btnWindowColor.UseVisualStyleBackColor = true;
@@ -346,9 +345,9 @@
             // 
             // btnSaveSettings
             // 
-            this.btnSaveSettings.Location = new System.Drawing.Point(98, 228);
+            this.btnSaveSettings.Location = new System.Drawing.Point(60, 174);
             this.btnSaveSettings.Name = "btnSaveSettings";
-            this.btnSaveSettings.Size = new System.Drawing.Size(121, 70);
+            this.btnSaveSettings.Size = new System.Drawing.Size(182, 42);
             this.btnSaveSettings.TabIndex = 2;
             this.btnSaveSettings.Text = "Apply";
             this.btnSaveSettings.UseVisualStyleBackColor = true;
@@ -356,22 +355,69 @@
             // 
             // tboxHeight
             // 
-            this.tboxHeight.Location = new System.Drawing.Point(101, 98);
+            this.tboxHeight.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tboxHeight.Location = new System.Drawing.Point(98, 101);
+            this.tboxHeight.MaxLength = 3;
             this.tboxHeight.Name = "tboxHeight";
-            this.tboxHeight.Size = new System.Drawing.Size(176, 20);
+            this.tboxHeight.Size = new System.Drawing.Size(144, 29);
             this.tboxHeight.TabIndex = 1;
+            this.tboxHeight.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tboxHeight_KeyPress);
             // 
             // tboxWidth
             // 
-            this.tboxWidth.Location = new System.Drawing.Point(104, 35);
+            this.tboxWidth.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tboxWidth.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.tboxWidth.Location = new System.Drawing.Point(98, 51);
+            this.tboxWidth.MaxLength = 4;
             this.tboxWidth.Name = "tboxWidth";
-            this.tboxWidth.Size = new System.Drawing.Size(174, 20);
+            this.tboxWidth.Size = new System.Drawing.Size(144, 29);
             this.tboxWidth.TabIndex = 0;
+            this.tboxWidth.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tboxWidth_KeyPress);
             // 
             // colorDialog3
             // 
             this.colorDialog3.Color = System.Drawing.SystemColors.ActiveCaption;
             this.colorDialog3.SolidColorOnly = true;
+            // 
+            // btnCancelSettings
+            // 
+            this.btnCancelSettings.Location = new System.Drawing.Point(362, 174);
+            this.btnCancelSettings.Name = "btnCancelSettings";
+            this.btnCancelSettings.Size = new System.Drawing.Size(174, 42);
+            this.btnCancelSettings.TabIndex = 5;
+            this.btnCancelSettings.Text = "Cancel";
+            this.btnCancelSettings.UseVisualStyleBackColor = true;
+            this.btnCancelSettings.Click += new System.EventHandler(this.btnCancelSettings_Click);
+            // 
+            // lbllWidth
+            // 
+            this.lbllWidth.AutoSize = true;
+            this.lbllWidth.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lbllWidth.Location = new System.Drawing.Point(21, 51);
+            this.lbllWidth.Name = "lbllWidth";
+            this.lbllWidth.Size = new System.Drawing.Size(63, 24);
+            this.lbllWidth.TabIndex = 6;
+            this.lbllWidth.Text = "Width:";
+            // 
+            // lblHeight
+            // 
+            this.lblHeight.AutoSize = true;
+            this.lblHeight.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblHeight.Location = new System.Drawing.Point(21, 101);
+            this.lblHeight.Name = "lblHeight";
+            this.lblHeight.Size = new System.Drawing.Size(70, 24);
+            this.lblHeight.TabIndex = 7;
+            this.lblHeight.Text = "Height:";
+            // 
+            // lblSettings
+            // 
+            this.lblSettings.AutoSize = true;
+            this.lblSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblSettings.Location = new System.Drawing.Point(247, 10);
+            this.lblSettings.Name = "lblSettings";
+            this.lblSettings.Size = new System.Drawing.Size(100, 29);
+            this.lblSettings.TabIndex = 8;
+            this.lblSettings.Text = "Settings";
             // 
             // MainForm
             // 
@@ -382,7 +428,6 @@
             this.Controls.Add(this.pnlSettings);
             this.Controls.Add(this.btnBack);
             this.Controls.Add(this.btnSettings);
-            this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.btnTransform);
             this.Controls.Add(this.btnMkUsrFig);
             this.Controls.Add(this.grboxFill);
@@ -440,7 +485,6 @@
         public System.Windows.Forms.GroupBox grboxFigures;
         private System.Windows.Forms.Button btnMkUsrFig;
         private System.Windows.Forms.Button btnTransform;
-        private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.Panel pnlSettings;
         private System.Windows.Forms.TextBox tboxHeight;
@@ -450,6 +494,10 @@
         private System.Windows.Forms.ColorDialog colorDialog4;
         private System.Windows.Forms.Button btnButtonsColor;
         private System.Windows.Forms.Button btnWindowColor;
+        private System.Windows.Forms.Button btnCancelSettings;
+        private System.Windows.Forms.Label lblSettings;
+        private System.Windows.Forms.Label lblHeight;
+        private System.Windows.Forms.Label lbllWidth;
     }
 }
 

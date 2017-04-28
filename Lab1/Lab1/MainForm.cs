@@ -1,18 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Drawing.Drawing2D;
-using System.Windows.Input;
 using System.Reflection;
-using System.Security.Cryptography;
 
 namespace Lab1
 {
@@ -41,44 +32,31 @@ namespace Lab1
         private int StartRBPos = 65;
         private int CursorPos { get; set; } = -1;
 
+        private string DLLsPath = "Dlls";
+        private string UserFiguresPath = "UserFigures";
+        private string UserFiguresExtension = "ufg";
+        private string SavedPicturesExtension = "mpp";
+        private string SaveLoadPath = "SavedPictures";
+
         private static Settings settings = new Settings();
 
         public MainForm()
         {
             InitializeComponent();
 
-            try
-            {
-                settings.GetSettingsFromXMLFile();
-                ApplySettings();
-            }
-            catch (System.Xml.XmlException e)
-            {
-                MessageBoxException(e.Message);
-            }
-            catch (System.FormatException e)
-            {
-                MessageBoxException("XML-document contains incorrect values.");
-            }
-            richTextBox1.AppendText(settings.Width.ToString() + "\n");
-            richTextBox1.AppendText(settings.ButtonsColor + "\n");
-            richTextBox1.AppendText(settings.WindowColor + "\n");
-            //richTextBox1.AppendText(settings.WindowColor + "\n");
+            LoadSettings();
 
-            tboxHeight.Text = settings.Height.ToString();
-            tboxWidth.Text = settings.Width.ToString();
 
-            
-
+            pnlSettings.Visible = false; ;
             colorDialog2.Color = pictureBox1.BackColor;
             DoubleBuffered = true;
             
             var Connecter = new AssembliesCollector();
-            DllList = Connecter.GetRightFiguresAssemblies(Application.StartupPath + "\\Dlls");
+            DllList = Connecter.GetRightFiguresAssemblies(Application.StartupPath + "\\" + DLLsPath);
             ConnectFiguresAssemblies();
 
             var UserConnecter = new UserFiguresCollector();
-            UserFigsList = UserConnecter.GetRightFiguresAssemblies(Application.StartupPath + "\\UserFigures");
+            UserFigsList = UserConnecter.GetRightFiguresAssemblies(Application.StartupPath + "\\" + UserFiguresPath, UserFiguresExtension);
             ConnectUserFigures();
             
             btnConfirm.Enabled = false;
@@ -86,20 +64,21 @@ namespace Lab1
             btnTransform.Enabled = false;
             lblWidth.Text = "Width: 2";
 
-            Layers[0] = new Bitmap(pictureBox1.Width, pictureBox1.Height);      // Background layer
+            Layers[0] = new Bitmap(pictureBox1.MaximumSize.Width, pictureBox1.MaximumSize.Height);      // Background layer
             grBack = Graphics.FromImage(Layers[0]);
-            Layers[1] = new Bitmap(pictureBox1.Width, pictureBox1.Height);      //Result front layer
+            Layers[1] = new Bitmap(pictureBox1.MaximumSize.Width, pictureBox1.MaximumSize.Height);      //Result front layer
             grRez = Graphics.FromImage(Layers[1]);
-            Layers[2] = new Bitmap(pictureBox1.Width, pictureBox1.Height);      //Temp (important!) layer to saving already drawed figures
+            Layers[2] = new Bitmap(pictureBox1.MaximumSize.Width, pictureBox1.MaximumSize.Height);      //Temp (important!) layer to saving already drawed figures
             grMajor = Graphics.FromImage(Layers[2]);
-            Layers[3] = new Bitmap(pictureBox1.Width, pictureBox1.Height);      //Temp layer for drawing current figure
+            Layers[3] = new Bitmap(pictureBox1.MaximumSize.Width, pictureBox1.MaximumSize.Height);      //Temp layer for drawing current figure
             grTemp = Graphics.FromImage(Layers[3]);
-            Layers[4] = new Bitmap(pictureBox1.Width, pictureBox1.Height);      //Temp layet for editing frame
+            Layers[4] = new Bitmap(pictureBox1.MaximumSize.Width, pictureBox1.MaximumSize.Height);     //Temp layet for editing frame
             grEdit = Graphics.FromImage(Layers[4]);
             pictureBox1.BackgroundImage = Layers[0];
             pictureBox1.Image = Layers[1];
 
             ActiveControl = trackbarWidth;
+            rbPointer.Checked = true;
         }      
 
         private void button8_Click(object sender, EventArgs e)
@@ -402,7 +381,8 @@ namespace Lab1
                 {
                     if (!IsExistName(name))
                     {
-                        FileStream fs = new FileStream(Application.StartupPath.ToString() + "\\UserFigures\\" + name + ".ufg", FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                        FileStream fs = new FileStream(Application.StartupPath.ToString() + "\\" + UserFiguresPath + "\\" + name + "." + UserFiguresExtension, 
+                                                            FileMode.OpenOrCreate, FileAccess.ReadWrite);
                         userfigsbinser = new MyCustomFiguresBinarySerializer();
                         var transformer = new UserFiguresTransformer();
                         var tmplist = transformer.TransformToFullList(FigList);
@@ -477,7 +457,7 @@ namespace Lab1
             result = MessageBox.Show("Do you want to save picture before exit?", "Exit...", buttons);
             if (result == DialogResult.Yes)
             {
-                sfdlgSave.InitialDirectory = Application.StartupPath.ToString() + "\\SavedPictures";
+                sfdlgSave.InitialDirectory = Application.StartupPath.ToString() + "\\" + SaveLoadPath;
                 if (sfdlgSave.ShowDialog() != DialogResult.Cancel)
                 {
                     if (sfdlgSave.FileName != "")
@@ -527,19 +507,32 @@ namespace Lab1
 
         private void btnSettings_Click(object sender, EventArgs e)
         {
-
+            pictureBox1.Visible = false;
+            pnlSettings.Visible = true;
+            foreach (var control in Controls)
+            {
+                (control as Control).Enabled = false; 
+            }        
+            pnlSettings.Enabled = true;
         }
 
         private void btnSaveSettings_Click(object sender, EventArgs e)
         {
-            settings.Height = Convert.ToInt32(tboxHeight.Text);
-            settings.Width = Convert.ToInt32(tboxWidth.Text);
-
-            settings.SaveSettingsToXMLFile();
-
-
-                ApplySettings();           
-
+            try
+            {
+                settings.Height = Convert.ToInt32(tboxHeight.Text);
+                settings.Width = Convert.ToInt32(tboxWidth.Text);
+                settings.SaveSettingsToXMLFile();
+            }
+            catch (System.Xml.XmlException ee)
+            {
+                MessageBoxException(ee.Message);
+            }
+            catch (FormatException ee)
+            {
+                MessageBoxException(ee.Message);
+            }          
+            ApplySettings();
             pictureBox1.Width = settings.Width;
             pictureBox1.Height = settings.Height;
         }
@@ -573,6 +566,77 @@ namespace Lab1
                 if (colorDialog4.Color == Color.Black) btnButtonsColor.ForeColor = Color.White;
                 else btnButtonsColor.ForeColor = Color.Black;
             }
+        }
+
+        private void btnCancelSettings_Click(object sender, EventArgs e)
+        {
+            LoadSettings();
+            pnlSettings.Visible = false;
+            pictureBox1.Visible = true;
+            foreach (var control in Controls)
+            {
+                (control as Control).Enabled = true;
+            }          
+        }
+
+        private void LoadSettings()
+        {
+            try
+            {
+                settings.GetSettingsFromXMLFile();
+                ApplySettings();
+            }
+            catch (System.Xml.XmlException e)
+            {
+                MessageBoxException(e.Message);
+                LoadDefaultSettings();
+            }
+            catch (System.FormatException e)
+            {
+                LoadDefaultSettings();
+                MessageBoxException("XML-document contains incorrect values.");
+            }
+            DLLsPath = settings.DLLsPath;
+            UserFiguresPath = settings.UserFiguresPath;
+            UserFiguresExtension = settings.UserFiguresExtension;
+            SavedPicturesExtension = settings.SavedPicturesExtension;
+            SaveLoadPath = settings.SaveLoadPath;
+            tboxHeight.Text = settings.Height.ToString();
+            tboxWidth.Text = settings.Width.ToString();
+            btnWindowColor.Text = "WindowColor: " + settings.WindowColor.Name;
+            btnButtonsColor.Text = "ButtonsColor: " + settings.ButtonsColor.Name;
+        }
+
+        private void LoadDefaultSettings()
+        {
+            pictureBox1.Width = 1500;
+            pictureBox1.Height = 800;
+            foreach (var item in this.Controls)
+            {
+                if (item is Button) (item as Button).BackColor = Color.LightBlue;
+            }
+            BackColor = Color.LightBlue;
+            DLLsPath = "Dlls";
+            UserFiguresPath = "UserFigures";
+            UserFiguresExtension = "ufg";
+            SavedPicturesExtension = "mpp";
+            SaveLoadPath = "SavedPictures";
+            tboxHeight.Text = "800";
+            tboxWidth.Text = "1500";
+            btnWindowColor.Text = "WindowColor: " + Color.LightBlue.Name;
+            btnButtonsColor.Text = "ButtonsColor: " + Color.LightBlue.Name;
+        }
+
+        private void tboxWidth_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if ((e.KeyChar <= 47 || e.KeyChar >= 58) && e.KeyChar != 8)
+                e.Handled = true;
+        }
+
+        private void tboxHeight_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if ((e.KeyChar <= 47 || e.KeyChar >= 58) && e.KeyChar != 8)
+                e.Handled = true;
         }
 
         private void MessageBoxWrongDll(string message)
@@ -638,7 +702,9 @@ namespace Lab1
         private void btnSave_Click(object sender, EventArgs e)
         {
             isOpenFile = true;
-            sfdlgSave.InitialDirectory = Application.StartupPath.ToString() + "\\SavedPictures";
+            sfdlgSave.DefaultExt = SavedPicturesExtension;
+            sfdlgSave.Filter = "MonsterPaint Pictures|*." + SavedPicturesExtension + "|All Files|*.**";
+            sfdlgSave.InitialDirectory = Application.StartupPath.ToString() + "\\" + SaveLoadPath;
             if (sfdlgSave.ShowDialog() != DialogResult.Cancel)
             {
                 if (sfdlgSave.FileName != "")
@@ -656,7 +722,8 @@ namespace Lab1
         private void btnLoad_Click(object sender, EventArgs e)
         {
             isOpenFile = true;
-            ofdlgLoad.InitialDirectory = Application.StartupPath.ToString() + "\\SavedPictures";
+            ofdlgLoad.Filter = "MonsterPaint Pictures|*." + SavedPicturesExtension + "|All Files|*.**";
+            ofdlgLoad.InitialDirectory = Application.StartupPath.ToString() + "\\" + SaveLoadPath;
             if (ofdlgLoad.ShowDialog() != DialogResult.Cancel)
             {
                 if (ofdlgLoad.FileName != "")
@@ -750,7 +817,7 @@ namespace Lab1
                     var tmplist = userfigsbinser.LoadFiguresList(fs, TypesList, UserNamesList, SourceLists);
                     fs.Close();
                     SourceLists.Add(tmplist);
-                    int length = (Application.StartupPath.ToString() + "\\UserFigures").Length;
+                    int length = (Application.StartupPath.ToString() + "\\" + UserFiguresPath).Length;
 
                     var nextRB = new RadioButton();
                     nextRB.Parent = grboxFigures;
@@ -807,10 +874,8 @@ namespace Lab1
             tboxHeight.Text = settings.Height.ToString();
             tboxWidth.Text = settings.Width.ToString();
 
-            //pictureBox1.Location.X = 169 + (this.Width - 169);
             pictureBox1.Left = 155 + (this.Width - 169 - pictureBox1.Width) / 2;
             pictureBox1.Top = 120 + (this.Height - 136 - pictureBox1.Height) / 2;
-
 
             foreach (var item in this.Controls)
             {
@@ -826,6 +891,12 @@ namespace Lab1
                 MessageBoxException(e.Message);
                 this.BackColor = Color.LightBlue;
                 settings.WindowColor = Color.LightBlue;
+            }
+            pnlSettings.Visible = false;
+            pictureBox1.Visible = true;
+            foreach (var control in Controls)
+            {
+                (control as Control).Enabled = true;
             }
         }
 

@@ -17,11 +17,11 @@ namespace Lab1
         private string[] UserFigs;
         List<string> UserFigsList;
 
-        public List<string> GetRightFiguresAssemblies(string path)
+        public List<string> GetRightFiguresAssemblies(string path, string ext)
         {
             try
             {
-                UserFigs = Directory.GetFiles(path, "*.ufg");
+                UserFigs = Directory.GetFiles(path, "*." + ext);
                 UserFigsList = new List<string>();
                 foreach (var figpath in UserFigs)
                 {
